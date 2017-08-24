@@ -1,0 +1,55 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+$dir = str_replace('controllers', '', __DIR__);
+
+require $dir.'third_party/twilio/twilio-php-master/Twilio/autoload.php';
+
+use Twilio\Rest\Client;
+
+
+class Twilio extends CI_Controller {
+
+    function __construct() {
+        parent::__construct();
+        
+    }
+    
+    function index(){
+        //$this->data['error'] = "";
+        $this->load->view('twilio');
+        
+    }
+    
+    function test(){
+        
+            $ph = $this->input->post('ph');
+            // Use the REST API Client to make requests to the Twilio REST API
+            if(empty($ph)|| !is_numeric($ph) || strlen($ph)<10 || strlen($ph)>10){
+                $msg = "Incorrect telephone number.";
+                $this->session->set_flashdata('succ_msg', '<font color="green"><span class="err_msg">' . $msg . '</span></font>');
+                redirect('twilio');
+            }else{
+            //echo $ph;die();
+            // Your Account SID and Auth Token from twilio.com/console
+            $sid = 'AC5d9552692b97e1fc3159975fe5eba8a6';
+            $token = '3a986cf91d8a436982fb98f72cc75e9e';
+            $client = new Client($sid, $token);
+
+            // Use the client to do fun stuff like send text messages!
+            $client->messages->create(
+                // the number you'd like to send the message to
+                '+91'.$ph,
+                array(
+                    // A Twilio phone number you purchased at twilio.com/console
+                    'from' => '+14139923472',
+                    // the body of the text message you'd like to send
+                    'body' => "Hey Jenny! Good luck on the exam!"
+                )
+            );
+            redirect('twilio');
+            }
+        }
+
+}

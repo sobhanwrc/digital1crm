@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <?php echo $header_link; ?>
+    <!-- END HEAD -->
+    <style>
+.add_form_sec h3 {
+font-size: 18px !important;
+width: 100%;
+height: 30px;
+margin-bottom: 0 !important;
+margin-top: 0 !important;
+text-align: left;
+padding-left: 0 !important;
+}   
+
+.add_input_edit_area {
+    margin: 0;
+    width: 100%;
+    display: inline-block;
+    height: 300px;
+    transition : height 1s linear;
+}
+       
+       .add_input_edit_area.short{
+
+   height : 300px;
+}
+        
+.caption .btn-sm {
+padding: 5px 10px;
+font-size: 12px;
+line-height: 1.5;
+border-radius: 3px;
+}
+
+.add_input_edit_area h3 {
+font-size: 18px !important;
+width: 100%;
+height: 30px;
+margin-bottom: 0 !important;
+margin-top: 0 !important;
+text-align: left;
+padding-left: 0 !important;
+}
+.portlet.light .portlet-body {
+    padding-top: 0;
+}
+       
+.form-group {
+    margin-bottom: 0;
+}
+       
+    .dropdown-menu {
+    box-shadow: 5px 5px rgba(102,102,102,.1);
+    left: -50px;
+    min-width: 175px;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    float: left;
+    list-style: none;
+    padding: 0;
+    background-color: #fff;
+    margin: 10px 0 0;
+    border: 1px solid #eee;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+        margin-bottom: 50px;
+
+}
+
+.btn-group > .dropdown-menu::before, .dropdown-toggle > .dropdown-menu::before, .dropdown > .dropdown-menu::before {
+position: absolute;
+top: -8px;
+left: 55px;
+right: auto;
+display: inline-block !important;
+border-right: 8px solid transparent;
+border-bottom: 8px solid #e0e0e0;
+border-left: 8px solid transparent;
+content: '';
+}
+       
+.btn-group > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .dropdown > .dropdown-menu::after {
+    position: absolute;
+    top: -7px;
+    left: 54px;
+    right: auto;
+    display: inline-block !important;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    content: '';
+}
+       
+#div1 {
+  height: 1px;
+  width: 100%;
+  background: #fff;
+  text-align: left;
+  transition : height 1s linear;
+    margin-bottom: 30px;
+    overflow: hidden;
+    display: inline-block;
+/*  border-bottom: 1px solid #e7ecf1 !important;*/
+}
+        
+.control-label {
+margin-top: 6px;
+font-weight: 400;
+}
+
+#div1.short{
+
+height: 1000px;
+margin-bottom: 30px;
+}
+.add_input_edit_area .form-control {
+height: 40px;
+margin-bottom: 8px;
+float: left;
+}
+
+.portlet.light .dataTables_wrapper .dt-buttons {
+margin-top: -38px;
+}
+
+        
+        
+    </style>   
+    
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="<?php echo $assets_path; ?>custom/js/jquery.js" type="text/javascript"></script>
+  
+   
+   <script>
+    
+ var aboutMe = function(x) {
+   $(x).toggleClass('short')
+ };
+
+ $(function() {
+   $('#clicker').click(function() {
+     aboutMe('#div1');
+       if($(this).find('i').hasClass('fa-angle-down')){
+           $(this).find('i').removeClass('fa-angle-down');
+           $(this).find('i').addClass('fa-angle-up');
+       }else{
+           $(this).find('i').addClass('fa-angle-down');
+           $(this).find('i').removeClass('fa-angle-up');
+       }
+   });
+ });
+       
+
+       
+       
+    </script>
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="menu-toggler sidebar-toggler"> </div>
+            <!-- BEGIN HEADER INNER -->
+            <?php echo $header; ?>
+            <!-- END HEADER INNER -->
+        </div><!-- END HEADER -->
+<!-- BEGIN HEADER & CONTENT DIVIDER -->
+<div class="clearfix"> </div>
+<!-- END HEADER & CONTENT DIVIDER -->
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <?php echo $left_sidebar; ?>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+
+            <!-- BEGIN PAGE BAR -->
+            <?php //echo $breadcrumb; ?>
+            <div class="page-bar" style=" position: relative">
+            
+                             <div class="col-md-4">
+               
+                <table width="180px" align="right">
+                    <tr>
+                        <?php if(!empty($prev)){?>
+                                <!--<td style="width: 35px" height="40px" valign="top"><a style="width: 100%; display: block" href="<?php echo $base_url;?>targets/previous_contact/<?php echo base64_encode($targets['target_seq_no']); ?>" id="prev"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-left"></i></a></td>-->
+                            <?php } ?>
+                            <td></td>
+                            <td style=" width: 90px">
+                                <div class="btn-group btn-group-devided" data-toggle="buttons" style=" position: absolute; top:4px">                
+                                    <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                    <input name="options" class="toggle" id="option1" type="radio">
+                                        <a style=" text-decoration: none; color:#fff" href="" onclick="javascript:window.location.href='<?php echo $base_url;?>emailtemplate'"> Back</a></label>               
+                                </div>
+                            </td>
+                            
+                            <?php if(!empty($next)){?>
+                                <!--<td style=" width: 35px" height="35px" valign="top"><a style="width: 100%; display: block" href="<?php echo $base_url;?>targets/next_contact/<?php echo base64_encode($targets['target_seq_no']); ?>" id="next"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-right pull-right"></i></a></td>-->
+                            <?php } ?>
+                    </tr>
+                        
+                    
+                </table>
+                
+                </div>
+                
+
+            </div>
+            <!-- END PAGE BAR -->
+
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet light bordered">
+
+                        <div class="portlet-body">
+                            <div class="row">
+                           
+                                <div style=" width: 100%; display: inline-block">
+                                    <div class="">
+                                        <!--<form name="ms" id="ms" method="post" action="javascript:void(0);">-->  
+
+                                            <!-- EMAIL HEADER -->
+
+
+
+                                            <div class="tab-content bg-light pn mt20">
+
+
+
+                                                <div class="tab-pane active p15" id="email-compose"> 
+
+                                                    <!-- EMAIL COMPOSE -->
+
+                                                    <div class="email-compose">
+                                                      <?php 
+                                                         if ($this->session->flashdata('sess_message'))
+                                                         {
+                                                      ?>
+                                                        <div id="mydiv" style="margin-left: 0px;" class="alert alert-success" id="general_msg_success"> 
+                                                            <?php if ($this->session->flashdata('sess_message')) { ?>
+                                                                <?php echo $this->session->flashdata('sess_message'); ?>
+                                                            <?php } elseif ($this->session->flashdata('err_message')) { ?>
+                                                                <?php echo $this->session->flashdata('err_message'); ?>
+                                                            <?php } ?>
+                                                        </div>
+                                                        <?php  } ?>
+                                                       <form name="frm1" method="post">
+                                                        <div class="row mb5 mt10">
+                                                        
+                                                            <div class="col-xs-12">
+                                                              <!--<div class="form-group">
+                                                                <label for="email">To:</label>
+                                                                <input type="email" class="form-control mentions" id="email" name="email" value="<?php echo $fetch_details[0]['email'];?>" style="width:400px;">
+                                                              </div>-->
+<!--                                                              <div class="form-group">
+                                                                <label >Template:</label>
+                                                                <select class="form-control" onchange="call_temp_data(this.value);">
+                                                                    <option value="">Select a template</option>
+                                                                    <?php
+                                                                    foreach($temp_det as $k=>$v){
+                                                                    ?>
+                                                                    <option value="<?php echo $v['id'];?>"><?php echo $v['name'];?></option>
+                                                                    <?php }?>
+                                                                </select>
+                                                              </div>-->
+                                                                <div class="form-group">
+                                                                <label for="subject">Template Name</label>
+
+                                                                <input type="text" class="form-control mentions" id="narrative_type" name="narrative_type" style="width:400px"  value="<?php  if(isset($getvalue[0]['name'])){ echo $getvalue[0]['name'] ;}?>">
+                                                              </div>
+                                                                 <div class="form-group">
+                                                                <label for="message">Message:</label>
+                                                                <div class="form-group">
+                                                                <textarea rows="12" cols="200" id="ckeditorBox" name="ckeditorBox" placeholder="Write your message here..." class="" style="height:300px;width: 300px;"><?php  if(isset($getvalue[0]['content'])){ echo $getvalue[0]['content'] ;}?></textarea>
+                                                                </div>
+                                                                </div>
+                                                                <input type="hidden" name="msid" id="msid" value="<?php echo base64_encode($contact_id);?>"/>
+                                                                <input type="hidden" name="eid" id="eid" value="<?php echo $getvalue[0]['id'];?>"/>
+                                                                <input type="button" id="mailbuttons1" name="mailbutton1" value="Update" class="btn btn-primary">
+                                                                <!--<div id="csv_email_loader1" style="display:none; padding-left:10px; margin-top:2px;"><font color="green"><img src="<?php echo $base_url; ?>assets/upload/image/FhHRx.gif"></font></div>-->
+                                                            </div>
+                                                        
+
+                                                        </div>
+                                                        </form>
+
+                                                        <div class="row mb5 mt10 hidden token-fields">
+
+                                                            <div class="col-xs-5">
+                                                                <div class="form-group">
+                                                                    <div class="input-group"> <span class="input-group-addon"><span class="glyphicons glyphicons-keys"></span> </span>
+                                                                        <input class="form-control" type="text" name="cc" id="cc" placeholder="CC">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-xs-5">
+                                                                <div class="form-group">
+                                                                    <div class="input-group"> <span class="input-group-addon"><span class="glyphicons glyphicons-keys"></span> </span>
+                                                                        <input class="form-control" type="text" name="bcc" id="bcc" placeholder="BCC">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <!--<div class="summernote mt15">Write your message here...</div>-->
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- End tab --> 
+
+                                            </div>
+
+                                            <!-- End tab-content --> 
+
+                                        <!--</form>--> 
+                                    </div>
+                               </div>
+                               
+                            </div>
+                            
+                        </div>
+                            
+                             
+                    <!-- END EXAMPLE TABLE PORTLET-->             
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                   
+                </div>
+                
+                
+            </div>
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT -->
+    <!-- BEGIN QUICK SIDEBAR -->
+</div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <?php echo $footer; ?>
+    <!-- END FOOTER -->
+    <?php echo $footer_link; ?>
+    <script type="text/javascript"> var BASE_URL = "<?php echo base_url(); ?>"; </script>
+    <!-- address db -->
+    <script src="<?php echo $assets_path; ?>custom/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="<?php echo $assets_path; ?>custom/js/validate/target_add_edit.js" type="text/javascript"></script>
+    <script src="<?php echo $assets_path; ?>custom/js/address.js" type="text/javascript"></script>
+    <!-- address db -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+    
+<!--    //new implement by sobhan 31-03-17-->
+
+<script src="<?php echo $assets_path; ?>custom/Datepair.js/dist/datepair.js"></script>
+<script src="<?php echo $assets_path; ?>custom/Datepair.js/dist/jquery.datepair.js"></script>
+<script src="<?php echo $assets_path; ?>custom/jquery-timepicker/jquery.timepicker.js"></script>
+<link href="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>]
+
+<!--<link rel="stylesheet" type="text/css" href="<?php echo $assets_path; ?>summernote/summernote.css">
+<script type="text/javascript" src="<?php echo $assets_path; ?>summernote/summernote.js"></script>-->
+
+<script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/js/index.js"></script>
+
+<script>
+       //$('.mentions').mentionsInput({
+         //alert('ok');
+          // source: [
+                //{value: 'alex', uid: 'user:1'},
+                //{value: 'andrew', uid: 'user:2'},
+                //{value: 'angry birds', uid: 'game:5'},
+               //{value: 'assault', uid: 'game:3'}
+            //]
+        //});
+</script>
+<!--<link rel="stylesheet" type="text/css" href="jquery.timepicker.css" />-->
+<!--    //end-->
+<!-- END PAGE LEVEL PLUGINS -->   
+<style>
+    
+ .modal.in .modal-dialog {
+       -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999999999;
+    text-align: center;
+    width: 100%;
+height: 100%;
+position: fixed; overflow: hidden;
+
+} 
+
+.modal-content {
+    background-color: #fff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+    background-clip: padding-box;
+    outline: 0;
+    z-index: 999999999 !important;
+    width: 550px !important;
+    margin: 0 auto;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9; 
+    background-color: #000;
+}
+    
+    
+</style>
+<script>
+            $(document).ready(function () {
+                Index.init();
+            });
+        </script>
+        
+        
+        <script>
+            //for validation
+            
+          $(document).ready(function(){
+              
+              $('#profile_naratives').validate({
+            rules: {
+//                title: {
+//                    required: true
+//                },
+              
+                
+                ckeditorBox: {
+                    required: true
+                },
+                
+                        
+                narrative_type: {
+                    required: true,
+                    
+                    remote: {
+                        //url: BASE_URL + "admin/profile_naratives/profilevalidation",
+                        type: "post",
+                        data: {
+                                  narrative_type: function() {
+                                  return $("#narrative_type").val();
+                            }
+                        },
+                        
+                        
+                    }
+                },
+                
+                
+               
+                
+                
+                
+            },
+            
+            messages: {
+//                title: {
+//                    required: "<font color=\"red\">Please enter title!</font>"
+//                },
+                narrative_type: {
+                    required: "<font color=\"red\">Please enter narative type!</font>",
+                    remote: "<font color=\"red\">narative type is already is exists! please try with another</font>"
+                },
+                
+                 ckeditorBox: {
+                    required: "<font color=\"red\">Please enter Narativs!</font>"
+                },
+              
+            }
+        });
+              
+              
+          });
+        
+            
+            
+            </script>
+ 
+
+<script type="text/javascript">
+
+ //$('.summernote3').summernote({
+           // height: 315, //set editable area's height
+            //focus: true  //set focus editable area after Initialize summernote
+        //});
+
+
+
+
+    $(document).ready(function () {
+    $('#mailbuttons1').on('click', function(e) {
+    e.preventDefault();
+     
+     var template_name=$('#narrative_type').val();
+     
+     var msg= CKEDITOR.instances['ckeditorBox'].getData()
+     var id=$('#eid').val();
+     
+     var b = BASE_URL;
+     $.ajax({
+        type: "POST",
+        url: b + 'emailtemplate/edit_emailtemplate/',
+        data: {template_name:template_name,msg:msg,id:id},
+        success: function(response) {
+           
+            //$('#calendarModal .close').trigger('click');
+            location.href=BASE_URL + 'emailtemplate/index/';
+           
+        },
+        error: function() {
+            alert('Error');
+        }
+    });
+    return false;
+});
+    
+});
+</script>
+   
+   
+    </body>
+
+</html> 
+

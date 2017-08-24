@@ -1,0 +1,84 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+class Module_setting extends MY_Controller {
+    function __construct() {
+       parent::__construct();
+
+        $this->isLogin();
+
+        $this->load->model('firm_model');
+        $this->load->model('user_model');
+        $this->load->model('app_users_model');
+        $this->load->model('address_model');
+        $this->load->model('country_model');
+        $this->load->model('county_model');
+        $this->load->model('states_model');
+        $this->load->model('city_model');
+        $this->load->model('firm_codes_model');
+        $this->load->model('codes_model');
+        $this->load->model('firm_attorney_model');
+        $this->load->model('attorney_model');
+        $this->load->model('attorney_rpt_model');
+        $this->load->model('attorney_sg_model');
+        $this->load->model('attorney_sec_model');
+        $this->load->model('section_model');
+        $this->load->model('designation_model');
+        $this->load->model('group_model');
+         $this->load->model('targets_model');
+         $this->load->model('category_model');
+        $this->load->model('super_master_model');
+        $this->load->model('module_setting_model');
+        $this->load->model('super_master_model');
+    }
+    function index() {
+              $admin_id = $this->data['admin_id'];
+             $role_code = $this->data['role_code'];
+             $firm_seq_no = $this->data['firm_seq_no'];
+              $this->get_include();
+            $this->load->view($this->view_dir . 'myfirm/module_setting_view', $this->data);
+    }
+    
+    function  add(){
+        
+              $firm_seq_no = $this->data['firm_seq_no'];
+              $module =   $this->input->post('module');
+              $module_instruction =   $this->input->post('module_instruction');
+              $cond1 = "AND module_name = '$module'";
+              $module_details = $this->module_setting_model->fetch($cond1);
+            //  t($module_details);
+              $id= $module_details[0]['id']; 
+              $count1 = count($module_details); 
+              //echo $count1; die();
+               $data = array(
+                     'module_name' =>  $module,
+                     'firm_seq_no' => $firm_seq_no,
+                     'content' => $module_instruction,
+                 );
+              if(($count1) == 0){
+                $this->module_setting_model->add($data);
+                $this->session->set_flashdata('suc_message', 'Module Instruction is inserted sucessfully');
+                redirect(base_url().'module_setting');
+              }
+            else {
+                       $this->module_setting_model->edit($data,$id);
+                       $this->session->set_flashdata('suc_message', 'Module Instruction is updated sucessfully');
+                       redirect(base_url().'module_setting');
+              }
+              
+              
+              //t($data); die();
+     }
+     
+     function view_instruction()
+     {
+         $module_val =   $this->input->post('module_val');
+         $cond1 = "AND module_name = '$module_val'";
+         $module_content = $this->module_setting_model->fetch($cond1);
+         echo   $module_content[0]['content'];
+     }
+     
+     
+    
+}

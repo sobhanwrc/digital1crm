@@ -1,0 +1,353 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+Class Module_weeks_report extends MY_Controller{
+    
+    function __construct() {
+        
+        parent::__construct();
+        
+        $this->isLogin();
+        $this->load->model('user_model');
+        $this->load->model('app_users_model');
+        $this->load->model('codes_model');
+        $this->load->model('targets_model');
+        $this->load->model('module2');
+        $this->load->model('appointment_details_module');
+        $this->load->model('Module4_Model');
+        $this->load->model('Model5');
+        $this->load->model('Module6_Model');
+        $this->load->model('Module7_Model');
+        $this->load->model('Model8');
+        $this->load->model('Module9_Model');
+        $this->load->model('Module10_Model');
+        $this->load->model('change_module_number_module');
+        $this->load->model('change_module_name');
+
+        $this->data['page'] = 'Dashboard';
+    }
+    
+    function index($year=' ', $week=' ', $module=''){
+        $this->load->model('firm_model');
+        $this->load->model('address_model');
+        $this->load->model('attorney_model');
+        $this->load->model('app_users_model');
+
+
+
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        if($admin_session_data['FIRMADM']) {
+            
+        }
+
+        $cond = " AND user_seq_no = '" . $admin_id . "'";
+        $row = $this->app_users_model->fetch($cond); //t($row , 1);
+        $this->data['users'] = $row;
+        $this->data['fname'] = $row[0]['user_first_name'];
+        $this->data['lname'] = $row[0]['user_last_name'];
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        //t($row); exit;
+        //$admin_all_session['role_code'];
+        $cond3 = " and code = '" . $role_code . "'";
+        $row3 = $this->codes_model->fetch($cond3);
+        $this->data['role_short_description'] = $row3[0]['short_description'];
+        
+        
+        $date = getdate();        
+        if ($year) {
+            if (strlen($year) == 4 && is_numeric($year) == 1) {  // $week from parameter is 4 character length then it is 
+                if ($year <= 2016 || $year >= 2025) {
+                    $year = $year;
+                }
+            } else {
+                $year = $date['year'];
+            }
+        } else {
+            $year = $date['year'];
+        }
+        
+        $ddate = date('d-m-Y');
+        $date1 = new DateTime($ddate);
+        
+        if ($week) {
+            if (strlen($week) == 2 && is_numeric($week) == 1) {  // $week from parameter is 4 character length then it is 
+            
+                $week = $week;
+            } else {
+                $week = $date1->format("W");
+            }
+        } else {
+            $week = $date1->format("W");
+            $month = $date['mon'];
+        }
+        
+        $this->data['week'] = $week;
+        $date1 = date( "M d", strtotime($year."W".$week."1") ); // First day of week
+        //echo date( "M d", strtotime("+7 day", strtotime($year."W".$week."1") ));
+        $week_date_array = array();
+        $week_date_arrays = array();
+        for($j=0;$j<=6;$j++){
+            $week_date_array[$j] = date( "d-M-Y", strtotime("+".$j." day", strtotime($year."W".$week."1") ));
+            $week_date_arrays[$j] = date( "d-m-Y", strtotime("+".$j." day", strtotime($year."W".$week."1") ));
+//           $week_date_arrays1[$j] = strtotime("+".$j." day", strtotime($year."W".$week."1") );
+        }
+        $from_date = date('d/m/Y', strtotime($week_date_array[0]));
+        $to_date = date('d/m/Y', strtotime($week_date_array[6]));
+        
+//        t($week_date_array);
+//        t($week_date_arrays);
+//        die();
+        
+        $this->data['week_date_array'] = $week_date_array;
+        
+        $d = "1 January $year";
+        $time = strtotime($d, time());
+        $day = date('w', $time);
+        $time += ((7 * $week) + 1 - $day) * 24 * 3600;
+        $month = date('n', $time);
+        
+        $this->data['year'] = $year;
+        $this->data['month'] = $month;
+        
+        $month_date = array();
+        $first_month = date('n', $time);
+        $first_day = date('j', $time);
+        
+        $time += 6 * 24 * 3600;
+        $second_month = date('n', $time);
+        $second_day = date('j', $time);
+        
+        $from_date1 = $week_date_arrays[0];
+        $to_date1 = $week_date_arrays[6];
+        
+        $cond1 = " AND firm_seq_no=$firm_seq_no AND status=1 AND DATE_FORMAT(FROM_UNIXTIME(`created_date`), '%d-%m-%Y') between '$from_date1'  and  '$to_date1'";
+        $select1 = "count(target_seq_no)";
+        $fetch_all_contact_module1 = $this->targets_model->fetch($cond1,$select1);
+        
+        $cond2 = " AND  firm_seq_no=$firm_seq_no AND status=1 AND added_date between '$from_date1'  and  '$to_date1'";
+        $select2 = "count(id)";
+        $fetch_total_from_module2 = $this->module2->fetch($cond2,$select2);
+        
+        $cond3 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select3 = "count(id)";
+        $fetch_total_from_model3 = $this->appointment_details_module->fetch($cond3,$select3);
+        
+        $cond4 = " AND  firm_seq_no=$firm_seq_no AND created_date between '$from_date1'  and  '$to_date1'";
+        $select4 = "count(module_4_seq_no)";
+        $fetch_total_from_model4 = $this->Module4_Model->fetch($cond4,$select4);
+        
+        $cond5 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select5 = "count(id)";
+        $fetch_total_from_model5 = $this->Model5->fetch($cond5,$select5);
+        
+        $cond6 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select6 = "count(id)";
+        $fetch_total_from_model6 = $this->Module6_Model->fetch($cond6,$select6);
+        
+        $cond7 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND updated_date between '$from_date1'  and  '$to_date1'";
+        $select7 = "count(module_7_seq_no)";
+        $fetch_total_from_model7 = $this->Module7_Model->fetch($cond7,$select7);
+        
+        $cond8 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select8 = "count(module_8_seq_no)";
+        $fetch_total_from_model8 = $this->Model8->fetch($cond8,$select8);
+        
+        $cond9 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select9 = "count(module_9_seq_no)";
+        $fetch_total_from_model9 = $this->Module9_Model->fetch($cond9,$select9);
+        
+        $cond10 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select10 = "count(id)";
+        $fetch_total_from_model10 = $this->Module10_Model->fetch($cond10,$select10);
+        
+        
+        $weekly_module1 = array();
+        $weekly_module2 = array();
+        $weekly_module3 = array();
+        $weekly_module4 = array();
+        $weekly_module5 = array();
+        $weekly_module6 = array();
+        $weekly_module7 = array();
+        $weekly_module8 = array();
+        $weekly_module9 = array();
+        $weekly_module10 = array();
+        
+        foreach ($week_date_arrays as $key => $value) {
+            
+            $cond1 = " AND firm_seq_no=$firm_seq_no AND status=1 AND DATE_FORMAT(FROM_UNIXTIME(`created_date`), '%d-%m-%Y')='$value'";
+            $select1 = "count(target_seq_no) as module1_total_contact";
+            $fetch_all_contact_module1 = $this->targets_model->fetch($cond1,$select1);
+            $weekly_date_module1[] = $fetch_all_contact_module1[0]['module1_total_contact'];
+            
+            $cond2 = " AND firm_seq_no=$firm_seq_no AND status=1 AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select2 = "count(id) as module2_total_contact";
+            $fetch_total_from_module2 = $this->module2->fetch($cond2,$select2);
+            $weekly_date_module2[] = $fetch_total_from_module2[0]['module2_total_contact'];
+            
+            $cond3 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select3 = "count(id) as module3_total_contact";
+            $fetch_total_from_model3 = $this->appointment_details_module->fetch($cond3,$select3);
+            $weekly_date_module3[] = $fetch_total_from_model3[0]['module3_total_contact'];
+            
+            $cond4 = " AND firm_seq_no=$firm_seq_no AND DATE_FORMAT(FROM_UNIXTIME(`created_date`), '%d-%m-%Y')='$value'";
+            $select4 = "count(module_4_seq_no) as module4_total_contact";
+            $fetch_total_from_model4 = $this->Module4_Model->fetch($cond4,$select4);
+            $weekly_date_module4[] = $fetch_total_from_model4[0]['module4_total_contact'];
+            
+            $cond5 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select5 = "count(id) as module5_total_contact";
+            $fetch_total_from_model5 = $this->Model5->fetch($cond5,$select5);
+            $weekly_date_module5[] = $fetch_total_from_model5[0]['module5_total_contact'];
+            
+            $cond6 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select6 = "count(id) as module6_total_contact";
+            $fetch_total_from_model6 = $this->Module6_Model->fetch($cond6,$select6);
+            $weekly_date_module6[] = $fetch_total_from_model6[0]['module6_total_contact'];
+
+            $cond7 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`updated_date`), '%d-%m-%Y')='$value'";
+            $select7 = "count(module_7_seq_no) as module7_total_contact";
+            $fetch_total_from_model7 = $this->Module7_Model->fetch($cond7,$select7);
+            $weekly_date_module7[] = $fetch_total_from_model7[0]['module7_total_contact'];
+
+            $cond8 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select8 = "count(module_8_seq_no) as module8_total_contact";
+            $fetch_total_from_model8 = $this->Model8->fetch($cond8,$select8);
+            $weekly_date_module8[] = $fetch_total_from_model8[0]['module8_total_contact'];
+
+            $cond9 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select9 = "count(module_9_seq_no) as module9_total_contact";
+            $fetch_total_from_model9 = $this->Module9_Model->fetch($cond9,$select9);
+            $weekly_date_module9[] = $fetch_total_from_model9[0]['module9_total_contact'];
+
+            $cond10 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND DATE_FORMAT(FROM_UNIXTIME(`added_date`), '%d-%m-%Y')='$value'";
+            $select10 = "count(id) as module10_total_contact";
+            $fetch_total_from_model10 = $this->Module10_Model->fetch($cond10,$select10);
+            $weekly_date_module10[] = $fetch_total_from_model10[0]['module10_total_contact'];
+        }
+        
+        $month_date['first_month'] = date('M', mktime(0, 0, 0, $first_month, 10));
+        $month_date['first_day'] = $first_day;
+        $month_date['second_month'] = date('M', mktime(0, 0, 0, $second_month, 10));
+        $month_date['second_day'] = $second_day;
+
+        $this->data['month_date'] = $month_date;
+
+        $week_date_array = $this->changeFormate($week_date_array);        
+
+        $this->data['weekly_date_module1'] = $weekly_date_module1;
+        
+        $this->data['module_name'] = $module;
+        
+        if($module == 'module1'){
+            $this->data['weekly_date_module1'] = $weekly_date_module1;
+        }
+        if($module == 'module2'){
+            $this->data['weekly_date_module1'] = $weekly_date_module2;
+        }
+        if($module == 'module3'){
+            $this->data['weekly_date_module1'] = $weekly_date_module3;
+        }
+        if($module == 'module4'){
+            $this->data['weekly_date_module1'] = $weekly_date_module4;
+        }
+        if($module == 'module5'){
+            $this->data['weekly_date_module1'] = $weekly_date_module5;
+        }
+        if($module == 'module6'){
+            $this->data['weekly_date_module1'] = $weekly_date_module6;
+        }
+        if($module == 'module7'){
+            $this->data['weekly_date_module1'] = $weekly_date_module7;
+        }
+        if($module == 'module8'){
+            $this->data['weekly_date_module1'] = $weekly_date_module8;
+        }
+        if($module == 'module9'){
+            $this->data['weekly_date_module1'] = $weekly_date_module9;
+        }
+        if($module == 'module10'){
+            $this->data['weekly_date_module1'] = $weekly_date_module10;
+        }
+        
+        $day_month_array = array();
+        $weeks = str_pad($week, 2, '0', STR_PAD_LEFT);
+        for($i=1;$i<=52;$i++){
+         $week = str_pad($i, 2, '0', STR_PAD_LEFT);    
+         $date1 = date( "M d", strtotime($year."W".$week."1") ); // First day of week
+         $date2 = date( "M d", strtotime($year."W".$week."7") ); // Last day of week
+         $day_month_array[$week] = $date1 . " - " . $date2;
+        }
+        
+        $this->data['weekly_area'] = $day_month_array[$weeks];
+        $this->data['day_month_array'] = $day_month_array;
+        
+        $all_module_name = $this->change_module_name->fetch();
+        $this->data['all_module_name'] = $all_module_name[0];
+        
+        $this->get_include();
+        $this->load->view($this->view_dir . module_weeks_report, $this->data);
+    }
+    
+    function week_cal(){
+        $year = $this->input->post('year');
+        $outs = '<option>Select Week</option>';
+        $day_month_array = array();
+        for($i=1;$i<=52;$i++){
+         $week = str_pad($i, 2, '0', STR_PAD_LEFT);    
+         $date1 = date( "M d", strtotime($year."W".$week."1") ); // First day of week
+         $date2 = date( "M d", strtotime($year."W".$week."7") ); // Last day of week
+         $outs.='<option value="'.$week.'">'.$date1 . " - " . $date2.'</option>'; 
+         $day_month_array[$week] = '<option value="'.$week.'">'.$date1 . " - " . $date2.'</option>'; 
+        }
+        echo json_encode(array('weeks'=>$outs,'first_week'=>$day_month_array['01']));
+    }
+
+    function changeFormate($week_date_array) {
+        $new_formate = array();
+        foreach ($week_date_array as $key => $value) {
+            $date_array = explode('/', $value);
+            if ($date_array[0] == '01') {
+                $month = 'Jan';
+            }
+            if ($date_array[0] == '02') {
+                $month = 'Feb';
+            }
+            if ($date_array[0] == '03') {
+                $month = 'Mar';
+            }
+            if ($date_array[0] == '04') {
+                $month = 'Apr';
+            }
+            if ($date_array[0] == '05') {
+                $month = 'May';
+            }
+            if ($date_array[0] == '06') {
+                $month = 'Jun';
+            }
+            if ($date_array[0] == '07') {
+                $month = 'Jul';
+            }
+            if ($date_array[0] == '08') {
+                $month = 'Aug';
+            }
+            if ($date_array[0] == '09') {
+                $month = 'Sep';
+            }
+            if ($date_array[0] == '10') {
+                $month = 'Oct';
+            }
+            if ($date_array[0] == '11') {
+                $month = 'Nov';
+            }
+            if ($date_array[0] == '12') {
+                $month = 'Dec';
+            }
+            $new_data = $date_array[1] . '-' . $month . '-' . $date_array[2];
+            $new_formate[] = $new_data;
+        }
+        return $new_formate;
+    }
+}
+
+?>

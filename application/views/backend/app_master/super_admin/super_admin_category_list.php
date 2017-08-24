@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <?php echo $header_link; ?>
+    <!-- END HEAD -->
+<?php //print_r  ($categories); die(); ?>
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <div id="loader_image" style=" width: 100%; height: 800px; position: absolute; top: 0; left: 0; padding-top: 15%; text-align: center; overflow-y: hidden !important; overflow-x: hidden !important; background: #fff; z-index: 99999999999">
+            <img style="width: 100px; height:100px" src="<?php echo $assets_path; ?>pages/img/Loading_icon.gif" alt="" class="" />
+
+        </div>
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="menu-toggler sidebar-toggler"> </div>
+            <!-- BEGIN HEADER INNER -->
+            <?php echo $header; ?>
+            <!-- END HEADER INNER -->
+        </div><!-- END HEADER -->
+<!-- BEGIN HEADER & CONTENT DIVIDER -->
+<div class="clearfix"> </div>
+<!-- END HEADER & CONTENT DIVIDER -->
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <?php echo $left_sidebar; ?>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+
+            <!-- BEGIN PAGE BAR -->
+            <?php //echo $breadcrumb; ?>
+            <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="<?php echo base_url()?>dashboard">Home</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                   <!-- <li>
+                        <a href="#">Manage Call User</a>
+                        <i class="fa fa-circle"></i> 
+                    </li> -->
+                    <li>
+                        <span>Manage Category</span>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- END PAGE BAR -->
+
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption font-dark">
+                                <i class="icon-settings font-dark"></i>
+                                <span class="caption-subject bold uppercase">Manage Category</span>
+                            </div>
+                         
+
+                                                                <?php $smsg = $this->session->flashdata('suc_message'); if(isset($smsg) && $smsg != ''){ ?>
+                                         <div class="alert alert-success" id="general_msg_success" >
+                                             <strong>Success!</strong> <span id="general_msg"> <?php echo $smsg; ?></span> 
+                                         </div>
+                                         <?php } ?>
+
+                        </div>
+                        <input type="hidden" name="category_status" id="category_status" value="1">
+                        <div class="portlet-body">
+                           
+                            <br>
+                            <table class="table table-striped table-bordered table-hover table-responsive" id="sample_1">
+                                <thead>
+                                    <tr class="">
+                                        <th> SL# </th>
+                                        <th>Industry Type</th>
+                                      <th> Firm Name </th>
+                                       <th> Submit Date </th>
+                                       
+                                        <th> Actions </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                <?php $i = 0;  //t($firms); die();
+                                foreach($categories as $key => $value){ ?>
+                                    <tr>
+                                        <td> <?php echo ++$i; ?> </td>
+                                        <?php if($role_code=='SITEADM'){ ?>
+                                        <td> <?php echo $value['type_name']; ?> </td>
+                                        <td> <?php echo $value['firm_name']; ?> </td>
+                                         <td> <?php echo $value['submit_date']; ?> </td>
+                                        <?php } ?>
+                                                                         
+                                        <td>
+                                            <div class="btn-group">
+                                                <?php if(($value['status'])=='2'){ ?>
+                                              Already approved
+                                              <?php } elseif(($value['status'])=='1'){ ?>
+                                              Approved
+                                                <?php } else {?>
+                                                <button  class="btn btn-xs green dropdown-toggle" data-id="<?php echo $value['id']; ?>" p-id="<?php echo $value['id']; ?>"   type="button" data-toggle="dropdown" aria-expanded="false"> Approved 
+                                                   <!-- <i class="fa fa-angle-down"></i> -->
+                                                
+                                            </button>
+                                              <?php } ?>
+                                                <?php if(($role_code =='ATTR' )|| ($role_code =='FIRMADM')||($role_code =='SITEADM') ){ ?>
+                                                <!-- <ul class="dropdown-menu" role="menu">  
+                                                    <li>
+                                                        <a href="">
+                                                            <i class="icon-docs"></i> Approved </a>
+                                                    </li>
+                                                    
+                                                    
+                                                   
+                                                    <?php  } ?>
+                                                </ul> -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>                                             
+                                    
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT -->
+    
+  
+</div>
+
+     
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <?php echo $footer; ?>
+    <!-- END FOOTER -->
+    <?php echo $footer_link; ?>
+    <style>
+         .dropdown-menu {
+    box-shadow: 5px 5px rgba(102,102,102,.1);
+    left: -109px;
+    min-width: 175px;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    float: left;
+    list-style: none;
+    padding: 0;
+    background-color: #fff;
+    margin: 10px 0 0;
+    border: 1px solid #eee;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.btn-group > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .dropdown > .dropdown-menu::after {
+    position: absolute;
+    top: -7px;
+    right: 10px !important;
+    left: auto;
+    display: inline-block !important;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    content: '';
+}
+
+.btn-group > .dropdown-menu::before, .dropdown-toggle > .dropdown-menu::before, .dropdown > .dropdown-menu::before {
+    position: absolute;
+    top: -8px;
+    right: 7px;
+    left:auto;
+    display: inline-block !important;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #e0e0e0;
+    border-left: 8px solid transparent;
+    content: '';
+}
+        
+    </style>
+    <script src="http://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
+   <script src="http://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
+   <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+
+    $(window).load(function() {
+//          $("#loader_image").hide();
+        $('#loader_image').delay(2000).fadeOut(1000)
+    });
+
+    
+   $(document).on('click','.dropdown-toggle', function(e){
+        //var data_id = $(this).data('id');
+        var data_id = $(this).attr('p-id');
+        var category_status = $('#category_status').val();
+        //alert(category_status);
+       // alert(data_id);
+         $.ajax({
+                                 type: "POST",
+                                 url: BASE_URL + "category/approved_category",
+                                data: {
+                                            data_id: data_id,
+                                            category_status: category_status
+                                         },
+                              success: function(data){
+                                         if (data == '1') {
+                                             jconfirm({
+                                                 title: 'Confirmation!',
+                                                 content: "Request is Sucessfully Approved",
+                                                 buttons: {
+                                                     OK: function () {
+                                                         window.location.href = BASE_URL + 'category';
+                                                    }
+                                                 }
+                                             });
+                                         }
+                              }            
+                                 
+                             });
+        
+        
+        
+
+   });
+    </script>
+    </body>
+
+</html> 

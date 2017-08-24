@@ -1,0 +1,41 @@
+/*    label.error {
+        display: none !important;
+    }*/
+.customErrorClass {
+    border: 1px solid red !important;
+    /*color: red;*/
+    background-color: #ffcccc;
+}
+
+input[type=text].error,input[type=file].error, input[type=email].error, input[type=password].error, textarea.error, select.error,input[type=checkbox].error {
+    border: 1px solid red !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

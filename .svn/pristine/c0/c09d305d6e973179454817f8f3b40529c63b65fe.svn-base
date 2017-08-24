@@ -1,0 +1,574 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
+class Login extends MY_Controller {
+
+
+    public function __construct() {
+        parent::__construct();
+
+//        session_start();
+        $this->load->model('user_model');
+        $this->load->model('firm_model');
+        $this->load->model('app_profiles_model');
+        $this->load->model('app_users_model');
+    }
+
+    function index() {
+
+        $admin_id = $this->data['admin_id'];
+//t($_COOKIE);
+//echo $_COOKIE['ci_session'];
+//exit;
+        if ($admin_id) {
+            redirect($base_url . 'dashboard');
+        } else {
+//            if (isset($_COOKIE['remember_me'])) {
+//                $cond = " and user_id = '" . $this->db->escape_str($username) . "'";
+//                $row_data = $this->user_model->fetch($cond);
+//                if (count($row_data) > 0) {
+//                    $temp_array = array(
+//                        'session' => 1,
+//                        'login_ip' => $ip_address,
+//                        'login_time' => time()
+//                    );
+//                    $this->user_model->edit($temp_array, $row_data[0]['user_seq_no']);
+//
+//                    $newdata = array(
+//                        'admin_id' => $row_data[0]['user_seq_no'],
+//                        'first_name' => $row_data[0]['user_first_name'],
+//                        'last_name' => $row_data[0]['user_last_name'],
+//                        'email' => $row_data[0]['user_id'],
+//                        'admin_name' => $row_data[0]['user_name'],
+//                        'role_code' => $row_data[0]['role_code'],
+//                        'image' => $row_data[0]['image']
+//                    );
+//
+//                    $this->session->set_userdata('admin_session_data', $newdata);
+//                    redirect($base_url . 'dashboard');
+//                }
+//            }
+            $this->load->view($this->view_dir . 'login/login', $this->data);
+        }
+
+//         $this->load->view($this->view_dir . 'login/login', $this->data);
+    }
+
+    // new submit with mail //
+    function activat_link($random) {
+
+//        $admin_all_session = $this->session->userdata('admin_session');
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        if ($admin_id) {
+            redirect($base_url . 'dashboard');
+        }
+
+        $salt = base64_decode($random);
+        $data = array(
+            'updated_at' => time(),
+            'status' => 1
+        );
+
+        $cond_array = array(
+            'salt' => $salt
+        );
+
+        $edit = $this->user_model->edit_cond($data, $cond_array);
+        //echo $this->db->last_query(); exit;
+        if ($edit) {
+            //fetch user email
+            $cond = "AND salt='$salt'";
+            $fetch = $this->user_model->fetch($cond);
+            $email = $fetch[0]['user_id'];
+
+            $message_content = "Welcome to Attorney Management System. Your account is activated now.";
+
+            $subject = "Reply from Attorney Management System";
+            $this->email_config();
+            $this->email->from('noreply@ams.com', 'Attorney Management System');
+            $this->email->to($email);
+            $this->email->subject($subject);
+            $this->email->message($message_content);
+            $send = $this->email->send();
+
+            $msg = 'Your account is activated . Login Now.';
+            $this->session->set_flashdata('err_message', '<font color="green"><span class="err_msg">' . $msg . '</span></font>');
+            redirect($base_url . 'login');
+        } else {
+            $msg = 'Account is not activated, please try again';
+            $this->session->set_flashdata('err_message', '<font color="red"><span class="err_msg">' . $msg . '</span></font>');
+            redirect($base_url . 'login');
+        }
+    }
+
+    function submit($param) {
+
+//        $admin_all_session = $this->session->userdata('admin_session');
+//        $admin_id = $admin_all_session['admin_id'];
+//        if ($admin_id) {
+//            redirect($base_url . 'dashboard');
+//        }
+        //        $random = random_string('alnum', 16);
+        //        $random1 = base64_encode($random);
+
+     if (isset($_POST["username"])) {
+        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+
+        $username = $this->input->post('username');
+        $password = md5($this->input->post('password'));
+        $company_id = $this->input->post('company_id');
+        
+        //fetch_company_details
+        $cond123 = " AND firm_seq_no='$company_id'";
+        $select = "firm_seq_no";
+        $fetch_company_id = $this->firm_model->fetch($cond123,$select);
+        $company_id = $fetch_company_id[0]['firm_seq_no'];
+//        t($fetch_company_id);die();
+        //end
+
+        $remember = $this->input->post('remember');
+
+//        setcookie('remember_me', $username, $year);
+
+        $ip_address = $this->get_ip_address();
+
+        if ($this->form_validation->run() == FALSE) {
+            $msg = 'Please enter username and password';
+            $this->session->set_flashdata('err_message', '<font color="red"><span class="err_msg">' . $msg . '</span></font>');
+            redirect($base_url . 'login');
+        } else {
+            $cond = " and user_id = '" . $this->db->escape_str($username) . "'";
+            $row_data = $this->user_model->fetch($cond);
+            
+
+//              echo $this->db->last_query();
+//               t($row_data);
+//               die();
+
+            if (!empty($row_data)) {
+
+                $user_status = $row_data[0]['status'];
+                $fname = $row_data[0]['user_name'];
+                $email = $row_data[0]['user_id'];
+                $salt = $row_data[0]['salt'];
+                $salt1 = base64_encode($salt);
+                if ($user_status == 0) {
+
+                    $message_tpl = file_get_contents($this->config->item('assets_path') . 'email/forgot.html');
+                    $patterns = array();
+                    $patterns[0] = '/!!!#name#!!!/';
+                    $patterns[1] = '/!!!#base_url#!!!/';
+                    $replacements = array();
+                    $replacements[0] = $fname;
+                    $replacements[1] = base_url() . 'login/activat_link/' . $salt1;
+                    $message_content = preg_replace($patterns, $replacements, $message_tpl);
+                    //  $message_content = "Welcome to Da Vincii Tracking";
+
+                    $subject = "Reply from Attorney Management System";
+                    $this->email_config();
+                    $this->email->from('noreply@ams.com', 'Attorney Management System');
+                    $this->email->to($email);
+                    $this->email->subject($subject);
+                    $this->email->message($message_content);
+                    $send = $this->email->send();
+
+                    $msg = 'You are an inactive user. Please acivate from email.';
+                    $this->session->set_flashdata('err_message', '<font color="green"><span class="err_msg">' . $msg . '</font></span>');
+                    redirect($base_url . 'login');
+                }
+            }
+//t($row_data);
+            if (!empty($row_data)) {
+
+                $password_temp = $row_data[0]['password'];
+                $salt = $row_data[0]['salt'];
+                $temp = substr($password_temp, -24, 24);
+                $temp2 = substr($password_temp, 0, 32);
+                $decoded_salt = base64_decode($temp);
+
+                if (($decoded_salt != $salt) || ($password != $temp2)) {
+                    $msg = 'Wrong Username/Password, please try again';
+                    $this->session->set_flashdata('err_message', '<font color="red"><span class="err_msg">' . $msg . '</span></font>');
+                    redirect($base_url . 'login');
+                }
+            }
+
+//t($row_data);exit;
+            if (count($row_data) > 0) {
+
+                $year = time() + (30 * 24 * 7 * 3600);              /////remember for one year
+                if ($remember) {
+                    setcookie('remember_me', $username, $year);
+                }
+
+                $temp_array = array(
+                    'session' => 1,
+                    'login_ip' => $ip_address,
+                    'login_time' => time()
+                );
+                $this->user_model->edit($temp_array, $row_data[0]['user_seq_no']);
+
+                
+                if(!empty($row_data[0]['assign_to'])){
+                    $newdata = array(
+                        'admin_id' => $row_data[0]['user_seq_no'],
+                        'first_name' => $row_data[0]['user_first_name'],
+                        'last_name' => $row_data[0]['user_last_name'],
+                        'email' => $row_data[0]['user_id'],
+                        'admin_name' => $row_data[0]['user_name'],
+                        'role_code' => $row_data[0]['role_code'],
+                        'image' => $row_data[0]['profile_photo'],
+                        'firm_seq_no' => $company_id
+                    );
+                }else{
+                    $newdata = array(
+                        'admin_id' => $row_data[0]['user_seq_no'],
+                        'first_name' => $row_data[0]['user_first_name'],
+                        'last_name' => $row_data[0]['user_last_name'],
+                        'email' => $row_data[0]['user_id'],
+                        'admin_name' => $row_data[0]['user_name'],
+                        'role_code' => $row_data[0]['role_code'],
+                        'image' => $row_data[0]['profile_photo'],
+                        'firm_seq_no' => $row_data[0]['firm_seq_no']?$row_data[0]['firm_seq_no']:$this->input->post('company_id')
+                    );
+                }
+                
+                
+                
+
+
+//t($newdata);exit;
+                $this->session->set_userdata('admin_session_data', $newdata);
+
+//                 $admin_all_session = $this->session->userdata('admin_session_data');
+//                 t($admin_all_session);
+//        exit;
+
+                // app profile update
+                $user_seq_no = $row_data[0]['user_seq_no'];
+                $profile_exist = $this->app_profiles_model->fetch(" AND user_seq_no = '" . $user_seq_no . "'"); //t($profile_exist , 1);
+
+                if (count($profile_exist) > 0) {
+                    //update
+                    $device = $this->detectDevice();
+                    $ip = $this->get_ip_address();
+
+                    $base_location_all = $this->get_location();
+                    $base_location = 'Country : ' . $base_location_all['country'] . ', latitude : ' . $base_location_all['lat'] . ', Longitude : ' . $base_location_all['lon'] . ', City : ' . $base_location_all['city'] . ', ISP : ' . $base_location_all['isp'] . ', Timezone : ' . $base_location_all['timezone'];
+
+                    $last_device_type = 'Device : ' . $device['device'] . ', ' . $device['browser'] . ', ' . $device['user_egent'];
+                    $base_session_ref = $base_location . ', ' . $last_device_type;
+
+                    $data_3 = array(
+                        'user_seq_no' => $row_data[0]['user_seq_no'],
+                        'current_location' => $base_location,
+                        'current_session_ref' => $base_session_ref,
+                        'last_device_type' => $last_device_type,
+                        'last_ip_address' => $ip,
+                        'last_device_ref' => $base_session_ref,
+                        'last_accessed_time' => time(),
+                        'remarks_notes' => 'USER LOGIN',
+                        'updated_by' => $row_data[0]['user_seq_no'],
+                        'updated_date' => time()
+                    );
+
+                    $profile = $this->app_profiles_model->edit($data_3, $profile_exist[0]['profile_seq_no']);
+                } else {
+                    // insert
+                    $device = $this->detectDevice();
+                    $ip = $this->get_ip_address();
+
+                    $base_location_all = $this->get_location();
+                    $base_location = 'Country : ' . $base_location_all['country'] . ', latitude : ' . $base_location_all['lat'] . ', Longitude : ' . $base_location_all['lon'] . ', City : ' . $base_location_all['city'] . ', ISP : ' . $base_location_all['isp'] . ', Timezone : ' . $base_location_all['timezone'];
+
+                    $last_device_type = 'Device : ' . $device['device'] . ', ' . $device['browser'] . ', ' . $device['user_egent'];
+                    $base_session_ref = $base_location . ', ' . $last_device_type;
+
+                    $data_3 = array(
+                        'user_seq_no' => $user_seq_no,
+                        'base_location' => $base_location,
+                        'base_session_ref' => $base_session_ref,
+                        'last_device_type' => $last_device_type,
+                        'last_ip_address' => $ip,
+                        'last_device_ref' => $base_session_ref,
+                        'last_accessed_time' => time(),
+                        'remarks_notes' => 'USER LOGIN',
+                        'created_by' => $user_seq_no,
+                        'created_date' => time()
+                    );
+
+                    $profile = $this->app_profiles_model->add($data_3);
+                }
+
+                $msg = "You have logged in successfully.";
+                $this->session->set_flashdata('succ_msg', '<font color="green"><span class="err_msg">' . $msg . '</span></font>');
+                redirect($base_url . 'dashboard');
+            } else {
+                $msg = 'Wrong Username/Password, please try again';
+                $this->session->set_flashdata('err_message', '<font color="red"><span class="err_msg">' . $msg . '</span></font>');
+                redirect($base_url . 'login');
+            }
+        }
+
+     } else {
+          $this->load->view($this->view_dir . 'login/login', $this->data);
+     }
+    }
+    
+    function check_digital1_staff (){
+        $user_id = $this->input->post('user_id');
+        if($user_id == 'admin@rshi.co') {
+            $this->db->select('*')->from('plma_firm')->order_by('firm_name');
+            
+            $fetch_all_company = $this->db->get()->result_array();
+        }
+        else {
+            $cond = " AND user_id='$user_id'  AND created_by='1' AND status='1' AND assign_to<>''";
+            $select = "assign_to";
+            $fetch_user_details = $this->user_model->fetch($cond,$select);
+            
+            $company_id = $fetch_user_details[0]['assign_to'];      
+            
+            if($company_id) {
+                $cond123 = " AND firm_seq_no in ($company_id)";
+                $fetch_all_company = $this->firm_model->fetch($cond123);
+            }
+            else {
+                $fetch_all_company = array();
+            }
+        }
+        
+        
+        
+        echo json_encode($fetch_all_company);
+        
+    }
+
+    function logout($param) {
+
+//        $admin_all_session = $this->session->userdata('admin_session'); //t($admin_all_session); exit;
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+
+        $temp_array = array(
+            'session' => 0,
+        );
+        $this->user_model->edit($temp_array, $admin_id);
+
+//        t($_COOKIE);
+//$ci_session= $_COOKIE['ci_session'];
+        $this->session->unset_userdata('admin_session');
+        $this->session->unset_userdata('ci_session');
+
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        $this->output->set_header("Pragma: no-cache");
+
+        $this->session->sess_destroy();
+
+        $msg = 'Logged out successfully.';
+        $this->session->set_flashdata('err_message', '<font color="green"><span class="err_msg">' . $msg . '</font></span>');
+        redirect($base_url . 'login');
+    }
+
+    /* function send_code()
+      {
+      $this->email->from('kasturi.wrc@gmail.com', 'Kasturi');
+      $list = array('jayanta.wrc@gmail.com');
+      $this->email->to($list);
+      $this->email->reply_to('kasturi.wrc@gmail.com', 'Re-Kasturi');
+      $this->email->subject('This is an email test');
+      $this->email->message('It is working. Great!');
+      echo $this->email->send();
+      } */
+
+    function detectDevice() {
+        $userAgent = $_SERVER["HTTP_USER_AGENT"];
+        $devicesTypes = array(
+            "computer" => array("msie 10", "msie 9", "msie 8", "windows.*firefox", "windows.*chrome", "x11.*chrome", "x11.*firefox", "macintosh.*chrome", "macintosh.*firefox", "opera"),
+            "tablet" => array("tablet", "android", "ipad", "tablet.*firefox"),
+            "mobile" => array("mobile ", "android.*mobile", "iphone", "ipod", "opera mobi", "opera mini"),
+            "bot" => array("googlebot", "mediapartners-google", "adsbot-google", "duckduckbot", "msnbot", "bingbot", "ask", "facebook", "yahoo", "addthis")
+        );
+        foreach ($devicesTypes as $deviceType => $devices) {
+            foreach ($devices as $device) {
+                if (preg_match("/" . $device . "/i", $userAgent)) {
+                    $deviceName = array(
+                        'device' => $deviceType,
+                        'user_egent' => $userAgent,
+                        'browser' => $device
+                    );
+                }
+            }
+        }
+        return /* ucfirst( */$deviceName/* ) */;
+    }
+
+    function get_ip_address() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
+    function get_location() {
+        $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $this->get_ip_address()));
+        if ($query && $query['status'] == 'success') {
+            return $query;
+        }
+    }
+
+    function forgot_password() {
+//       echo 123; exit;
+        $submit = $this->input->post('forgot_password_submit');
+        $user_id = $this->input->post('email');
+//        echo 'enter';
+//        echo $this->db->last_query(); exit;
+        if ($submit) {
+//            echo 'submit';
+            if (isset($user_id)) {
+//                echo 123;
+
+                $cond = "AND `status` = '1' AND `user_id` = '" . $user_id . "'";
+                $row = $this->app_users_model->fetch($cond);
+
+                if ((count($row) > 0)) {
+//                    echo 456;
+                    $user_seq_no = $row[0]['user_seq_no'];
+                    $user_first_name = $row[0]['user_first_name'];
+                    $user_id = $row[0]['user_id'];
+
+                    $mail = $this->sendForgotPasswordEmail($user_seq_no, $user_first_name, $user_id);
+
+
+                    if ($mail) {
+//                    echo 789;
+                        $this->session->set_flashdata('suc_message', '<font color="green"><span class="err_msg">' . 'Please check your email for new password.' . '</font></span>');
+                        redirect($base_url . 'login');
+                    } else {
+                        $this->session->set_flashdata('err_message', '<font color="red"><span class="err_msg">' . 'wrong username  <br> Please try again.' . '</font></span>');
+                        redirect($base_url . 'login');
+                    }
+                } else {
+                    $this->session->set_flashdata('err_message', '<font color="green"><span class="err_msg">' . 'wrong username  <br> Please try again.' . '</font></span>');
+                }
+            }
+        }
+    }
+
+    function sendForgotPasswordEmail($user_seq_no, $user_first_name, $user_id) {
+
+        $link_url = $base_url . 'login/VerifyEmail/';
+        $one_time_password = base64_encode($user_seq_no);
+
+        $email = $user_id;
+
+//        $cond = "AND `user_id` = '" . $user_id . "'  AND `status` = '1'";
+//        $row_1 = $this->app_users_model->fetch('$cond');
+//        $user_seq_no=$row_1[0]['user_seq_no'];
+//        $path = $this->data['email_template_path'] . 'forgot_password.html';
+//        $message_tpl = file_get_contents($path);
+//        $message_tpl = $this->load->view($this->view_dir . 'login/forgot_password', $this->data);
+//        $patterns = array();
+//
+//        $patterns[0] = '/!!!#fname#!!!/';
+//        $patterns[1] = '/!!!#link_url#!!!/';
+//        $patterns[2] = '/!!!#year#!!!/';
+//
+//        $replacements = array();
+//
+//        $replacements[0] = $user_first_name;
+//        $replacements[1] = $link_url . $one_time_password;
+//        $replacements[2] = date("Y");
+//        $message_content = preg_replace($patterns, $replacements, $message_tpl);
+        //t($message_content,1);
+        $subject = "Forgot Password";
+
+        $password = rand(11111111, 99999999);
+        $this->load->helper('string');
+        $random = random_string('alnum', 16);
+        $random1 = base64_encode($random);
+
+        $password_1 = md5($password);
+        $final_password = $password_1 . $random1;
+
+        $data_pass = array(
+            'password' => $final_password,
+            'salt' => $random
+        );
+        $edit_pass = $this->app_users_model->edit($data_pass, $user_seq_no);
+
+        $message_content = "Your new password is: " . $password;
+
+        $this->load->library('email');
+//            $this->email->initialize($config);
+//            $this->email_config();
+        $this->email->from('noreply@ams.com', 'Attorney Management System');
+        $this->email->to($email);
+        $this->email->subject($subject);
+        $this->email->message($message_content);
+        $send = $this->email->send();
+
+
+        if ($send) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    function verify_email($code) {
+
+        $user_seq_no = base64_decode($code);
+        $cond = "AND `user_seq_no` = '" . $user_seq_no . "' `status` = '1'";
+        $row_1 = $this->app_users_model->fetch('$cond');
+
+        if (count($row_1 > 0)) {
+
+            $password = $this->input->post('password');
+            $cpassword = $this->input->post('cpassword');
+
+            if ($password == $cpassword) {
+
+
+                $this->load->helper('string');
+                $random = random_string('alnum', 16);
+                $random1 = base64_encode($random);
+
+                $password_1 = md5($password);
+                $final_password = $password_1 . $random1;
+
+                $data_pass = array(
+                    'password' => $final_password,
+                    'salt' => $random
+                );
+                $edit_pass = $this->app_users_model->edit($data_pass, $code);
+                if ($edit_pass) {
+                    $msg = 'Password updated successfully.';
+                    $this->session->set_flashdata('server_message', '<div class="alert alert-success" id="general_msg_success" style="display:block">
+                                                    <strong>Success!</strong> ' . $msg . ' </div>');
+                    redirect($base_url . 'login');
+                } else {
+                    $msg = 'Something went wrong.';
+                    $this->session->set_flashdata('server_message', '<div class="alert alert-danger" id="general_msg_success" style="display:block">
+                                                    <strong>Faliure!</strong> ' . $msg . ' </div>');
+                    redirect($base_url . 'login');
+                }
+            } else {
+                $msg = 'New password and confirm password not same!';
+                $this->session->set_flashdata('server_message', '<div class="alert alert-danger" id="general_msg_success" style="display:block">
+                <strong>Faliur!</strong> ' . $msg . ' </div>');
+                redirect($base_url . 'login');
+            }
+        }
+    }
+
+}

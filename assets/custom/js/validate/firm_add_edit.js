@@ -1,0 +1,656 @@
+$(function () {
+
+    var b = BASE_URL;
+
+      /////////////////// This is for changing dropdown for firm approval level for a particular firm - begin/////////////////  
+      // ('#designation_code_1').change(function (){
+      //     var b = BASE_URL;
+      //     var approval_level = $('#approval_process').val();
+      //     if(approval_level === '2'){
+              
+      //     } else if(approval_level === '3'){
+              
+      //     } else if(approval_level === '4'){
+              
+      //     }
+          
+      // });
+       
+
+      /////////////////// This is for changing dropdown for firm approval level for a particular firm - end///////////////////   
+
+    // begining of firm add
+    $("#general-submit-btn").on('click', function () {
+        $.validator.addMethod('filesize', function(value, element, param) {
+            return this.optional(element) || (element.files[0].size <= param) 
+        }, "<font color=\"red\">File size must be less than 5 MB</font>");
+
+        //for space prevent
+            jQuery.validator.addMethod("noSpace", function (value, element) {
+                return value.trim();
+            }, "No space please and don't leave it empty");
+        //end
+
+
+        $("#myfirm-general-info-form").validate({
+            errorClass: 'customErrorClass',
+            rules: {
+                fname: {
+                    required: true,
+                    noSpace: true
+                },
+                lname: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_admin_seq_no: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_name: {
+                    required: true,
+                    noSpace: true
+                },
+                group_code: {
+                    required: true,
+                    noSpace: true
+                },
+                designation_code: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_id: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_code: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_reg: {
+                    required: true,
+                    noSpace: true
+                },
+                sections: {
+                    required: true,
+                    noSpace: true
+                },
+                firm_jurisdiction: {
+                    required: true,
+                    noSpace: true
+                },
+                sp_name: {
+                    required: true,
+                    noSpace: true
+                },
+                sp_role: {
+                    required: true,
+                    noSpace: true
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    minlength: 6,
+                    remote: {
+                        url: b + 'firm/user_id_check/',
+                        type: "post",
+                        data: {
+                            user_id: function () {
+                                return $('#email').val();
+                            }
+
+                        }
+                    }
+                },
+                password: {
+                    required: true,
+                    noSpace: true,
+                    minlength: 8
+                },
+                email_1: {
+                    required: true,
+                    noSpace: true,
+                    email: true
+                },
+                country_code1: {
+                    required: true,
+                    noSpace: true,
+                    maxlength: 3,
+                    minlength: 3,
+                    accept: "[0-9]+"
+                },
+                country_code2: {
+                    required: true,
+                    noSpace: true,
+                    maxlength: 3,
+                    minlength: 3,
+                    accept: "[0-9]+"
+                },
+                phone: {
+                    required: true,
+                    noSpace: true,
+                    accept: "[0-9-\(\)]+"
+                },
+                mobile: {
+//                    required: true,
+                    noSpace: true,
+                    accept: "[0-9-\(\)]+"
+                },
+//                mobile: {
+//                    required: true
+//                },
+//                fax: {
+//                    required: true
+//                },
+//                web_url: {
+//                    required: true,
+//                    url: true
+//                },
+//                social_url: {
+//                    required: true,
+//                    url: true
+//                },
+                addr_line_1: {
+                    required: true,
+                    noSpace: true
+                },
+//                addr_line_2: {
+//                    required: true
+//                },
+//                addr_line_3: {
+//                    required: true
+//                },
+                country: {
+                    required: true,
+                    noSpace: true
+                },
+                state: {
+                    required: true,
+                    noSpace: true
+
+                },
+//                county: {
+//                    required: true
+//                },
+                city: {
+                    required: true,
+                    noSpace: true
+                },
+                postal_code: {
+                    required: true,
+                    maxlength: 6
+                },
+//                postal_code: {
+//                    required: true,
+//                    minlength: 5,
+//                    remote: {
+//                        url: b + 'address/zip_code_check/',
+//                        type: "post",
+//                        data: {
+//                            state: function () {
+//                                return $('#state').val();
+//                            },
+//                            city: function () {
+//                                return $('#city').val();
+//                            },
+//                            zip: function () {
+//                                return $('#postal_code').val();
+//                            }
+//
+//                        }
+//                    }
+//                },
+//                "category[]": "required"
+                "practice_area[]": {
+                    required: true,
+                    noSpace: true
+                },
+                company_logo: {
+                   // required: true,
+                    accept:"jpg,png,jpeg,gif",
+                    filesize: 5048576
+                }
+//                
+            },
+            messages: {
+                fname: {
+                    required: "<font color=\"red\">Please select first name</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                lname: {
+                    required: "<font color=\"red\">Please select last name</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_admin_seq_no: {
+                    required: "<font color=\"red\">Please select firm admin</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_name: {
+                    required: "<font color=\"red\">Please enter firm name</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                group_code: {
+                    required: "<font color=\"red\">Please select group</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                designation_code: {
+                    required: "<font color=\"red\">Please select designation</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_id: {
+                    required: "<font color=\"red\">Please enter firm id</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_code: {
+                    required: "<font color=\"red\">Please enter firm code</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_reg: {
+                    required: "<font color=\"red\">Please enter firm registration</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                sections: {
+                    required: "<font color=\"red\">Please enter sections</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                firm_jurisdiction: {
+                    required: "<font color=\"red\">Please enter firm jurisdiction</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                sp_name: {
+                    required: "<font color=\"red\">Please enter single point name</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                sp_role: {
+                    required: "<font color=\"red\">Please enter single point role</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                email: {
+                    required: "<font color=\"red\">Please enter a User ID</font> ",
+                    email: "<font color=\"red\">Please enter a valid Email</font>",
+                    remote: "<font color=\"red\">User ID already exists. Please try with another ! </font>",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                password: {
+                    required: "<font color=\"red\">Please enter your Password</font> ",
+                    maxlength: "<font color=\"red\">Your password must be more than 8 characters</font>",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                email_1: {
+                    required: "<font color=\"red\">Please enter a Email</font> ",
+                    email: "<font color=\"red\">Please enter a valid Email</font>",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                country_code1: {
+                    required: "<font color=\"red\">Please enter your country code!</font>",
+                    maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                    minlength: "<font color=\"red\">Please enter your correct country code !</font>",
+                    accept: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                country_code2: {
+                    required: "<font color=\"red\">Please enter your country code!</font>",
+                    maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                    minlength: "<font color=\"red\">Please enter your correct country code !</font>",
+                    accept: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                phone: {
+                    required: "<font color=\"red\">Please enter phone number</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                mobile: {
+//                    required: "<font color=\"red\">Please enter phone number</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+//                mobile: {
+//                    required: "<font color=\"red\">Please enter mobile number</font> "
+//                },
+//                fax: {
+//                    required: "<font color=\"red\">Please enter fax number</font> "
+//                },
+//                web_url: {
+//                    required: "<font color=\"red\">Please enter web url</font> ",
+//                    url: "<font color=\"red\">Please enter valid URL</font> "
+//                },
+//                social_url: {
+//                    required: "<font color=\"red\">Please enter social url</font> ",
+//                    url: "<font color=\"red\">Please enter valid URL</font> "
+//                },
+                addr_line_1: {
+                    required: "<font color=\"red\">Please enter address line 1</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+//                addr_line_2: {
+//                    required: "<font color=\"red\">Please enter address line 2</font> "
+//                },
+//                addr_line_3: {
+//                    required: "<font color=\"red\">Please enter address line 3</font> "
+//                },
+                country: {
+                    required: "<font color=\"red\">Please enter country</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+                state: {
+                    required: "<font color=\"red\">Please enter state</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+//                county: {
+//                    required: "<font color=\"red\">Please enter county.</font> "
+//                },
+                city: {
+                    required: "<font color=\"red\">Please enter city</font> ",
+                    noSpace: "<font color=\"red\">Space not allowed</font> "
+                },
+               postal_code: {
+                   required: "<font color=\"red\">Please enter postal code</font> ",
+                   maxlength: "<font color=\"red\">Maximum 6 digits allowed</font> ",
+               },
+                "practice_area[]": {
+                    required: "<font color=\"red\">Please select atleast one practice area</font> "
+                },
+                company_logo: {
+                   // required: "<font color=\"red\">Please upload company logo</font>",
+                    accept:"<font color=\"red\">Must be image type file</font>"
+                }
+//                remarks: {
+//                    required: "<font color=\"red\">Please write a remark/comment</font> "
+//                }
+            },
+            submitHandler: function (form) {
+                // call ajax or submit
+                form.submit();
+            }
+        });
+    });
+    // end of firm add
+
+    
+
+    // begining of firm Location Add
+    $("#add-location-submit-btn").on('click', function () {
+        $("#add-location-form").validate({
+            errorClass: 'customErrorClass',
+            rules: {
+                email1: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: b + 'firm/add_location_user_exist/',
+                        type: "post",
+                        data: {
+                            email: function () {
+                                return $('#email1').val();
+                            }
+
+                        }
+                    }
+                },
+                phone1: {
+                    required: true
+                },
+                mobile1: {
+                    required: true
+                },
+                fax1: {
+                    required: true
+                },
+                web_url1: {
+                    required: true
+                },
+                social_url1: {
+                    required: true
+                },
+                addr_line_11: {
+                    required: true
+                },
+//                addr_line_21: {
+//                    required: true,
+//                },
+//                addr_line_31: {
+//                    required: true,
+//                },
+                country1: {
+                    required: true
+                },
+                state1: {
+                    required: true
+                },
+//                county1: {
+//                    required: true
+//                },
+                city1: {
+                    required: true
+                },
+                postal_code1: {
+                    required: true,
+                    minlength: 5,
+                    remote: {
+                        url: b + 'address/zip_code_check/',
+                        type: "post",
+                        data: {
+                            state: function () {
+                                return $('#location_state').val();
+                            },
+                            city: function () {
+                                return $('#location_city').val();
+                            },
+                            zip: function () {
+                                return $('#postal_code1').val();
+                            }
+
+                        }
+                    }
+                }
+            },
+            messages: {
+                email1: {
+                    required: "<font color=\"red\">Please enter email</font> ",
+                    email: "<font color=\"red\">not an email</font> ",
+                    remote: "<font color=\"red\">Email already exist </font>"
+                },
+                phone1: {
+                    required: "<font color=\"red\">Please enter phone</font> "
+                },
+                fax1: {
+                    required: "<font color=\"red\">Please enter fax</font> "
+                },
+                mobile1: {
+                    required: "<font color=\"red\">Please enter mobile</font> "
+                },
+                web_url1: {
+                    required: "<font color=\"red\">Please enter web url</font> "
+                },
+                social_url: {
+                    required: "<font color=\"red\">Please enter social url</font> "
+                },
+                addr_line_11: {
+                    required: "<font color=\"red\">Please enter address line 1</font> "
+                },
+//                addr_line_21: {
+//                    required: "<font color=\"red\">Please enter address line 2</font> "
+//                },
+//                addr_line_31: {
+//                    required: "<font color=\"red\">Please enter address line 3</font> "
+//                },
+                country1: {
+                    required: "<font color=\"red\">Please enter country</font> "
+                },
+                state1: {
+                    required: "<font color=\"red\">Please enter state</font> "
+                },
+//                county1: {
+//                    required: "<font color=\"red\">Please enter county</font> "
+//                },
+                city1: {
+                    required: "<font color=\"red\">Please enter city</font> "
+                },
+                postal_code1: {
+                    required: "<font color=\"red\">Please enter postal code</font> ",
+                    minlength: "<font color=\"red\">Invalid postal code</font> ",
+                    remote: "<font color=\"red\">Wrong postal code</font>"
+                }
+            },
+            submitHandler: function (form) {
+                // call ajax or submit
+                var url_ = $('#url_submit1').val();
+                $.ajax({
+                    url: url_,
+                    type: 'post',
+                    dataType: 'json',
+                    data: $("#add-location-form").serialize(),
+                    success: function (data) {
+                        if (data.result == 'ok') {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    });
+    // end of firm firm Location Add
+
+    // begining of firm Location edit using class
+    $(".firm_location_edit").on('click', function () {
+        
+        var form_id =  $(this).attr('button_id');
+        //alert(form_id);
+        //alert($('#postal_code_'+form_id).val());
+        
+        $("#form_id_"+form_id).validate({
+            errorClass: 'customErrorClass',
+            rules: {
+                firm_addr_type2: {
+                    required: true
+                },
+                email2: {
+                    required: true,
+                    email: true,
+//                    remote: {
+//                        url: b + 'firm/add_location_user_exist/',
+//                        type: "post",
+//                        data: {
+//                            email: function () {
+//                                return $('#email2').val();
+//                            },
+//                            original_email: function () {
+//                                return $('#hidden_original_email').val();
+//                            }
+//                        }
+//                    }
+                },
+                phone2: {
+                    required: true
+                },
+                fax2: {
+                    required: true
+                },
+                mobile2: {
+                    required: true
+                },
+                web_url2: {
+                    required: true
+                },
+                social_url2: {
+                    required: true
+                },
+                addr_line_12: {
+                    required: true
+                },
+//                addr_line_22: {
+//                    required: true,
+//                },
+//                addr_line_32: {
+//                    required: true,
+//                },
+                country2: {
+                    required: true
+                },
+                state2: {
+                    required: true
+                },
+//                county2: {
+//                    required: true
+//                },
+                city2: {
+                    required: true
+                },
+                postal_code2: {
+                    required: true,
+                    minlength: 5,
+                    remote: {
+                        url: b + 'address/zip_code_check/',
+                        type: "post",
+                        data: {
+                            state: function () {
+                                return $('#location_edit_state_'+form_id).val();
+                            },
+                            city: function () {
+                                return $('#location_edit_city_'+form_id).val();
+                            },
+                            zip: function () {
+                                return $('#postal_code_'+form_id).val();
+                            }
+
+                        }
+                    }
+                }
+            },
+            messages: {
+                firm_addr_type2: {
+                    required: "<font color=\"red\">Please select firm address type</font> "
+                },
+                email2: {
+                    required: "<font color=\"red\">Please enter email</font> ",
+                    email: "<font color=\"red\">not an email</font> ",
+                    //remote: "<font color=\"red\">Email already exist </font>"
+                },
+                phone2: {
+                    required: "<font color=\"red\">Please enter phone</font> "
+                },
+                fax2: {
+                    required: "<font color=\"red\">Please enter fax</font> "
+                },
+                mobile2: {
+                    required: "<font color=\"red\">Please enter mobile</font> "
+                },
+                web_url2: {
+                    required: "<font color=\"red\">Please enter web url</font> "
+                },
+                social_url2: {
+                    required: "<font color=\"red\">Please enter social url</font> "
+                },
+//                addr_line_12: {
+//                    required: "<font color=\"red\">Please enter address line 1</font> "
+//                },
+//                addr_line_22: {
+//                    required: "<font color=\"red\">Please enter address line 2</font> "
+//                },
+                addr_line_32: {
+                    required: "<font color=\"red\">Please enter address line 3</font> "
+                },
+                country2: {
+                    required: "<font color=\"red\">Please enter country</font> "
+                },
+                state2: {
+                    required: "<font color=\"red\">Please enter state</font> "
+                },
+//                county2: {
+//                    required: "<font color=\"red\">Please enter county.</font> "
+//                },
+                city2: {
+                    required: "<font color=\"red\">Please enter city.</font> "
+                },
+                postal_code2: {
+                    required: "<font color=\"red\">Please enter postal code</font> ",
+                    minlength: "<font color=\"red\">Invalid postal code</font> ",
+                    remote: "<font color=\"red\">Wrong postal code </font>"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+    // end of firm Location edit using class
+});

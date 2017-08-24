@@ -1,0 +1,184 @@
+.client_form{ width:100%; margin:0; }
+
+.form_form{ width:100%; margin:0; }
+
+.form_form .portlet.box.green > .portlet-title, .portlet.green, .portlet > .portlet-body.green {
+    background-color: #717372;
+	margin-top:15px;
+}
+.form_form .portlet.box.green {
+	border: 1px solid #717372;
+	border-top: 0
+}
+
+.add_activity_area{ margin:0 auto; width:60%; }
+
+.add_activity_area h3 {
+    font-size: 24px;
+	width:100%;
+	height:30px; 
+	margin-bottom:20px;
+	text-align:center;
+}
+
+.add_activity_area .form-control {
+    background-color: #fff;
+    border: 1px solid #c2cad8;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    height: 40px;
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+	float:left
+}
+
+.add_activity_area .btn.default:not(.btn-outline) {
+    background-color: #e1e5ec;
+    border-color: #e1e5ec;
+    color: #666;
+	border-right: 1px solid #c2cad8;
+	border-top: 1px solid #c2cad8;
+	border-bottom: 1px solid #c2cad8;
+}
+.add_activity_area .btn:not(.btn-sm):not(.btn-lg) {
+    line-height: 26px;
+}
+
+.add_activity_area .input-group {
+    border-collapse: separate;
+    display: inline-block;
+	width: 100%;
+}
+
+#attorney_goal_add_frm .form-control {
+    background-color: #fff;
+    border: 1px solid #c2cad8;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    height: 40px;
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+	float:left
+}
+
+#attorney_goal_add_frm .modal-title {
+    line-height: 1.42857;
+    margin: 0;
+	width:100%;
+	text-align:center;
+}
+
+
+.add_input_deactive_area{ margin:0; width:100%; }
+
+.add_input_deactive_area h3 {
+    font-size: 24px;
+	width:100%;
+	height:30px; 
+	margin-bottom:20px;
+	text-align:left;
+}
+
+.add_input_deactive_area .form-control {
+	height:40px; 
+	margin-bottom:15px;
+	float:left
+}
+
+.add_input_deactive_area .btn.default:not(.btn-outline) {
+    background-color: #e1e5ec;
+    border-color: #e1e5ec;
+    color: #666;
+	border-right: 1px solid #c2cad8;
+	border-top: 1px solid #c2cad8;
+	border-bottom: 1px solid #c2cad8;
+}
+.add_input_deactive_area .btn:not(.btn-sm):not(.btn-lg) {
+    line-height: 26px;
+}
+
+.add_input_deactive_area .input-group {
+    border-collapse: separate;
+    display: inline-block;
+	width: 100%;
+}
+
+#add_input_deactive_area .form-control {
+    background-color: #fff;
+    border: 1px solid #c2cad8;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    height: 40px;
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+	float:left
+}
+
+
+.add_input_edit_area{ margin:0; width:100%; }
+
+.add_input_edit_area h3 {
+    font-size: 24px;
+	width:100%;
+	height:30px; 
+	margin-bottom:20px;
+	text-align:left;
+}
+
+.add_input_edit_area .form-control {
+	height:40px; 
+	margin-bottom:15px;
+	float:left
+}
+
+.add_input_edit_area .btn.default:not(.btn-outline) {
+    background-color: #e1e5ec;
+    border-color: #e1e5ec;
+    color: #666;
+	border-right: 1px solid #c2cad8;
+	border-top: 1px solid #c2cad8;
+	border-bottom: 1px solid #c2cad8;
+}
+.add_input_edit_area .btn:not(.btn-sm):not(.btn-lg) {
+    line-height: 26px;
+}
+
+.add_input_edit_area .input-group {
+    border-collapse: separate;
+    display: inline-block;
+	width: 100%;
+}
+
+#add_input_edit_area .form-control {
+    background-color: #fff;
+    border: 1px solid #c2cad8;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    height: 40px;
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+	float:left
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

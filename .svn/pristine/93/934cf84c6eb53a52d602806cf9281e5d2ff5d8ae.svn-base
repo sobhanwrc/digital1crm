@@ -1,0 +1,1091 @@
+<div class="page-sidebar-wrapper">
+
+    <!-- BEGIN SIDEBAR -->
+
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+    <div class="page-sidebar navbar-collapse collapse">
+
+        <!-- BEGIN SIDEBAR MENU -->
+
+        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+
+        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+
+        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+
+        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+
+        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+        <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+
+            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+
+            <li class="sidebar-toggler-wrapper hide">
+
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+                <div class="sidebar-toggler"> </div>
+
+                <!-- END SIDEBAR TOGGLER BUTTON -->
+
+            </li>
+
+            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+
+            <!--            <li class="sidebar-search-wrapper">
+
+
+
+                            <form class="sidebar-search  sidebar-search-bordered" action="page_general_search_3.html" method="POST">
+
+                                <a href="javascript:;" class="remove">
+
+                                    <i class="icon-close"></i>
+
+                                </a>
+
+                                <div class="input-group">
+
+                                    <input type="text" class="form-control" placeholder="Search...">
+
+                                    <span class="input-group-btn">
+
+                                        <a href="javascript:;" class="btn submit">
+
+                                            <i class="icon-magnifier"></i>
+
+                                        </a>
+
+                                    </span>
+
+                                </div>
+
+                            </form>
+
+
+
+                        </li>-->
+
+            <?php if ($role_code == 'SITEADM' || $role_code == 'FIRMADM') { ?>
+
+                <li class="nav-item start ">
+
+                    <a href="<?php echo $base_url; ?>dashboard" class="nav-link">
+
+                        <i class="icon-home"></i>
+
+                        <span class="title">Dashboard</span>
+
+                    </a>
+
+                </li>
+
+
+
+                <li class="nav-item <?php
+
+                if ($controller_name == 'PostGroup' || $controller_name == 'targets' || $controller_name == 'change_module_number' || $controller_name == 'section' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'designation' || $controller_name == 'group' || $controlle_name == 'firm_designation' || $controller_name == 'app_users' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin') {
+
+                    echo 'open';
+
+                }
+
+                ?>">
+
+                    <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <i class="icon-settings"></i>
+
+                        <span class="title">Settings</span>
+
+                        <span class="arrow <?php
+
+                        if ($controller_name == 'PostGroup' || $controller_name == 'change_module_number' || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'documentsetting') {
+
+                            echo 'open';
+
+                        }
+
+                        ?>">
+
+                        </span>
+
+                    </a>
+
+                    <ul  <?php if ($controller_name == 'change_module_number' || $controller_name == 'PostGroup'  || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'module_setting' || $controller_name == 'documentsetting') { ?> style="display: block;"<?php } else { ?> style="display: none;" <?php } ?>class="sub-menu">
+
+                        <!--Only Site admin  can see app codes-->
+
+                        <?php if ($role_code == 'FIRMADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'venue') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>venue/" class="nav-link ">
+
+                                    <span class="title">My Venue</span>
+
+                                </a>
+
+
+
+                            </li>
+
+
+
+                            <li class="nav-item <?php if ($controller_name == 'module_setting') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>module_setting/" class="nav-link ">
+
+                                    <span class="title">Module Setting</span>
+
+                                </a>
+
+
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item <?php if ($controller_name == 'emailtemplate' && ($method_name == 'index' || $method_name == 'add' || $method_name == 'edit')) { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>emailtemplate/index/" class="nav-link ">
+
+                                    <span class="title">Email Template</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'emailtemplate' && ($method_name == 'contract' || $method_name == 'add_contract' || $method_name == 'edit_contract')) { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>emailtemplate/contract/" class="nav-link ">
+
+                                    <span class="title">Contract Template</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'paymentsettings') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>paymentsettings/" class="nav-link ">
+
+                                    <span class="title">Payment Settings</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'signaturesettings') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>signaturesettings/" class="nav-link ">
+
+                                    <span class="title">Signature Settings</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'managelist') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>managelist/" class="nav-link ">
+
+                                    <span class="title">Manage List</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'documentsetting') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>documentsetting/" class="nav-link ">
+
+                                    <span class="title">Document Management</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                        <?php } ?>
+
+                        <?php if (($role_code == 'SITEADM') || ($role_code == 'FIRMADM')) { ?>
+
+
+
+
+
+                            <li class="nav-item <?php if ($controller_name == 'change_module_number') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>change_module_number" class="nav-link ">
+
+                                    <span class="title">Change Module Name</span>
+
+                                </a>
+
+                            </li>
+
+
+
+                            <li class="nav-item <?php if ($controller_name == 'targets' && $method_name == 'index') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>targets" class="nav-link ">
+
+                                    <span class="title">Super Master Contacts</span>
+
+                                </a>
+
+                            </li>
+
+
+
+                            <li class="nav-item <?php if ($controller_name == 'PostGroup' && $method_name == 'index') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>PostGroup" class="nav-link ">
+
+                                    <span class="title">Postcode Group</span>
+
+                                </a>
+
+                            </li>
+
+
+
+
+
+                        <?php } ?>
+
+                    </ul>
+
+                </li>
+
+
+
+                <li class="nav-item <?php
+
+                if (($controller_name == 'firm' && $method_name != 'show_module') || $controller_name == 'Industry_Type' || $controller_name == 'attorney' || $controller_name == 'employee' || ($controller_name == 'competitor' && $method_name == 'view_rank') || $controller_name == 'client_master' || $controller_name == 'target_conversion' || ($controller_name == 'competitor' && $method_name == 'index')) {
+
+                    echo 'open';
+
+                }
+
+                ?>">
+
+                    <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <i class="icon-magnet"></i>
+
+                        <span class="title">
+
+                            Company
+
+                            Operation
+
+                        </span>
+
+                        <span class="arrow <?php
+
+                        if (($controller_name == 'Industry_Type' || $controller_name == 'firm' && $method_name != 'show_module') || $controller_name == 'attorney' || $controller_name == 'employee' || ($controller_name == 'competitor' && $method_name == 'view_rank') ||  $controller_name == 'client_master' || $controller_name == 'target_conversion' || ($controller_name == 'competitor' && $method_name == 'index')) {
+
+                            echo 'open';
+
+                        }
+
+                        ?>"></span>
+
+                    </a>
+
+                    <ul <?php if (($controller_name == 'firm' && $method_name != 'show_module') || $controller_name == 'attorney' || $controller_name == 'Industry_Type' || $controller_name == 'employee' || ($controller_name == 'competitor' && $method_name == 'view_rank') ||  $controller_name == 'client_master' || $controller_name == 'target_conversion' || ($controller_name == 'competitor' && $method_name == 'index') || ($controller_name == 'category')) { ?> style="display: block;" <?php } else { ?> style="display: none;" <?php } ?>  class="sub-menu">
+
+                        <?php if ($role_code == 'SITEADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'firm' && $method_name == 'index') { ?> menu_active<?php } ?>" >
+
+                                <a href="<?php echo $base_url; ?>firm" class="nav-link ">
+
+                                    <span class="title">Company</span> <!-- [Firm admin : Own Firm View] --> <!-- [Attorney : Own Firm View] -->
+
+                                </a>
+
+                            </li>
+
+                        <?php } ?>
+
+
+
+
+
+                            <?php if ($role_code == 'SITEADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'category') { ?> menu_active<?php } ?>" >
+
+                                <a href="<?php echo $base_url; ?>category" class="nav-link ">
+
+                                    <span class="title">Request For Contact List</span>
+
+                                </a>
+
+                            </li>
+
+                        <?php } ?>
+
+
+
+                        <?php if ($role_code == 'SITEADM') { ?>
+
+                        <li class="nav-item <?php if ($controller_name == 'Industry_Type' && ($method_name == "index" || $method_name == "add" || $method_name == "edit")) { ?> menu_active<?php } ?>" >
+
+                            <a href="<?php echo $base_url; ?>Industry_Type" class="nav-link ">
+
+                                <span class="title">Industry Type</span>
+
+                            </a>
+
+                        </li>
+
+                    <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+                        <?php if ($role_code == 'FIRMADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'firm') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>firm/my-firm" class="nav-link ">
+
+                                    <span class="title">My Company</span> <!-- [Firm admin : Own Firm View] --> <!-- [Attorney : Own Firm View] -->
+
+                                </a>
+
+                            </li>
+
+                        <?php } ?>
+
+
+
+
+
+                            <?php if ($role_code == 'FIRMADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'contacts_list') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>contacts_list" class="nav-link ">
+
+                                    <span class="title">Contacts List</span>
+
+                                </a>
+
+                            </li>
+
+                        <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+                        <?php if ($role_code == 'FIRMADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'attorney' && $method_name == 'index') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>attorney" class="nav-link">
+
+                                    <span class="title"> Manage Call Users </span> <!-- [Firm admin] --> <!-- [Attorney : Self/Team View] -->
+
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'attorney' && $method_name == 'd1_employee_list') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>attorney/d1_employee_list" class="nav-link">
+
+                                    <span class="title"> Manage D1 Users </span> <!-- [Firm admin] --> <!-- [Attorney : Self/Team View] -->
+
+                                </a>
+
+                            </li>
+
+                        <?php } else { ?>
+
+                            <!-- <li class="nav-item <?php if ($controller_name == 'attorney') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>attorney" class="nav-link">
+
+                                    <span class="title"> Attorneys </span>
+
+                                </a>
+
+                            </li> -->
+
+                        <?php } ?>
+
+
+
+                        <?php if ($role_code == 'FIRMADM') { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'employee') { ?> menu_active<?php } ?>">
+
+                                <!--<a href="<?php echo $base_url; ?>employee" class="nav-link ">
+
+                                    <span class="title">Manage Appointment Users</span> [Firm admin] --> <!-- [Attorney : View]
+
+                                </a>-->
+
+                                <a href="<?php echo $base_url; ?>manageappointmentuser" class="nav-link ">
+
+                                    <span class="title">Manage Appointment Users</span> <!-- [Firm admin] --> <!-- [Attorney : View] -->
+
+                                </a>
+
+                            </li>
+
+                        <?php } else { ?>
+
+                            <li class="nav-item <?php if ($controller_name == 'employee') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>employee" class="nav-link ">
+
+                                    <span class="title">Employees/ Staffs</span> <!-- [Firm admin] --> <!-- [Attorney : View] -->
+
+                                </a>
+
+                            </li>
+
+                        <?php } ?>
+
+                    </ul>
+
+                </li>
+
+                <li class="nav-item <?php
+
+                if ($controller_name == 'attorney_goals' || $controller_name == 'activity' || $controller_name == 'activity_approvals' || $controller_name == 'hour_budgeting_tools' || $controller_name == 'audit_trails') {
+
+                    echo 'open';
+
+                }
+
+                ?>">
+
+                    <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <i class="icon-action-redo"></i>
+
+                        <span class="title">
+
+                            Company
+
+                            Transactions
+
+                        </span>
+
+                        <span class="arrow <?php
+
+                        if ($controller_name == 'attorney_goals' || $controller_name == 'activity' || $controller_name == 'activity_approvals' || $controller_name == 'budgeting' || $controller_name == 'audit_trails' || $controller_name == 'activity_budegt_report') {
+
+                            echo 'open';
+
+                        }
+
+                        ?>"></span>
+
+                    </a>
+
+
+
+                </li>
+
+                <li class="nav-item  <?php
+
+                if (($controller_name == 'module_weeks_report' )) {
+
+                    echo 'open';
+
+                }
+
+                ?>">
+
+                    <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <i class="icon-layers"></i>
+
+                        <span class="title">Reports</span>
+
+                        <span class="arrow <?php
+
+                        if (($controller_name == '' )) {
+
+                            echo 'open';
+
+                        }
+
+                        ?>"></span>
+
+                    </a>
+
+                    <ul <?php if (($controller_name == '')) { ?> style="display: block;" <?php }?>  class="sub-menu">
+
+<!--                        <li class="nav-item  ">
+
+                            <a href="javascript:;" class="nav-link ">
+
+                                <span class="title">Adhoc Reports</span>
+
+                            </a>
+
+                        </li>-->
+                        
+                        <?php if ($role_code == 'FIRMADM') { ?>
+                            <li class="nav-item <?php if ($controller_name == 'module_weeks_report') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>module_weeks_report" class="nav-link ">
+
+                                    <span class="title">Module weekly report</span>
+
+                                </a>
+
+                            </li>
+                        <?php } ?>
+
+                    </ul>
+
+                </li>
+
+
+
+
+
+
+
+                        <?php }
+
+                                        ?>
+
+                <?php if ($role_code == 'ATTRMGR' || $role_code == 'ATTR' || $role_code == 'APPT') {?>
+
+
+
+                <li class="nav-item start <?php if ($controller_name == 'dashboard') { ?> menu_active<?php } ?>">
+
+                    <a href="<?php echo $base_url; ?>dashboard" class="nav-link">
+
+                        <img src="<?php echo $assets_path; ?>pages/img/home.png" alt="" class="menu_icon" />
+
+                        <span class="title">Dashboard</span>
+
+                    </a>
+
+                </li>
+
+                <?php
+                $ci = &get_instance();
+
+                $ci->load->model('change_module_name');
+                $ci->load->model('Change_module_name_by_firm');
+                $ci->load->model('user_model');
+
+                $cond = " AND user_seq_no=$admin_id";
+                $fetch_details = $ci->user_model->fetch($cond);
+                $user_created_by = $fetch_details[0]['created_by'];
+                
+                $cond123 = "AND firm_seq_no=$user_created_by";
+                $fetch_module_name_byFirm = $ci->Change_module_name_by_firm->fetch($cond123);
+                
+                if(!empty($fetch_module_name_byFirm)){
+                    $fetch_module_name = $fetch_module_name_byFirm;
+                }else{
+                    $fetch_module_name = $ci->change_module_name->fetch();
+                }
+
+                ?>
+
+                <li class="nav-item <?php if ($controller_name == 'attorney') { ?> menu_active<?php } ?>" >
+
+
+
+                    <?php
+
+                    if ($role_code == 'ATTR') {
+
+                        ?>
+
+                        <a href="<?php echo $base_url; ?>attorney/edit/<?php echo base64_encode($attorney_seq_no
+
+                );
+
+                ?>" class="nav-link">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/profile.png" alt="" class="menu_icon" />
+
+                            <span class="title">My Profile</span>
+
+                        </a>
+
+                    <?php
+
+                    } else if ($role_code == 'APPT') {
+
+                        ?>
+
+                        <a href="<?php echo $base_url; ?>manageappointmentuser/edit/<?php echo base64_encode($appt_seq_no); ?>" class="nav-link">
+
+                            <i class="icon-user"></i>
+
+                            <span class="title">My Profile</span>
+
+                        </a>
+
+
+
+                    <?php } ?>
+
+                </li>
+
+
+
+                <?php
+
+                if ($role_code == 'ATTRMGR' || $role_code == 'ATTR') {
+
+                    ?>
+
+                    <li class="nav-item <?php if ($controller_name == 'targets') { ?> menu_active<?php } ?>">
+
+                        <a href="<?php echo $base_url; ?>targets" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Master_Contacts.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module1'] ?></span> <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'client_master') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>client_master" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Lead_Contacted.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module2'] ?></span> <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+
+
+                    <li class="nav-item <?php if (($controller_name == 'Competitor' || $controller_name == 'competitor') && ($method_name == trim('index') || $method_name == trim('view'))) { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>Competitor/index/<?php echo base64_encode($fetch_module_name[0]['module3']
+
+            );
+
+            ?>" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Appointments.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module3'] ?></span> <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'competitor' && ($method_name == 'contract_list' || $method_name == "contract_view")) { ?> menu_active<?php } ?>">
+
+                        <a href="<?php echo $base_url; ?>competitor/contract_list" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Purchased.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module4'] ?></span> <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if (($controller_name == 'competitor' || $controller_name == 'Competitor') && ($method_name == 'product_purchase' || $method_name == 'detials_module5')) { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>competitor/product_purchase" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Delivery.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module5'] ?></span> <!-- [Site admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'activity') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>activity" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Payments.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module6'] ?></span> <!-- [Site admin] -->  <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'Activity_Payment') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>Activity_Payment" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Testimonials.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module7'] ?></span>  <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'testimonial') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>testimonial" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Referral.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module8'] ?></span>  <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'Client_referral') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>Client_referral" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Master_Contacts.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module9'] ?></span>  <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item <?php if ($controller_name == 'Client_purchase') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>Client_purchase" class="nav-link ">
+
+                            <img src="<?php echo $assets_path; ?>pages/img/Master_Contacts.png" alt="" class="menu_icon" />
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module10'] ?></span>  <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+                <?php
+
+                }
+
+                if ($role_code == 'APPT') {
+
+                    ?>
+
+                    <li class="nav-item <?php if ($controller_name == 'competitor' && $method_name == 'index') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>competitor" class="nav-link ">
+
+                            <i class="fa  fa-sort-amount-desc"></i>
+
+                            <span class="title"><?php echo $fetch_module_name[0]['module3'] ?></span> <!-- [Firm admin] --> <!-- [Attorney] -->
+
+                        </a>
+
+                    </li>
+
+
+
+
+
+    <?php } ?>
+
+                <?php if ($approver) { ?>
+
+                    <li class="nav-item <?php if ($controller_name == 'activity_approvals') { ?> menu_active<?php } ?>" >
+
+                        <a href="<?php echo $base_url; ?>activity-approvals" class="nav-link ">
+
+                            <i class="icon-layers"></i>
+
+                            <span class="title">Activity Approvals</span> <!-- [Site admin] --> <!-- [Attorney : View] -->
+
+                        </a>
+
+                    </li>
+
+    <?php } ?>
+
+
+
+
+
+                </li>
+
+
+
+<?php } ?>
+
+            <?php if ($role_code == "FIRMADM") { ?>
+
+                <li class="nav-item <?php if ($controller_name == 'firm' && $method_name == 'show_module') { ?> menu_active<?php } ?>" >
+
+                    <a href="<?php echo $base_url; ?>firm/show_module" class="nav-link ">
+
+
+
+                        <i class="fa fa-code"></i><span class="title">Script </span> <!-- [Firm admin : Own Firm View] --> <!-- [Attorney : Own Firm View] -->
+
+                    </a>
+
+
+
+
+
+                </li>
+
+<?php } ?>
+
+            <!-- END SIDEBAR MENU -->
+
+            <!-- END SIDEBAR MENU -->
+
+    </div>
+
+    <!-- END SIDEBAR -->
+
+</div>
+
+
+
+<div id="chngpass_responsive"  class="modal fade" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                <h4 class="modal-title">Change Password</h4>
+
+            </div>
+
+            <form action="<?php echo $base_url . 'dashboard/change-password/' . base64_encode($admin_id); ?>" name="change_password_form" id="change_password_form" method="post">
+
+                <div class="modal-body">
+
+                    <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="1">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+
+                                    <label class="control-label">Old Password</label>
+
+                                    <input type="password" placeholder="**********" class="form-control" name="password" id="password"/>
+
+                                </div>
+
+
+
+                                <div class="form-group">
+
+                                    <label class="control-label">New Password</label>
+
+                                    <input type="password" placeholder="**********" class="form-control" name="new_pass" id="new_pass"/>
+
+                                </div>
+
+
+
+                                <div class="form-group">
+
+                                    <label class="control-label">Confirm New Password</label>
+
+                                    <input type="password" placeholder="***********" class="form-control" name="con_pass" id="con_pass"/>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
+
+                    <button type="submit" class="btn green" name="change_password_submit" id="change_password_submit">Save</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<div id="super_user_login"  class="modal fade" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+                <h4 class="modal-title">Login As Super User</h4>
+
+            </div>
+
+            <form action="<?php echo $base_url . 'super-admin/login/'; ?>" name="superadmin_form" id="superadmin_form" method="post">
+
+                <div class="modal-body">
+
+                    <div class="scroller" style="height:400px" data-always-visible="1" data-rail-visible1="1">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+
+                                    <label class="control-label">Select Firm</label>
+
+                                    <select class="form-control" name="firm">
+
+                                        <option value="">Select One</option>
+
+<?php
+
+foreach ($all_firms as $key => $value) {
+
+    $value = (array) $value;
+
+    ?>
+
+                                            <option value="<?php echo $value['firm_admin_seq_no']; ?>"><?php echo $value['firm_name']; ?></option>
+
+                                        <?php } ?>
+
+                                    </select>
+
+                                </div>
+
+
+
+                                <div class="form-group">
+
+                                    <label class="control-label">Username</label>
+
+                                    <input type="text"  name="username" class="form-control" placeholder="Enter Username" id="username">
+
+                                </div>
+
+
+
+                                <div class="form-group">
+
+                                    <label class="control-label">password</label>
+
+                                    <input type="password"  name="password" id="password" class="form-control" placeholder="********">
+
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
+
+                    <button type="submit" class="btn green" name="superadmin_submit" id="superadmin_submit">Submit</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!--<script type="text/javascript" src="<?php echo $base_url ?>assets/custom/js/validate/firm_codes_add.js"></script>-->
+
+
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $(".page-content-white").addClass("page-sidebar-closed");
+
+        $(".page-sidebar-menu").addClass("page-sidebar-menu-closed");
+
+    });
+
+</script>

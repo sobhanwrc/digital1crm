@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <?php echo $header_link; ?>
+    <!-- END HEAD -->
+
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <div id="loader_image" style=" width: 100%; height: 800px; position: absolute; top: 0; left: 0; padding-top: 15%; text-align: center; overflow-y: hidden !important; overflow-x: hidden !important; background: #fff; z-index: 99999999999">
+            <img style="width: 100px; height:100px" src="<?php echo $assets_path; ?>pages/img/Loading_icon.gif" alt="" class="" />
+
+        </div>
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="menu-toggler sidebar-toggler"> </div>
+            <!-- BEGIN HEADER INNER -->
+            <?php echo $header; ?>
+            <!-- END HEADER INNER -->
+        </div><!-- END HEADER -->
+<!-- BEGIN HEADER & CONTENT DIVIDER -->
+<div class="clearfix"> </div>
+<!-- END HEADER & CONTENT DIVIDER -->
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <?php echo $left_sidebar; ?>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN PAGE HEADER-->
+
+            <!-- BEGIN PAGE BAR -->
+            <?php //echo $breadcrumb; ?>
+            <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="<?php echo base_url()?>dashboard">Home</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                   <!-- <li>
+                        <a href="#">Manage Call User</a>
+                        <i class="fa fa-circle"></i> 
+                    </li> -->
+                    <li>
+                        <span>Manage D1 User</span>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- END PAGE BAR -->
+
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption font-dark">
+                                <i class="icon-settings font-dark"></i>
+                                <span class="caption-subject bold uppercase">Manage Call User List</span>
+                            </div>
+                            
+
+                        <?php $smsg = $this->session->flashdata('suc_message'); if(isset($smsg) && $smsg != ''){ ?>
+                         <div class="alert alert-success" id="general_msg_success" >
+                             <strong>Success!</strong> <span id="general_msg"> <?php echo $smsg; ?></span> 
+                         </div>
+                         <?php } ?>
+
+                        </div>
+                        <div class="portlet-body">
+                            
+                            <?php if($role_code=='SITEADM'){ ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-3"></div>
+                                        <form action="<?php echo $base_url; ?>attorney/fetchFirmCodes" method="post" name="firm_list_form" id="firm_list_form">
+                                            <div class="col-md-3">
+                                                <select class="form-control" name="fimrs">
+                                                    <option value="">Select a Firm</option>
+                                                    <option value="all">All</option>
+                                                    <?php foreach ($firms as $key => $value) { ?>
+                                                    <option value="<?php echo $value['firm_seq_no']; ?>" <?php if($firm_id==$value['firm_seq_no']){ ?> selected="" <?php } ?>><?php echo $value['firm_name']; ?></option>                                         
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="submit" value="Go" class="btn" id="firm_list_submit">
+                                            </div>
+                                        </form>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+                            <br>
+                            <table class="table table-striped table-bordered table-hover table-responsive" id="sample_1">
+                                <thead>
+                                    <tr class="">
+                                        <th> SL# </th>
+                                        
+                                        <th> Name </th>
+                                       <th> Email </th>
+                                       <th> Mobile </th>
+
+                                        <th> Phone1 </th>
+                                        <th> Phone2 </th>
+                                        <th> Position </th>
+                                        <th> Actions </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                <?php $i = 0; 
+                                foreach($employee_list as $key => $value){ ?>
+                                    <tr>
+                                        <td> <?php echo ++$i; ?> </td>
+                                        
+                                        <td> <?php echo $value['attorney_first_name'] . ' ' . $value['attorney_last_name']; ?> </td>
+
+                                        <td> <?php echo $value['attorney_email1']; ?> </td>
+                                        <td> <?php echo $value['mobile']; ?> </td>
+                                        <td> <?php echo $value['phone1']; ?> </td>
+                                        <td> <?php echo $value['phone2']; ?> </td>
+                                        <td> <?php echo $value['position']; ?> </td>                                        
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-xs green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
+                                                    <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <?php if(($role_code =='ATTR' )|| ($role_code =='FIRMADM')||($role_code =='SITEADM') ){ ?>
+                                                <ul class="dropdown-menu" role="menu">  
+                                                    
+                                                    <?php if(($role_code =='ATTR' )|| ($role_code =='FIRMADM')||($role_code =='SITEADM')){ ?>
+                                                    
+                                                    <li>
+                                                        <a class="call_user_class" href="javascript:void(0)" data-toggle="modal" call_user_id="<?php echo $value['attorney_seq_no']; ?>" data-target="#assign_call_user_modal">
+                                                            <i class="icon-list"></i> Assign to list </a>
+                                                    </li>
+                                                    <?php } } ?>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>                                             
+                                    
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT -->
+
+    <div id="assign_call_user_modal" class="modal fade" role="dialog">
+
+            <div class="modal-dialog modal-dialog-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <div class="modal-title"><span style=" color:#333" class="glyphicon glyphicon-pencil text-purple2 mr10"></span><b style=" color:#333">Assign to list</b></div>
+                    </div>
+                    <div class="modal-body">
+                        <div id="create_event" class=" mt10">
+                            <div class="col-md-12">
+                                <form name="assign_call_user" id="assign_call_user" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" class="call_user_seq_no" value="0">
+                                    <div class="form-group" style=" color:#333">
+                                        <div style="width: 16%; padding-top: 5px; display: inline-block">
+                                            <label>Select List</label>
+                                        </div>
+                                        <select id="list_select" class="multiselect-ui form-control" multiple="multiple" name="list_id[]">
+
+                                            <?php foreach ($managelist as $key => $value) { ?>
+                                                <option value="<?php echo $value['list_id']; ?>"><?php echo $value['list_name']; ?></option>
+                                            <?php } ?> 
+                                        </select>
+
+                                    </div>
+                                    <div class=" col-md-12">
+                                        <input style=" color:#fff" type="button" value="Submit" class="submit btn green pull-right" name="assign_call_user_button" id="assign_call_user_button">
+                                    </div>  
+                                </form>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
+                    <div class="input-group col-md-12 pull-right" style="padding-left:10px">
+
+                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><!-- <img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font> --></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- BEGIN QUICK SIDEBAR -->
+   
+    
+    
+</div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <?php echo $footer; ?>
+    <!-- END FOOTER -->
+    <?php echo $footer_link; ?>
+    <style>
+         .dropdown-menu {
+    box-shadow: 5px 5px rgba(102,102,102,.1);
+    left: -109px;
+    min-width: 175px;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    float: left;
+    list-style: none;
+    padding: 0;
+    background-color: #fff;
+    margin: 10px 0 0;
+    border: 1px solid #eee;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.btn-group > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .dropdown > .dropdown-menu::after {
+    position: absolute;
+    top: -7px;
+    right: 10px !important;
+    left: auto;
+    display: inline-block !important;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    content: '';
+}
+
+.btn-group > .dropdown-menu::before, .dropdown-toggle > .dropdown-menu::before, .dropdown > .dropdown-menu::before {
+    position: absolute;
+    top: -8px;
+    right: 7px;
+    left:auto;
+    display: inline-block !important;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #e0e0e0;
+    border-left: 8px solid transparent;
+    content: '';
+}
+        
+    </style>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    <script type="text/javascript">
+        $(function() {
+                $('.multiselect-ui').multiselect({
+                    includeSelectAllOption: true
+                });
+            });
+
+        $(window).load(function() {
+//                    $("#loader_image").hide();
+                    $('#loader_image').delay(2000).fadeOut(1000)
+        });
+        
+            jQuery(document).ready(function () {
+
+                $('#assign_call_user').validate({
+                        rules: {
+                            'list_id[]': {
+                                required: true,
+                            }
+                        },
+                        messages: {
+                            'list_id[]': {
+                                required: "<font color=\"red\">Please select a list name</font>",
+                            }
+                        }
+                });
+
+                $(".call_user_class").click(function(){
+                    $("#list_select option:selected").removeAttr("selected");
+                    var call_user_id = $(this).attr('call_user_id');
+                    $(".call_user_seq_no").val(call_user_id);
+                    $.ajax({
+                            type: "POST",
+                            url: BASE_URL + "managelist/selected_list",
+                            data: {
+                                call_user_id: call_user_id
+                            },
+                            success: function (data) {
+                                var obj = $.parseJSON(data);
+                               
+                                for(var i in obj) {
+                                    var optionVal = obj[i].list_id;
+                                    
+
+                                    $("#list_select").find("option[value="+optionVal+"]").prop("selected", "selected");
+                                }
+                                $("#list_select").multiselect('refresh');
+                                
+                            }
+
+                        });
+                });
+
+                $("#assign_call_user_button").click(function (e) {
+                        var list_id = $('#list_select').val();
+                        //alert(list_id);
+                        var call_user_id = $(".call_user_seq_no").val();
+                        //alert(call_user_id);
+                        var valid = $("#assign_call_user").valid();
+                        if(valid){
+                            $.ajax({
+                                type: "POST",
+                                url: BASE_URL + "managelist/assign_to_call_user",
+                                data: {
+                                    list_id: list_id,
+                                    call_user_id: call_user_id
+                                },
+                                success: function (data) {
+                                    if (data == 1) {
+                                        jconfirm({
+                                            title: 'Confirmation!',
+                                            content: "Successfully assigned to the call user",
+                                            buttons: {
+                                                OK: function () {
+                                                    window.location.href = BASE_URL + 'attorney';
+                                                    //   $('#add_category1').prop('disabled', true);
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        jconfirm({
+                                            title: 'Alert!',
+                                            content: "Select a list to assign",
+                                            buttons: {
+                                                OK: function () {
+                                                    //window.location.href = BASE_URL + 'contacts_list';
+                                                    //   $('#add_category1').prop('disabled', true);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+
+                            });
+                        }
+                });
+            });
+    </script>
+    </body>
+
+</html> 

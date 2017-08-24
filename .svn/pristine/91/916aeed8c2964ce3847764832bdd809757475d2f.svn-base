@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <?php echo $header_link; ?>
+    <!-- END HEAD -->
+    <?php //print_r  ($categories); die(); ?>
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+        <div id="loader_image" style=" width: 100%; height: 800px; position: absolute; top: 0; left: 0; padding-top: 15%; text-align: center; overflow-y: hidden !important; overflow-x: hidden !important; background: #fff; z-index: 99999999999">
+
+            <img style="width: 100px; height:100px" src="<?php echo $assets_path; ?>pages/img/Loading_icon.gif" alt="" class="" />
+
+
+
+        </div>
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="menu-toggler sidebar-toggler"> </div>
+            <!-- BEGIN HEADER INNER -->
+            <?php echo $header; ?>
+            <!-- END HEADER INNER -->
+        </div><!-- END HEADER -->
+        <!-- BEGIN HEADER & CONTENT DIVIDER -->
+        <div class="clearfix"> </div>
+        <!-- END HEADER & CONTENT DIVIDER -->
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <?php echo $left_sidebar; ?>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEADER-->
+
+                    <!-- BEGIN PAGE BAR -->
+                    <?php //echo $breadcrumb; ?>
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="<?php echo base_url() ?>dashboard">Home</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <!-- <li>
+                                 <a href="#">Manage Call User</a>
+                                 <i class="fa fa-circle"></i> 
+                             </li> -->
+                            <li>
+                                <span>Module Setting</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!-- END PAGE BAR -->
+
+                    <!-- END PAGE HEADER-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    
+                                    <div class="caption font-dark">
+                                        <i class="icon-settings font-dark"></i>
+                                        <span class="caption-subject bold uppercase">Module Setting</span>
+                                    </div>
+                                    <!--                                    <div class="actions">
+                                                                            <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                                                                <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                                                                    <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                                                                <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
+                                                                                    <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                                                            </div>
+                                                                        </div>-->
+
+                                    
+
+                                </div>
+                                <div class="portlet-body" style=" display: inline-block; width: 100%;">
+
+                                   <div class="col-md-6" style=" display:  inline-block; background: #eee; padding: 15px">
+                                <form name="form1" id="form1" method="POST" novalidate="novalidate" enctype="multipart/form-data" action="<?php echo base_url()?>module_setting/add">
+                                    <input type="hidden" name="firm_seq_no" id="firm_seq_no" value="<?php echo $firm_seq_no; ?>">
+                                        <div class="form-group" style=" color:#333">
+                                        <label>Select Module</label>
+                                        
+                                            <select class="form-control" name="module" id="module">
+                                                <option value="">Select</option>
+                                                <option value="module1">Module1</option>
+                                                <option value="module2">Module2</option>
+                                                <option value="module3">Module3</option>
+                                                <option value="module4">Module4</option>
+                                                <option value="module5">Module5</option>
+                                                <option value="module6">Module6</option>
+                                                <option value="module7">Module7</option>
+                                                <option value="module8">Module8</option>
+                                                <option value="module9">Module9</option>
+                                                <option value="module10">Module10</option>
+                                            </select> 
+                                        
+                                        </div>
+
+                                    <div class="form-group" style=" color:#333">
+                                        <label>Module Instruction</label>
+                                        
+                                           <textarea class="form-control" name="module_instruction" id="module_instruction"  rows="4" cols="50"></textarea>
+                                            <!-- <input   class="form-control" name="submit_date" id="submit_date" placeholder="DD-MM-YYYY" type="text"> -->
+                                        
+
+                                    </div>
+                                    <input style=" color:#fff" type="submit" value="Submit" class="submit btn green pull-right" name="submit1" id="submit1" >  
+                                </form>
+                                   </div>
+                                   
+                                    <div class=" col-md-6">
+                                        <?php $smsg = $this->session->flashdata('suc_message');
+                                    if (isset($smsg) && $smsg != '') {
+                                        ?>
+                                        <div class="alert alert-success" id="general_msg_success" >
+                                            <strong>Success!</strong> <span id="general_msg"> <?php echo $smsg; ?></span> 
+                                        </div>
+                                    <?php } ?>                                       
+                                    </div>
+                                   
+                                </div> 
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            <a href="javascript:;" class="page-quick-sidebar-toggler">
+                <i class="icon-login"></i>
+            </a>
+          <!-- END QUICK SIDEBAR -->
+           
+        </div>
+   <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+<?php echo $footer; ?>
+        <!-- END FOOTER -->
+<?php echo $footer_link; ?>
+        <style>
+            .dropdown-menu {
+                box-shadow: 5px 5px rgba(102,102,102,.1);
+                left: -109px;
+                min-width: 175px;
+                position: absolute;
+                z-index: 1000;
+                display: none;
+                float: left;
+                list-style: none;
+                padding: 0;
+                background-color: #fff;
+                margin: 10px 0 0;
+                border: 1px solid #eee;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                -ms-border-radius: 4px;
+                -o-border-radius: 4px;
+                border-radius: 4px;
+            }
+
+            .btn-group > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .dropdown > .dropdown-menu::after {
+                position: absolute;
+                top: -7px;
+                right: 10px !important;
+                left: auto;
+                display: inline-block !important;
+                border-right: 7px solid transparent;
+                border-bottom: 7px solid #fff;
+                border-left: 7px solid transparent;
+                content: '';
+            }
+
+            .btn-group > .dropdown-menu::before, .dropdown-toggle > .dropdown-menu::before, .dropdown > .dropdown-menu::before {
+                position: absolute;
+                top: -8px;
+                right: 7px;
+                left:auto;
+                display: inline-block !important;
+                border-right: 8px solid transparent;
+                border-bottom: 8px solid #e0e0e0;
+                border-left: 8px solid transparent;
+                content: '';
+            }
+
+        </style>
+        
+         <script type="text/javascript">
+          $(document).ready(function() {
+              
+              $(window).load(function() {
+
+//                    $("#loader_image").hide();
+
+                    $('#loader_image').delay(2000).fadeOut(1000)
+
+                });
+             $("#form1").validate({
+                                                                                        rules: {
+                                                                                            module: {
+                                                                                                required: true
+                                                                                            },
+                                                                                            module_instruction: {
+                                                                                                required: true
+                                                                                            }
+
+                                                                                        },
+                                                                                        messages: {
+                                                                                            module: {
+                                                                                                required: "<font color=\"red\">Please enter Module</font>"
+                                                                                            },
+                                                                                            module_instruction: {
+                                                                                                required: "<font color=\"red\">Please enter Module Instruction</font>"
+                                                                                            }
+
+                                                                                        },
+                                                                                        submitHandler: function (form) {
+                                                                                            form.submit();
+                                                                                        }
+
+                                                                                    });
+                                                                                    
+                                                                                    
+                       
+                       
+                   $('#module').on("change", function () {
+                         var module_val = $(this).val();
+                       // alert(module_val);
+                        $.ajax({
+                                      type: "POST",
+                                      url: BASE_URL + "module_setting/view_instruction",
+                                       data: {
+                                                   module_val: module_val,
+                                                  },
+                                        success: function (data) {
+                                            $('#module_instruction').val(data);
+                                        }           
+                        });
+                   });
+                                                                                    
+         });
+        </script>
+   </body>
+
+</html> 
