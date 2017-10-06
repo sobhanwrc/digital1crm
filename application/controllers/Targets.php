@@ -33,6 +33,7 @@ class Targets extends MY_Controller {
         $this->load->model('add_contact_model');
         $this->load->model('emailtemplate_model');
         $this->load->model('Module4_Model');
+        $this->load->model('sms_add_model');
     }
 
     function index() {
@@ -601,7 +602,7 @@ class Targets extends MY_Controller {
         } else {
             $row = $this->targets_model->fetch($cond);
         }
-       // t($row);die;
+
 //        $session = $this->session->set_userdata('for_locked',1);
         $_SESSION['for_locked'] = '1';
 //         t($_SESSION);die();
@@ -620,6 +621,9 @@ class Targets extends MY_Controller {
             $add = $this->temorary_module_lock->add($data);
         }
 
+        $fetch_cond = " AND module_name='module1' AND firm_seq_no='".$admin_all_session['firm_seq_no']."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
 //        echo $this->db->last_query();
 //        t($row);exit;
 

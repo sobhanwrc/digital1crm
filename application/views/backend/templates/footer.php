@@ -50,12 +50,12 @@ float: right;
 //            var url = "http://jygsaw.com/digital1crm/api/push_notification"; // checking in server
 //            var url = "http://localhost/digital1crm/api/push_notification"; //checking in local server
 //            var url = "http://jygsaw.com/digital1/api/push_notification"; //checking in jygsaw main server http://www.digital1crm.com/
-            var url = "http://www.digital1crm.com/api/push_notification"; //checking in main server http://www.digital1crm.com/
+            var url = BASE_URL + "api/push_notification"; //checking in main server http://www.digital1crm.com/
             var id = $(this).attr('val');
             var from_model = $(this).attr('from_model'); 
             
             if(from_model == 'module1'){
-                var url1 = "http://www.digital1crm.com/targets/send_module2_from_call";
+                var url1 = BASE_URL + "targets/send_module2_from_call";
                 
                 jconfirm({
                     title: 'Alert !',
@@ -81,13 +81,13 @@ float: right;
                                 content: "Please check your mobile to complete the call",
                                 buttons:{
                                     OK : function () {
-                                        window.location.href = 'http://www.digital1crm.com/targets';
+                                        //window.location.href = 'http://www.digital1crm.com/targets';
                                     }                                
                                 }
                             });                        
                         },
                         No: function  () {
-                            window.location.reload();
+                            //window.location.reload();
                         }
                     }
                 });

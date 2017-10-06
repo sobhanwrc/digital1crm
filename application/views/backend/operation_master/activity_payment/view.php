@@ -338,6 +338,13 @@
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php  echo $user_detail[0]['email']; ?></span>
 
+                                                <?php if ($user_detail[0]['lead_source_and_date']){ ?>
+                                                    <span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                        <strong>Lead Source:</strong>                                                        
+                                                            <?php echo $user_detail[0]['lead_source_and_date'];?>
+                                                    </span>
+                                                <?php }?>
+
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                     <strong>Phone:</strong> <?php  echo $user_detail[0]['phone']; ?>
 

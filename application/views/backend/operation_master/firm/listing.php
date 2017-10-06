@@ -172,17 +172,13 @@ foreach ($all_firms as $key => $value) {
                                                                             <i class="icon-tag"></i> Delete </a>
                                                                     </li>
     <?php } ?>
-                                                                <!--                                                    <li>
-                                                                                                                        <a href="javascript:;">
-                                                                                                                            <i class="icon-user"></i> New User </a>
-                                                                                                                    </li>
-                                                                                                                    <li class="divider"> </li>
-                                                                                                                    <li>
-                                                                                                                        <a href="javascript:;">
-                                                                                                                            <i class="icon-flag"></i> Comments
-                                                                                                                            <span class="badge badge-success">4</span>
-                                                                                                                        </a>
-                                                                                                                    </li>-->
+                                                                    <?php if($role_code == 'SITEADM'){ ?>
+                                                                    <li>
+                                                                        <button style=" margin-bottom: 15px; margin-top: 10px" class="btn btn-transparent dark btn-outline btn-circle active1 btn_make_appointment" firm_seq_no="<?php echo $value['firm_seq_no'] ?>" type="button">
+                                                                            Add more users
+                                                                        </button>
+                                                                    </li>
+                                                                    <?php  } ?>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -909,6 +905,83 @@ foreach ($all_firms as $key => $value) {
                 </div>
             </div>
         </div>
+        
+<!--        //add more users//-->
+                    <!-- Make Appointment Modal -->
+
+            <div class="modal fade appointment_date_and_time_div" tabindex="-1" role="dialog"  aria-hidden="true">
+
+                <div class="modal-dialog modal-dialog-sm">
+
+                    <div class="modal-content">
+
+                        <form name="more_add_user_form" class="more_add_user_form" method="post" novalidate>
+                            <input type="hidden" name="firm_seq_no_for_user" id="firm_seq_no_for_user" value="">
+                            <div class="modal-header">
+
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                <div class="modal-title"><span class="glyphicon glyphicon-pencil text-purple2 mr10"></span><b> Add more users</b></div>
+
+                            </div>
+
+                            <div class="modal-body" style=" display: inline-block; width: 100%">
+
+                                <div id="create_event" class=" mt10">
+
+                                    <div class="col-md-12" style=" padding-left: 0; padding-right: 0">
+
+                                        <div class="form-group">
+                                            <label for="comment">User First Name</label>
+                                            <input class="form-control" type="text" name="user_fisrt_name" id="user_fisrt_name" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment">User Last Name</label>
+                                            <input class="form-control" type="text" name="user_last_name" id="user_last_name" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment">User Email Id</label>
+                                            <input class="form-control" type="text" name="user_emailId" id="user_emailId" value="" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment">Password</label>
+                                            <input class="form-control" type="password" name="user_password" id="user_password" value="" autocomplete="off">
+                                        </div>
+
+                                    </div>
+
+                                    <img src="<?php echo base_url(); ?>assets/custom/img/FhHRx.gif" alt="logo" style="display:none;" >
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
+
+                                <div class="input-group col-md-12" style="padding-right:15px">
+
+                                    <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right cancel user_add_cancel" name="user_add_cancel" id="">
+
+                                    <input type="button" value="Submit" class="submit btn green pull-right more_add_user_submit" name="appointment_made_submit" id="" >
+
+                                    <div id="master_name_submit_loader" style="display:none; padding-left:15px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Modal -->
+<!--//end//-->
 
 
         <!---------------------------------------------------------------------------------------------->
@@ -1063,6 +1136,109 @@ foreach ($all_firms as $key => $value) {
                 });
             }
 
+        });
+        
+        $(".btn_make_appointment").click(function (e) {
+            $(".appointment_date_and_time_div").modal('show');
+            var firm_seq_no = $(this).attr('firm_seq_no');
+            $('#firm_seq_no_for_user').val(firm_seq_no);
+        });
+        
+        $('.user_add_cancel').on('click',function(){
+            $(".appointment_date_and_time_div").modal('hide');
+        });
+        
+        $(".more_add_user_form").validate({
+            rules:{
+                user_fisrt_name:{
+                    required: true
+                },
+                user_last_name:{
+                    required: true
+                },
+                user_emailId:{
+                    required: true,
+                    email: true
+                },
+                user_password:{
+                    required: true,
+                    minlength: 8
+                }
+            },
+            messages:{
+                user_fisrt_name:{
+                    required: "<font color='red'>Please enter first name</font>"
+                },
+                user_last_name:{
+                    required: "<font color='red'>Please enter last name</font>"
+                },
+                user_emailId:{
+                    required: "<font color='red'>Please enter email id</font>",
+                    email: "<font color='red'>Please enter valid email id</font>"
+                },
+                user_password:{
+                    required: "<font color='red'>Please enter password</font>",
+                    minlength: "<font color='red'>Minimum 8 character required.</font>"
+                }
+            }
+        });
+        
+        $('.more_add_user_submit').on('click',function(){
+            var valid = $('.more_add_user_form').valid();
+            if(valid){
+                var firm_seq_no = $('#firm_seq_no_for_user').val();
+                var user_first_name = $('#user_fisrt_name').val();
+                var user_last_name = $('#user_last_name').val();
+                var user_emailId = $('#user_emailId').val();
+                var user_password = $('#user_password').val();
+                
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + "firm/add_more_users",
+                    data:{
+                        firm_seq_no:firm_seq_no,
+                        user_first_name:user_first_name,
+                        user_last_name: user_last_name,
+                        user_emailId:user_emailId,
+                        user_password: user_password
+                    },
+                    success: function(data){
+                        if(data == 1){
+                            jconfirm({
+                                title: 'Confirmation !',
+                                content: "User added successfully for this company.",
+                                buttons: {
+                                    OK: function () {
+                                        $(".appointment_date_and_time_div").modal('hide');
+                                    }
+                                }
+                            });
+                        }
+                        
+                        if(data == 2){
+                            jconfirm({
+                                title: 'Alert !',
+                                content: "User added failed for this company.",
+                                buttons:{
+                                    OK: function(){
+                                    }
+                                }
+                            });
+                        }
+                        
+                        if(data == 3){
+                            jconfirm({
+                                title: 'Alert !',
+                                content: "Email id already exit for this company. Please try with another.",
+                                buttons:{
+                                    OK: function(){
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         });
 
     });

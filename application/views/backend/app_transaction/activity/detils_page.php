@@ -250,6 +250,13 @@
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php echo $fetch_contact_details[0]['email']; ?></span>
 
+                                                <?php if ($lead_source){ ?>
+                                                    <span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                        <strong>Lead Source:</strong>                                                        
+                                                            <?php echo $lead_source;?>
+                                                    </span>
+                                                <?php }?>
+
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                     <strong>Phone:</strong> <?php echo $fetch_contact_details[0]['phone']; ?>
 

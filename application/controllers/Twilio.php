@@ -90,7 +90,7 @@ Please click on the below link to get QR code." . '<a href="http://www.digital1c
             }
 
             
-            catch (Exception $e) {
+        catch (Exception $e) {
             echo "0";
         }
         } 

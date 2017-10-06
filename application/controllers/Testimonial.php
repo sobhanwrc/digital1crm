@@ -120,7 +120,7 @@ class Testimonial extends MY_Controller {
 
         $this->get_include();
     
-       $row = $this->Change_module_number_module->fetch();
+        $row = $this->Change_module_number_module->fetch();
                    $this->data['notes'] = $row;
     
     

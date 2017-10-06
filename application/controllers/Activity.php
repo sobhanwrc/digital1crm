@@ -1646,9 +1646,10 @@ pat.activity_seq_no =  '" . $code . "' ) GROUP BY
         $this->data['home_phone_number'] = $user_phone_number;
         
         $cond1 = " AND target_seq_no='$target_seq_no'";
-        $select1 = "target_image";
+        $select1 = "target_image, lead_source_and_date";
         $fetch_image_from_targets_table = $this->targets_model->fetch($cond1,$select1);
         $contact_image = $fetch_image_from_targets_table[0]['target_image'];
+        $this->data['lead_source'] = $fetch_image_from_targets_table[0]['lead_source_and_date'];
         $this->data['contact_image'] = $contact_image;
         
         

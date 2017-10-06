@@ -149,7 +149,6 @@
 
     
     <script>
-
         var aboutMe = function (x) {
             $(x).toggleClass('short')
         };
@@ -167,10 +166,6 @@
                 }
             });
         });
-
-
-
-
     </script>
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
@@ -222,9 +217,6 @@
                         <form name="ms" id="ms" method="post">  
 
                             <!-- EMAIL HEADER -->
-
-
-
                             <div class="tab-content bg-light pn mt20">
                                 <div class="tab-pane active p15" id="email-compose"> 
 
@@ -292,12 +284,8 @@
                                                         <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new"><i class="glyphicon glyphicon-paperclip"></i> Select file</span><span class="fileinput-exists"><i class="glyphicon glyphicon-repeat"></i> Change</span><input type="file" name="file"></span>
                                                         <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-remove"></i> Remove</a>
                                                         <a href="javascript:void(0)" id="upload-btn" class="input-group-addon btn btn-success fileinput-exists" ><i class="glyphicon glyphicon-open"></i> Upload</a>
-                                                        
-                                                        
-                                                       </div>
-                                                        
 
-                                                        
+                                                       </div>                                                        
                                                     </div>
                                                 </div>
 

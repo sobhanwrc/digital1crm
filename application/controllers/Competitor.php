@@ -346,7 +346,7 @@ class Competitor extends MY_Controller {
         $this->db->select('plma_target.target_seq_no,
         plma_target.company_id,plma_target.company,plma_target.target_first_name,
         plma_target.target_last_name,plma_target.phone as target_phone,plma_target.company,plma_target.target_image,
-        plma_target.email as target_email,plma_target.mobile,plma_target.address,plma_target.categories,
+        plma_target.email as target_email,plma_target.mobile,plma_target.address,plma_target.categories,plma_target.lead_source_and_date,
         plma_target_contact.first_name,plma_module4.module_4_seq_no,
         plma_target_contact.last_name,plma_target_contact.email,plma_target_contact.phone, plma_module4.contract_status,plma_module4.contract_signed')
         ->from('plma_target')
@@ -1763,9 +1763,10 @@ class Competitor extends MY_Controller {
         $company_id = base64_decode($company_id);
 
         $cond1 = " AND target_seq_no='$target_seq_no'";
-        $select = "target_image";
+        $select = "target_image, lead_source_and_date";
         $details_from_target_table = $this->Targets_model->fetch($cond1,$select);
         $contact_image = $details_from_target_table[0]['target_image'];
+        $this->data['lead_source'] = $details_from_target_table[0]['lead_source_and_date'];
         $this->data['contact_image'] = $contact_image;
 
         $admin_id = $this->data['admin_id'];
@@ -2041,7 +2042,7 @@ class Competitor extends MY_Controller {
             $edit = $this->Model5->edit($data12,$fetch_user_id);
 
             if($edit){
-                echo 1;
+                echo 'success';
             }
         }
     }

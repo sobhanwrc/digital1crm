@@ -282,7 +282,7 @@
 
                 <li class="nav-item <?php
 
-                if (($controller_name == 'firm' && $method_name != 'show_module') || $controller_name == 'Industry_Type' || $controller_name == 'attorney' || $controller_name == 'employee' || ($controller_name == 'competitor' && $method_name == 'view_rank') || $controller_name == 'client_master' || $controller_name == 'target_conversion' || ($controller_name == 'competitor' && $method_name == 'index')) {
+                if (($controller_name == 'firm' && $method_name != 'show_module') && ($controller_name == 'firm' && $method_name != 'sms_script') || $controller_name == 'Industry_Type' || $controller_name == 'attorney' || $controller_name == 'employee' || ($controller_name == 'competitor' && $method_name == 'view_rank') || $controller_name == 'client_master' || $controller_name == 'target_conversion' || ($controller_name == 'competitor' && $method_name == 'index')) {
 
                     echo 'open';
 
@@ -365,18 +365,9 @@
                     <?php } ?>
 
 
-
-
-
-
-
-
-
-
-
                         <?php if ($role_code == 'FIRMADM') { ?>
 
-                            <li class="nav-item <?php if ($controller_name == 'firm') { ?> menu_active<?php } ?>">
+                            <li class="nav-item <?php if ($controller_name == 'firm' && $method_name == 'my-firm') { ?> menu_active<?php } ?>">
 
                                 <a href="<?php echo $base_url; ?>firm/my-firm" class="nav-link ">
 
@@ -405,15 +396,6 @@
                             </li>
 
                         <?php } ?>
-
-
-
-
-
-
-
-
-
 
 
                         <?php if ($role_code == 'FIRMADM') { ?>
@@ -546,7 +528,7 @@
 
                         <span class="arrow <?php
 
-                        if (($controller_name == '' )) {
+                        if (($controller_name == 'module_weeks_report' ) || ($controller_name == 'all_contact_notes' )) {
 
                             echo 'open';
 
@@ -556,7 +538,7 @@
 
                     </a>
 
-                    <ul <?php if (($controller_name == '')) { ?> style="display: block;" <?php }?>  class="sub-menu">
+                    <ul <?php if (($controller_name == 'module_weeks_report' ) || ($controller_name == 'all_contact_notes' )) { ?> style="display: block;" <?php }?>  class="sub-menu">
 
 <!--                        <li class="nav-item  ">
 
@@ -574,6 +556,16 @@
                                 <a href="<?php echo $base_url; ?>module_weeks_report" class="nav-link ">
 
                                     <span class="title">Module weekly report</span>
+
+                                </a>
+
+                            </li>
+                            
+                            <li class="nav-item <?php if ($controller_name == 'all_contact_notes') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>all_contact_notes" class="nav-link ">
+
+                                    <span class="title">All contacts notes reports</span>
 
                                 </a>
 
@@ -871,11 +863,16 @@
                         <i class="fa fa-code"></i><span class="title">Script </span> <!-- [Firm admin : Own Firm View] --> <!-- [Attorney : Own Firm View] -->
 
                     </a>
+                </li>
 
 
+                <li class="nav-item <?php if ($controller_name == 'firm' && $method_name == 'sms_script') { ?> menu_active<?php } ?>" >
 
+                    <a href="<?php echo $base_url; ?>firm/sms_script" class="nav-link ">
 
+                        <i class="fa fa-envelope"></i><span class="title">SMS </span> <!-- [Firm admin : Own Firm View] --> <!-- [Attorney : Own Firm View] -->
 
+                    </a>
                 </li>
 
 <?php } ?>

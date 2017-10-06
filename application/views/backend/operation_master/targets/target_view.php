@@ -654,6 +654,12 @@
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php  echo $targets['email']; ?></span>
 
+                                                <?php if ($targets['lead_source_and_date']){ ?>
+                                                	<span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                    	<strong>Lead Source:</strong>                                                    	 
+                                                   	  		<?php echo $targets['lead_source_and_date'];?>
+                                                    </span>
+                                                <?php }?>
 
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
@@ -665,9 +671,6 @@
                                                 <a class="call_now" id="call_now_module1" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
 
                                                 </span>
-
-                                            
-
                                             </div>
 
                                             <?php 
@@ -2030,6 +2033,22 @@ foreach ($venue_details as $key => $value) {
 
                                     </div>
 
+                                    <div class="form-group" style="padding-bottom:25px;">
+
+                                        Select template
+                                        <select class="form-control" id="template" name="template" style="width: 85%">
+                                            <option value="">Select</option>
+
+                                            <?php foreach ($module_details as $key => $value) {
+                                                if ($key == 0) {
+                                                     $key = '';
+                                                 } ?>
+                                                <option value="<?php echo $value['sms_details'];?>"><?php echo "template".$key; ?></option>
+                                            <?php } ?>
+                                        </select>
+
+                                    </div>
+
                                     <div class="form-group">
 
                                         Text:
@@ -2069,8 +2088,6 @@ foreach ($venue_details as $key => $value) {
                     </div>
 
                 </div>
-
-
 
             </div>
 
@@ -2727,6 +2744,12 @@ foreach ($venue_details as $key => $value) {
 //                         }); 
 //                    });
 
+                    $('#template').on('change', function () {
+                            var template_value = $('#template option:selected').attr('value');
+                            $("#text1").val(template_value);
+                            
+                    });
+
                     $('#sendtext_submit').on('click', function () {
 
                         var valid = $('#module1_send_msg').valid();
@@ -2800,7 +2823,9 @@ foreach ($venue_details as $key => $value) {
 
                                                 OK: function () {
 
-                                                    window.location.href= BASE_URL + 'targets';
+                                                    $('#textModal').modal('hide');
+
+                                                   // window.location.href= BASE_URL + 'targets';
 
                                                 }
 
@@ -2834,6 +2859,10 @@ foreach ($venue_details as $key => $value) {
 
                                 required: true
 
+                            },
+                            template: {
+
+                                required: true
                             }
 
                         },
@@ -2844,8 +2873,12 @@ foreach ($venue_details as $key => $value) {
 
                                 required: "Please enter your text"
 
-                            }
+                            },
 
+                            template: {
+                                
+                                required: "Please select template"
+                            }
                         }
 
                     });

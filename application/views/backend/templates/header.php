@@ -321,7 +321,7 @@
                        <?php  if($profile_photo != "" && file_exists($_SERVER['DOCUMENT_ROOT']."assets/upload/employee/resize/".$profile_photo)){ ?>
                         <img alt="" class="img-circle" src="<?php echo $assets_path; ?>upload/employee/resize/<?php echo $profile_photo;?>" />
                         
-                       <?php  }else{ ?>
+                       <?php  } else { ?>
                          <img alt="" class="img-circle" src="<?php echo $assets_path; ?>layouts/layout/img/avatar.png" />
                        <?php  } ?>
                       <?php }?> 

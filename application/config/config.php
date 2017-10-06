@@ -27,6 +27,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //$config['secure_base_url'] = 'https://centroinbici.com';
 $config['enable_hooks'] = TRUE;
 
+$config['base_url'] = 'http://localhost/digital1crm';
+$config['project_name'] = 'digital1crm';
+
 if (isset($_SERVER['HTTP_HOST'])) {
 //echo $_SERVER['HTTP_HOST'];die();
     if ($_SERVER['HTTP_HOST'] == 'blogmo.co') {
@@ -41,27 +44,10 @@ if (isset($_SERVER['HTTP_HOST'])) {
         $config['base_url'] = 'http://plma-aws.bitnamiapp.com/apps/plma';
         $config['project_name'] = 'plma';
     } 
-    else if ($_SERVER['HTTP_HOST'] == 'plma-dev.performlaw.com' || $_SERVER['HTTP_HOST'] == 'www.plma-dev.performlaw.com') {
-        $config['base_url'] = 'http://plma-dev.performlaw.com/plma/';
-        $config['project_name'] = 'plma';
-    }
-    else if ($_SERVER['HTTP_HOST'] == '192.168.1.119') {
-        $config['base_url'] = 'http://192.168.1.119/attorney_management_system';
-        $config['project_name'] = 'attorney_management_system';
-    }
-    else if ($_SERVER['HTTP_HOST'] == 'localhost') {
-        $config['base_url'] = 'http://localhost/digital1crm';
-        $config['project_name'] = 'digital1crm';
-    }
-    else if ($_SERVER['HTTP_HOST'] == 'jygsaw.com' || $_SERVER['HTTP_HOST'] == 'www.jygsaw.com') {
-        $config['base_url'] = 'http://jygsaw.com/digital1crm';
-    }
     else {
         $config['base_url'] = 'http://localhost/digital1crm';
         $config['project_name'] = 'digital1crm';
-    }
-    
-    
+    }    
 } else {
     $config['base_url'] = '';
 }

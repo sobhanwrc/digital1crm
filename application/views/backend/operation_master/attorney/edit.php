@@ -436,8 +436,7 @@ var FormInputMask = function () {
         });
 
         $('#web_url').keyup(function(){
-            if (
-                ($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'http://') || ($(this).val() === ''))
+            if (($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'http://') || ($(this).val() === ''))
                 {
                 $(this).val('http://' + $(this).val());    
                 }

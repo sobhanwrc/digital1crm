@@ -68,7 +68,7 @@
                      <div class="row">
                       <div class="col-md-12">
 
-                      <div class="portlet light ">  
+                   <div class="portlet light ">  
                                      
                     <div style=" margin-top: 0%">
                         <h4 class="page-title">   
@@ -108,7 +108,7 @@
                                                 <?php foreach ($day_month_array as $key => $value) {
                                                     ?>
                                                     <option value="<?php echo $key; ?>" <?php if ($week == $key) { ?> selected="selected" <?php } ?>><?php echo $value; ?></option>
-    <?php } ?>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>

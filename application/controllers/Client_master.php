@@ -221,6 +221,7 @@ class Client_master extends MY_Controller {
         $code = base64_decode($code);
         $cond = "AND target_seq_no = '" . $code . "'";
         $row = $this->targets_model->fetch($cond);
+        $this->data['lead_source'] = $row[0]['lead_source_and_date'];
         $company_id = $this->data['firm_seq_no'];
         
         
@@ -1983,9 +1984,9 @@ class Client_master extends MY_Controller {
        // update table target(module1) data
        $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->targets_model->edit($target_data,$target_seq_no);
-       if($res && $target_res)
+       if($res)
        {
-         echo "1";
+         echo 1;
        }
     }
   function temp_email($id= '', $company_id= ' ')

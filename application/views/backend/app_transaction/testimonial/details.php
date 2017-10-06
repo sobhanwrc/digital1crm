@@ -151,15 +151,6 @@
                             </table>
 
 
-
-
-
-
-
-
-
-
-
                         <!--  ending of pagging   -->
 
 
@@ -239,6 +230,13 @@
                                                 <?php }?>
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php  echo $target_details[0]['email']; ?></span>
+
+                                                <?php if ($target_details[0]['lead_source_and_date']){ ?>
+                                                    <span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                        <strong>Lead Source:</strong>                                                        
+                                                            <?php echo $target_details[0]['lead_source_and_date'];?>
+                                                    </span>
+                                                <?php }?>
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                     <strong>Phone:</strong> <?php  echo $target_details[0]['phone']; ?>

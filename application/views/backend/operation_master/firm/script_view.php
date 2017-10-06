@@ -11,6 +11,12 @@
     ?>
     <!-- END HEAD -->
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+
+        <div id="loader_image" style=" width: 100%; height: 800px; position: absolute; top: 0; left: 0; padding-top: 15%; text-align: center; overflow-y: hidden !important; overflow-x: hidden !important; background: #fff; z-index: 99999999999">
+            <img style="width: 100px; height:100px" src="<?php echo $assets_path; ?>pages/img/Loading_icon.gif" alt="" class="" />
+
+        </div>
+
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <div class="menu-toggler sidebar-toggler"> </div>
@@ -98,7 +104,7 @@
 
 
                                                 <div class="form-group">
-                                                    <label for="message">Script:</label>
+                                                    <label for="message">SMS:</label>
                                                     <div class="form-group">
                                                         <textarea rows="12" cols="200" id="ckeditorBox" name="ckeditorBox"  class="editor form-control" style="height:300px;width: 300px;">
 
@@ -209,6 +215,12 @@
         </script>
 
         <script type="text/javascript">
+
+            $(window).load(function() {
+//                    $("#loader_image").hide();
+                    $('#loader_image').delay(2000).fadeOut(1000)
+            });
+
             $(document).ready(function () {
 
                 /*   

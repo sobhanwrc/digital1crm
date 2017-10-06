@@ -249,6 +249,13 @@
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php echo $targets[0]['email']; ?></span>
 
+                                                <?php if ($lead_source){ ?>
+                                                    <span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                        <strong>Lead Source:</strong>                                                        
+                                                            <?php echo $lead_source;?>
+                                                    </span>
+                                                <?php }?>
+
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                     <strong>Phone:</strong> <?php echo $targets[0]['phione']; ?>
 
@@ -1565,8 +1572,6 @@
                                     }
                                 }
                             });
-
-
                         }
                     });
 
@@ -1789,9 +1794,8 @@
                                     $('#edit_details_btn').prop('disabled', true);
                                 },
                                 success: function (data) {
-                                    $('#edit_details_btn').prop('disabled', false);
-                                    /*alert(data);                           
-                                     console.log(data);*/
+                                    $('#edit_details_btn').prop('disabled', false);                         
+//                                     console.log(data);
                                     if (data == 1) {
                                         jconfirm({
                                             title: 'Confirmation!',

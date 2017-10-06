@@ -35,6 +35,7 @@ class Firm extends MY_Controller {
         $this->load->model('group_model');
         $this->load->model('Change_module_number_module');
         $this->load->model('industry_Type_model');
+        $this->load->model('sms_add_model');
     }
 
     function index() {
@@ -63,6 +64,53 @@ left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.firm_jurisdiction "
         } else {
             redirect($base_url . 'firm/my_firm');
         }
+    }
+    function add_more_users(){
+        $admin_id = $this->data['admin_id'];
+        $firm_seq_no = $this->input->post('firm_seq_no');
+        $user_first_name = $this->input->post('user_first_name');
+        $user_last_name = $this->input->post('user_last_name');
+        $user_emailId = $this->input->post('user_emailId');
+        $user_password = md5($this->input->post('user_password'));
+        
+        $this->load->helper('string');
+        $random = random_string('alnum', 16);
+        $random1 = base64_encode($random);
+
+        $final_password = $user_password . $random1;
+        
+        //checking exiting user with email //
+        $cond = " AND user_id='$user_emailId' AND status='1'";
+        $feth_total = $this->app_users_model->fetch($cond);
+        if(count($feth_total) > 0){
+            echo 3;
+            exit;
+        }else{
+            $add_user_for_firm_admin_seq_no = array(
+                'user_first_name' => $user_first_name,
+                'user_last_name' => $user_last_name,
+                'user_id' => $user_emailId,
+                'password' => $final_password,
+                'firm_seq_no' => $firm_seq_no,
+                'role_code' => 'FIRMADM',
+                'salt' => $random,
+                'created_by' => $admin_id,
+                'created_date' => time(),
+                'status' => 1,
+                'authorized_by' => $admin_id,
+                'authorized_date' => time()
+            );
+            $user_insertid = $this->app_users_model->add($add_user_for_firm_admin_seq_no);
+
+            if($user_insertid){
+                echo 1;
+                exit;
+            }else{
+                echo 2;
+                exit;
+            } 
+        }
+
     }
 
     function details($code = '', $read = '') {
@@ -1400,6 +1448,45 @@ left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.firm_jurisdiction "
         $new_mobile_no = '+44' . '(0)' . $mobile_no1 . ' ' . $mobile_no2;
 
         return $new_mobile_no;
+    }
+
+    function sms_script() {
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        $this->data['firm_seq_no'] = $firm_seq_no;
+        if ($firm_seq_no != '') {
+            $query = $this->db->query("select *  from plma_change_module_name");
+            $fetch_module = $query->row_array();
+            $this->data['modules'] = $fetch_module;
+            $cond = " and firm_seq_no = '" . $firm_seq_no . "'";
+            $row = $this->Change_module_number_module->fetch($cond);
+            $this->data['notes'] = $row;
+            // print_r( $this->data['notes']);
+            // die();
+        }
+        $this->get_include();
+        $this->load->view($this->view_dir . 'operation_master/firm/sms_view', $this->data);
+    }
+
+    function submit_sms_script() {
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        $module_name = $this->input->post('module_values');
+        $script = $this->input->post('script');
+        if ($firm_seq_no != '') {
+            $added_data = array(
+                    'firm_seq_no' => $firm_seq_no,
+                    'sms_details' => $script,
+                    'module_name' => $module_name,
+                    'status' => 1,
+                    'added_date' => time(),
+            );
+            $data = $this->sms_add_model->add($added_data);
+            if($data) {
+            	echo 'success';
+            }
+        }
+        
     }
 
 }

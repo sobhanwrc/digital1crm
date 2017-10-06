@@ -71,7 +71,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 
-if($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='localhost:121' ){
+
+if($_SERVER['HTTP_HOST']=='localhost'){
    $active_group = 'default';
 }
 else if($_SERVER['HTTP_HOST']=='www.blogmo.co' || $_SERVER['HTTP_HOST']=='blogmo.co'){

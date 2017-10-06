@@ -272,6 +272,13 @@
 
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php echo $user_detail[0]['email']; ?></span>
 
+                                                <?php if ($targets[0]['lead_source_and_date']){ ?>
+                                                    <span style=" width: auto; padding: 0 5px; display: inline-block;">
+                                                        <strong>Lead Source:</strong>                                                        
+                                                            <?php echo $targets[0]['lead_source_and_date'];?>
+                                                    </span>
+                                                <?php }?>
+
                                                 <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                     <strong>Phone:</strong> <?php echo $user_detail[0]['phione']; ?>
 
@@ -345,6 +352,7 @@
 
                                                         </span>
                                                         <span style=" width: auto; padding: 0 5px; display: inline-block;"><strong>Email: </strong><?php echo $user_detail[0]['email']; ?></span>
+
 
                                                         <span style=" width: auto; padding: 0 5px; display: inline-block;">
                                                             <div class="caption-subject bold" style=" width: 100%; display: inline-block;">Phone: <?php echo $user_detail[0]['phione']; ?>

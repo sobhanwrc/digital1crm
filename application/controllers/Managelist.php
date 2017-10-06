@@ -296,7 +296,7 @@ class Managelist extends MY_Controller {
         } else {
             $this->db->where('user_seq_no', $call_user_id);
             $this->db->delete('plma_assign_list_to_call_user'); 
-            echo 1;
+            echo 2;
         }
     }
 

@@ -44,6 +44,7 @@ class documentsetting extends MY_Controller {
                 {
                      $data=array('firm_seq_no'=>$firm_seq_no,'title'=>$title_name,'document_name'=>$file_name,'created_date'=>time(),'updated_date'=>time());
                      $insert_id=$this->db->insert('plma_document',$data);
+                     
                      if($insert_id)
                      {
                         echo '1';

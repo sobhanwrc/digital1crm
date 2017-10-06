@@ -467,43 +467,32 @@ class Attorney extends MY_Controller {
      * Upload image function by Satyam
      */
 
-    function crop_image(){
-        $data = $_POST['image'];
-
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-
-        $data = base64_decode($data);
-        $imageName = time().'.png';
-        file_put_contents('assets/upload/employee/resize/CROP/'.$imageName, $data);
-
-        echo 'done';
-    }
 
     function files_up($admin_id,$profile_id) {
         $admin_id = $this->input->post('admin_id');
         $profile_id = $this->input->post('user_id');
 
         $data = $_POST['image'];
+        if($data!="") {
 
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
 
-        $data = base64_decode($data);
-        $imageName = time().'.png';
-        file_put_contents('assets/upload/employee/resize/CROP/'.$imageName, $data);
+            $data = base64_decode($data);
+            $imageName = time().'.png';
+            file_put_contents('assets/upload/employee/resize/CROP/'.$imageName, $data);
 
-        echo 'done';
+            echo 'done';
 
-        $sql_attorney = "UPDATE `plma_attorney` SET `profile_photo` = '$imageName' WHERE `plma_attorney`.`attorney_seq_no` = '$profile_id'";
-        $this->db->query($sql_attorney);
+            $sql_attorney = "UPDATE `plma_attorney` SET `profile_photo` = '$imageName' WHERE `plma_attorney`.`attorney_seq_no` = '$profile_id'";
+            $this->db->query($sql_attorney);
 
-        $this->db->select('user_seq_no')->from('plma_attorney')->where('attorney_seq_no',$profile_id);
-        $details = $this->db->get()->result_array();
+            $this->db->select('user_seq_no')->from('plma_attorney')->where('attorney_seq_no',$profile_id);
+            $details = $this->db->get()->result_array();
 
-        $sql ="UPDATE `plma_user` SET `profile_photo` = '{$imageName}' WHERE `plma_user`.`user_seq_no` = '".$details[0]['user_seq_no']."'";
-        $this->db->query($sql);
-
+            $sql ="UPDATE `plma_user` SET `profile_photo` = '{$imageName}' WHERE `plma_user`.`user_seq_no` = '".$details[0]['user_seq_no']."'";
+            $this->db->query($sql);
+        }
 
     }
     
@@ -525,10 +514,10 @@ class Attorney extends MY_Controller {
         }
         elseif ($extension =='png' or $extension =='pneg') {
             
-         $source_image = imagecreatefrompng($src);
-    }
-    elseif ($extension =='gif') {
-        $source_image = imagecreatefromgif($src);
+           $source_image = imagecreatefrompng($src);
+        }
+        elseif ($extension =='gif') {
+            $source_image = imagecreatefromgif($src);
     
 }
 else {
