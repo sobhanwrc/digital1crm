@@ -1209,7 +1209,7 @@ foreach ($all_firms as $key => $value) {
                                 content: "User added successfully for this company.",
                                 buttons: {
                                     OK: function () {
-                                        $(".appointment_date_and_time_div").modal('hide');
+                                        window.location.reload();
                                     }
                                 }
                             });

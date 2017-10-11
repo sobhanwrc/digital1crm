@@ -34,6 +34,7 @@ class Competitor extends MY_Controller {
         $this->load->model('send_sms_model');
         $this->load->model('emailtemplate_model');
         $this->load->model('signature_model');
+        $this->load->model('sms_add_model');
 
     }
    function index($code='')
@@ -94,6 +95,12 @@ class Competitor extends MY_Controller {
         $fetch_user_details = $this->user_model->fetch($cond);
         $role_code = $fetch_user_details[0]['role_code'];
         $company_id = $fetch_user_details[0]['firm_seq_no'];
+
+        $fetch_cond = " AND module_name='module3' AND firm_seq_no='".$company_id."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
+
+
          $id =base64_decode($id);
          //echo $id;die();
          $code =base64_decode($code);
@@ -319,7 +326,7 @@ class Competitor extends MY_Controller {
          
         
         $admin_id = $this->data['admin_id'];
-          $this->data['company_id']=$firm_seq_no;
+        $this->data['company_id']=$firm_seq_no;
         $this->load->helper('url');
         $target_seq_no = base64_decode($this->uri->segment(3));
 
@@ -340,6 +347,10 @@ class Competitor extends MY_Controller {
         $note=$this->Allnote_Model->fetch($condnote);
         $this->data['all_notes']=$note;
         /******************End**************************************/
+
+        $fetch_cond = " AND module_name='module4' AND firm_seq_no='".$firm_seq_no."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
 
         /*************Contact Details and his/her primary contact *********************/
 
@@ -1781,6 +1792,10 @@ class Competitor extends MY_Controller {
         $fetch_details = $this->Model5->fetch($cond);
         $contact_id = $fetch_details[0]['id'];
         $this->data['fetch_details'] = $fetch_details;
+
+        $fetch_cond = " AND module_name='module5' AND firm_seq_no='".$firm_seq_no."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
 
         $contact_phone = $fetch_details[0]['phone'];
         $original_home_phone = $contact_phone;

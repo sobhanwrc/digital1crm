@@ -45,6 +45,7 @@ class Client_purchase extends MY_Controller {
         $this->load->model('emailtemplate_model');
         $this->load->model('signature_model');
         $this->load->model('send_sms_model');
+        $this->load->model('sms_add_model');
 
     }
     function index()
@@ -122,6 +123,10 @@ class Client_purchase extends MY_Controller {
         $fetch_sms_details = $this->send_sms_model->fetch($cond);
         $this->data['sms_content'] = $fetch_sms_details;
     
+        
+        $fetch_cond = " AND module_name='module10' AND firm_seq_no='$firm_seq_no' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
 
         $this->get_include();
         $this->load->view($this->view_dir.'operation_master/client_purchase/view', $this->data);

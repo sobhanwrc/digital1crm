@@ -2859,12 +2859,7 @@ foreach ($venue_details as $key => $value) {
 
                                 required: true
 
-                            },
-                            template: {
-
-                                required: true
                             }
-
                         },
 
                         messages: {
@@ -2873,11 +2868,6 @@ foreach ($venue_details as $key => $value) {
 
                                 required: "Please enter your text"
 
-                            },
-
-                            template: {
-                                
-                                required: "Please select template"
                             }
                         }
 

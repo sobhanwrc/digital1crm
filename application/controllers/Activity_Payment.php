@@ -44,6 +44,7 @@ class Activity_Payment extends MY_Controller {
         $this->load->model('emailtemplate_model');
         $this->load->model('signature_model');
         $this->load->model('send_sms_model');
+        $this->load->model('sms_add_model');
 
     }
     function index()
@@ -94,6 +95,10 @@ class Activity_Payment extends MY_Controller {
          $condnote = " and admin_id ='".$admin_id."' and target_seq_no='".$target_seq_no."' order by id DESC";
          $note = $this->Allnote_Model->fetch($condnote);
          $this->data['viewallnotes']=$note;
+
+         $fetch_cond = " AND module_name='module7' AND firm_seq_no='".$firm_seq_no."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
          
          
         $user_phone = $targets_data_view[0]['phone'];

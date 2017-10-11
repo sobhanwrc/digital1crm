@@ -714,6 +714,23 @@ if ($fetch_contact_details[0]['type'] == "I") {
                                                                 Mobile No. 
                                                                 <input type="text" value="<?php echo $fetch_contact_details[0]['phone']; ?>" readonly placeholder="" class="form-control" id="mobile_no_for_send_tet" name="mobile_no" autocomplete="off" style="width: 85%">
                                                             </div>
+
+                                                            <div class="form-group" style="padding-bottom:25px;">
+
+                                                                Select template
+                                                                <select class="form-control" id="template" name="template" style="width: 85%">
+                                                                    <option value="">Select</option>
+
+                                                                    <?php foreach ($module_details as $key => $value) {
+                                                                        if ($key == 0) {
+                                                                             $key = '';
+                                                                         } ?>
+                                                                        <option value="<?php echo $value['sms_details'];?>"><?php echo "template".$key; ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+
+                                                            </div>
+
                                                             <div class="form-group">
                                                                 Text:
                                                                 <!--<input type="textarea" placeholder="Text" class="form-control required" id="text1" name="text1">-->
@@ -1047,7 +1064,11 @@ if ($fetch_contact_details[0]['type'] == "I") {
                 $('#datepairExample').datepair();
 
 
-
+                $('#template').on('change', function () {
+                            var template_value = $('#template option:selected').attr('value');
+                            $("#text1").val(template_value);
+                            
+                });
 
 
 

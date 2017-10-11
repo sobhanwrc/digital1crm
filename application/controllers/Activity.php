@@ -31,6 +31,7 @@ class Activity extends MY_Controller {
         $this->load->model('signature_model');
         $this->load->model('send_sms_model');
         $this->load->model('change_module_number_module');
+        $this->load->model('sms_add_model');
         //t($this->data['codes']['Activity Status']) ; exit;
         //echo $this->code_desc('PENDACT'); exit;
     }
@@ -1620,6 +1621,10 @@ pat.activity_seq_no =  '" . $code . "' ) GROUP BY
         $user_name = explode(' ', $fetch_contact_details[0]['name']);
         $this->data['user_1st_name'] = $user_name[0];
         $this->data['user_last_name'] = $user_name[1];
+
+        $fetch_cond = " AND module_name='module6' AND firm_seq_no='".$firm_seq_no."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
         
         $user_phone = $fetch_contact_details[0]['phone'];
         $original_user_phone = $user_phone;

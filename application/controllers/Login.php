@@ -298,7 +298,7 @@ class Login extends MY_Controller {
             $fetch_all_company = $this->db->get()->result_array();
         }
         else {
-            $cond = " AND user_id='$user_id'  AND created_by='1' AND status='1' AND assign_to<>''";
+            $cond = " AND user_id='$user_id' AND status='1' AND assign_to<>''";
             $select = "assign_to";
             $fetch_user_details = $this->user_model->fetch($cond,$select);
             

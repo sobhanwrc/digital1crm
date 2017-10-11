@@ -20,6 +20,7 @@ class Testimonial extends MY_Controller {
      $this->load->model('signature_model');
      $this->load->model('user_model');
      $this->load->model('send_sms_model');
+     $this->load->model('sms_add_model');
 
   }
 
@@ -60,6 +61,10 @@ class Testimonial extends MY_Controller {
         //echo  "$firm_seq_no <hr>";
           //echo $admin_id;
         //die();
+
+        $fetch_cond = " AND module_name='module8' AND firm_seq_no='".$firm_seq_no."' AND status=1";
+        $module_details = $this->sms_add_model->fetch($fetch_cond);
+        $this->data['module_details']= $module_details;
     
     
     $this->db->select('plma_all_notes.*,plma_user.user_first_name,plma_user.user_last_name')

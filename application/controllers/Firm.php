@@ -80,7 +80,7 @@ left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.firm_jurisdiction "
         $final_password = $user_password . $random1;
         
         //checking exiting user with email //
-        $cond = " AND user_id='$user_emailId' AND status='1'";
+        $cond = " AND firm_seq_no='$firm_seq_no' AND user_id='$user_emailId' AND status='1'";
         $feth_total = $this->app_users_model->fetch($cond);
         if(count($feth_total) > 0){
             echo 3;
