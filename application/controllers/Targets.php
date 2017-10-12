@@ -589,10 +589,29 @@ class Targets extends MY_Controller {
 //       echo $id; die();
 
    }
-
+   
+    function check_user_notification(){
+        $user_id = $this->input->post('call_user_id');
+        
+        $cond = " AND user_seq_no=$user_id";
+        $fetch = $this->user_model->fetch($cond);
+        $notification = $fetch[0]['notification'];
+        echo $notification;
+        exit();
+    }
+    
     function details($code = '', $b= '') {
         $admin_all_session = $this->session->userdata('admin_session_data');
         $admin_id = $admin_all_session['admin_id'];
+        
+        //fetch_notification settings
+        $cond = " AND user_seq_no=$admin_id";
+        $notification = $this->user_model->fetch($cond);
+//        t($notification);die();
+        $get_notification_opt = $notification[0]['notification'];
+        $this->data['get_notification_opt'] = $get_notification_opt;
+        //end
+        
         $role_code = $admin_all_session['role_code'];
         //echo $role_code;die;
         $code = base64_decode($code);
@@ -753,7 +772,7 @@ class Targets extends MY_Controller {
 
         }
         $this->data['targets'] = $row[0];
-        //t($this->data['targets']);die;
+//        t($this->data['targets']);die;
         $target_seq_id = $row[0]['target_seq_no'];
         if (count($row) > 0) {
             $cond2 = " and address_seq_no = '" . $row[0]['address_seq_no'] . "'";

@@ -145,6 +145,44 @@ class Api extends MY_Controller {
             );
         }
     }
+    
+        
+    public function notification_settings(){
+        $notification_value = $this->input->post('opt');
+        $user_id = $this->input->post('user_id');
+        
+        $data = array(
+            'notification' => $notification_value
+        );
+        
+        $edit_notification = $this->user_model->edit($data,$user_id);
+        if ($edit_notification) {
+            echo json_encode(
+                    array(
+                        'server_code' => "100",
+                        'msg' => "success"
+                    )
+            );
+        }
+    }
+    
+    public function send_notification(){
+        $user_id = $this->input->post('user_id');
+        $cond = " AND user_seq_no=$user_id";
+        $fetch = $this->user_model->fetch($cond);
+        $fetch_notification = $fetch[0]['notification'];
+        
+        if($fetch){
+            echo json_encode(
+                    array(
+                        'server_code' => "100",
+                        'msg' => "success",
+                        'data' => $fetch_notification
+                    )
+            );
+        }
+    }
+            
 
     function check_digital1_staff() {
         $user_id = $this->input->post('email');
@@ -193,7 +231,7 @@ class Api extends MY_Controller {
         $new_phone2 = substr($new_phone1,-10);
         $country_code = substr($new_phone1, 0, 3);
         $phone_nuber = $country_code.$new_phone2;
-//        t($fetch_mc_details);
+//        t($fetch_mc_details);die();
 
         $admin_id = $logged_admin_id;
         $name = $fetch_mc_details[0]['target_first_name'] . ' ' . $fetch_mc_details[0]['target_last_name'];
@@ -236,8 +274,7 @@ class Api extends MY_Controller {
             $total_array['data']['type'] = 'call';
             $total_array['data']['admin_id'] = $logged_admin_id;
             $total_array['data']['form_model'] = $from_model;
-            $total_array['data']['phone'] = $phone_nuber;
-           
+            $total_array['data']['phone'] = $phone_nuber;   
         }
 //        t($total_array);die();
         if (count($total_array) > 0) {
@@ -258,6 +295,7 @@ class Api extends MY_Controller {
             );
         }
     }
+
 
     // SEND MESSAGES
 
@@ -397,7 +435,6 @@ class Api extends MY_Controller {
             "form_model" => $all_details[data]['form_model'],
             "receive_sms_text" => $all_details[data]['text']
         );
-//        t($message);die();
         // Set POST variables
         $url = 'https://fcm.googleapis.com/fcm/send';
 

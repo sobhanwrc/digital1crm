@@ -668,7 +668,7 @@
 
 
 
-                                                <a class="call_now" id="call_now_module1" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
+                                                <a class="call_now" id="call_now_module1" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" notification="<?php echo $get_notification_opt;?>" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
 
                                                 </span>
                                             </div>
@@ -713,7 +713,7 @@
 
                                                                 <div class="caption-subject bold" style=" width: 100%; display: inline-block;">Phone: <?php echo $fetch_add_contact_details['phone']; ?>
 
-                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
+                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" notification="<?php echo $get_notification_opt;?>" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
 
                                                                 </div>
 
@@ -761,7 +761,7 @@
 
                                                                 <div class="caption-subject bold" style=" width: 100%; display: inline-block;">Phone: <?php echo $fetch_add_contact_details['phone']; ?>
 
-                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
+                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" notification="<?php echo $get_notification_opt;?>" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
 
                                                                 </div>
 
@@ -799,7 +799,7 @@
 
                                                                 <div class="caption-subject bold" style=" width: 100%; display: inline-block;">Phone: <?php echo $targets['phone']; ?>
 
-                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
+                                                                    <a class="call_now" href="javascript:void(0)" val='<?php echo $targets['target_seq_no']; ?>' from_model="module1" notification="<?php echo $get_notification_opt;?>" name="<?php echo $targets['target_first_name'] . ' ' . $targets['target_last_name']; ?>"><i style="font-size: 23px; margin-left: 10px; color:#337ab7" class="fa fa-phone-square"></i></a>
 
                                                                 </div>
 
