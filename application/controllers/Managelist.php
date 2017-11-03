@@ -235,7 +235,7 @@ class Managelist extends MY_Controller {
 
         $cond1 = "AND firm_seq_no = '$firm_seq_no'";
         $firm_details = $this->targets_model->fetch($cond1);
-        //t($firm_details); die();
+//        t($firm_details); die();
         //$select = "firm_seq_no,firm_name";
         $this->data['firms'] = $firm_details;
         
@@ -245,9 +245,91 @@ class Managelist extends MY_Controller {
             $row = $this->managelist_model->fetch($cond);
             $this->data['managelist'] = $row;
         }
+//        t($row); die();
 
         $this->get_include();
         $this->load->view($this->view_dir . 'operation_master/manage_list/search_from_contacts', $this->data);
+    }
+    
+    function index1() {
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        
+        $my_search = $this->input->post('search');
+        $my_order = $this->input->post('order');
+        
+        if ($role_code == 'FIRMADM') {
+
+            $no_of_columns_in_list = explode(',', "target_first_name, target_last_name, email, company, type, phone");
+            $sql_target = "SELECT * "
+                    . " FROM plma_target "
+                    . " WHERE firm_seq_no = '" . (int) $firm_seq_no . "' ";
+        }
+        
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+        
+        $CountAllQueryData = count($all_target_array);
+
+        $AllFilteredData = $CountAllQueryData;  
+        
+        if($role_code == 'FIRMADM'){
+            $sql_target .= " AND((target_first_name LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[1] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[2] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[3] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[4] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[5] LIKE '%" . $my_search['value'] . "%')) ";
+        }
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+        
+        $CountAllQueryData = count($all_target_array);
+        
+        $sorted_column = '';
+        if ($my_order[0]['column'] == 0) {
+            $sorted_column = 0;
+        } else if ($my_order[0]['column'] > 0) {
+            $sorted_column = $my_order[0]['column'] - 1;
+        }
+        $start = $this->input->post('start');
+        $length = $this->input->post('length');
+
+        if ($length == '-1') {
+            $sql_target .= " ORDER BY " . $no_of_columns_in_list[$sorted_column] . "  " . $my_order[0]['dir'] . " ";
+        } else {
+            $sql_target .= " ORDER BY " . $no_of_columns_in_list[$sorted_column] . "  " . $my_order[0]['dir'] . " LIMIT " . $start . "," . $length . " ";
+        }
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+
+        $all_target_list = array();
+        
+        $index = 0;
+
+        foreach($all_target_array as $key => $value){
+            $target_id = $value['target_seq_no'];
+            $nested_data = array();
+            $index++;
+            
+            $nested_data[] = ' <input type="checkbox" name="checked_ids[]" id="examplecBox" class="myCheckbox" multiple="multiple" value = " '.$target_id.'"> ' . $index . '';
+            $nested_data[] = (!empty($value['target_first_name']) || $value['target_last_name'] != ' ') ? $value['target_first_name'].' '.$value['target_last_name'] : 'N/A';
+            $nested_data[] = !empty($value['email'])? $value['email']: 'N/A';
+            $nested_data[] = !empty($value['company'])? $value['company'] :'N/A';
+            $nested_data[] = !empty($value['type'])? $value['type']: 'N/A';
+            $nested_data[] = !empty($value['phone']) ? $value['phone']: 'N/A';  
+            $all_target_list[] = $nested_data;
+        }
+
+        $json_data = array(
+            "draw" => intval($this->input->post('draw')), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal" => intval($AllFilteredData), // total number of records
+            "recordsFiltered" => intval($CountAllQueryData), // total number of records after searching, if there is no searching then totalFiltered = totalData
+            "data" => $all_target_list   // total data array
+        );
+        echo json_encode($json_data);  // send data as json format
     }
 
     function assign_to_list() {

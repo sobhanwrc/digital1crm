@@ -81,15 +81,17 @@ class Targets extends MY_Controller {
             $this->data['fetch_details_master_contacts'] = $fetch_details_master_contacts;
         }
         elseif ($role_code == 'ATTR') {
-//            echo $attr_seq_no;
+           /*echo $admin_id;
+           die();*/
 
             $this->db->select('plma_target.*')->from('plma_target')
             ->join('plma_assign_list_to_call_user','plma_target.list_id = plma_assign_list_to_call_user.list_id','INNER')
-            ->where('plma_assign_list_to_call_user.user_seq_no',$attr_seq_no)
+            ->where('plma_assign_list_to_call_user.user_seq_no',$admin_id)
             ->where('plma_target.status != "Inactive"')
             ->where('plma_assign_list_to_call_user.firm_seq_no',$company_id);
             
             $fetch_details_master_contacts = $this->db->get()->result_array();
+
             //echo $this->db->last_query();die;
             $this->data['admin_id'] = $admin_id;
 
@@ -855,10 +857,12 @@ class Targets extends MY_Controller {
 
         $primary_contact_phone = $fetch_add_contact_details[0]['phone'];
         //--------end------------//
-
-
+        $cond = " and firm_seq_no = '" . $admin_all_session['firm_seq_no'] . "'";
+        $row = $this->change_module_number_module->fetch($cond);
+        
+        
         $this->get_include();
-        $row = $this->change_module_number_module->fetch();
+        
         $this->data['row'] = $row;
         $this->load->view($this->view_dir . 'operation_master/targets/target_view', $this->data);
     }
@@ -2447,13 +2451,15 @@ class Targets extends MY_Controller {
     }
 
     function temp_email($id= '', $company_id= ' ' ){
-       
-       $admin_id = $this->data['admin_id'];
-       $firm_seq_no = $this->data['firm_seq_no'];
+       $admin_session_data = $this->session->userdata('admin_session_data');
+       $admin_id = $admin_session_data['admin_id'];
+       $firm_seq_no = $admin_session_data['firm_seq_no'];
        //echo $admin_id.'##'.$firm_seq_no;die();
        //
        $cond = "AND created_by=$firm_seq_no";
        $user_login_template = $this->emailtemplate_model->fetch($cond);
+       /*echo $this->db->last_query();
+       die();*/
        $this->data['user_login_template'] = $user_login_template;
        $this->data['aid'] = $admin_id;
        //print_r($user_login_template);die();

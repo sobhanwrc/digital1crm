@@ -16,13 +16,15 @@ class Change_module_number extends MY_Controller {
     }
 
     function index() {
+        $company_session = $this->session->userdata('admin_session_data');       
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
+        $firm_seq_no = $company_session['firm_seq_no'];
         
         $details = $this->change_module_name->fetch();
         $this->data['module'] = $details;
         
-        $cond = " AND firm_seq_no=$admin_id";
+        $cond = " AND firm_seq_no=$firm_seq_no";
         $fetch_details_from_change_module_name_byFirm = $this->Change_module_name_by_firm->fetch($cond);
         $this->data['fetch_details_from_change_module_name_byFirm'] = $fetch_details_from_change_module_name_byFirm;
         
@@ -89,8 +91,11 @@ class Change_module_number extends MY_Controller {
     }
     
     function edit_by_firm() {
+        $company_session = $this->session->userdata('admin_session_data');       
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
+        $firm_seq_no = $company_session['firm_seq_no'];
+
 
         $add_new_attorney_btn = $this->input->post('add_new_module_btn_by_firm');
         if (isset($add_new_attorney_btn)) {
@@ -109,7 +114,7 @@ class Change_module_number extends MY_Controller {
             $module10= $this->input->post('module10');
 
             $data1 = array(
-                'firm_seq_no' => $admin_id,
+                'firm_seq_no' => $firm_seq_no,
                 'module1' => $module1,
                 'module2' => $module2,
                 'module3' => $module3,

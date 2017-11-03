@@ -140,7 +140,7 @@
                                                     <?php if(($role_code =='ATTR' )|| ($role_code =='FIRMADM')||($role_code =='SITEADM')){ ?>
                                                     
                                                     <li>
-                                                        <a class="call_user_class" href="javascript:void(0)" data-toggle="modal" call_user_id="<?php echo $value['attorney_seq_no']; ?>" data-target="#assign_call_user_modal">
+                                                        <a class="call_user_class" href="javascript:void(0)" data-toggle="modal" call_user_id="<?php echo $value['user_seq_no']; ?>" data-target="#assign_call_user_modal">
                                                             <i class="icon-list"></i> Assign to list </a>
                                                     </li>
                                                     <?php } } ?>

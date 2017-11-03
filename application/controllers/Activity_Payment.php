@@ -318,9 +318,12 @@ class Activity_Payment extends MY_Controller {
     function temp_email($id= '', $company_id= ' ')
     {
        $target_seq_no=base64_decode($id);
-        $firm_seq_no=base64_decode($company_id);
+        //$firm_seq_no=base64_decode($company_id);
         //echo $target_seq_no.'#'.$firm_seq_no;die();
-        $admin_id = $this->data['admin_id'];
+        //$admin_id = $this->data['admin_id'];
+       $admin_session_data = $this->session->userdata('admin_session_data');
+       $admin_id = $admin_session_data['admin_id'];
+       $firm_seq_no = $admin_session_data['firm_seq_no'];
 
        $cond = "AND created_by=$firm_seq_no";
        $user_login_template = $this->emailtemplate_model->fetch($cond);

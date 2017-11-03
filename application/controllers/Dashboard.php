@@ -32,16 +32,95 @@ class Dashboard extends MY_Controller {
 
     function index($year=' ', $week=' ') {
 
+        /* $ch = curl_init();
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, 'https://us16.api.mailchimp.com/3.0/lists');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_USERPWD, "anystring:6c66c016f943ae2ea90e72ab666d0f53-us16");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, 'content-type: application/json');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, '{"name":"Manomit Mitra","contact":{"company":"MailChimp","address1":"675 Ponce De Leon Ave NE","address2":"Suite 5000","city":"Atlanta","state":"GA","zip":"30308","country":"US","phone":""},"permission_reminder":"Test Email","campaign_defaults":{"from_name":"Freddie","from_email":"md@theglobalcc.com","subject":"","language":"en"},"email_type_option":true}');
+
+        // Execute post
+        $result = json_decode(curl_exec($ch),true);
+        
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+        else {
+            
+            //print_r($result);
+            $list_id = $result['id'];
+            echo $list_id;
+            
+        }
+
+        // Close connection
+        curl_close($ch);
+        $ch_1 = curl_init();
+        curl_setopt($ch_1, CURLOPT_URL, 'https://us16.api.mailchimp.com/3.0/campaigns');
+        curl_setopt($ch_1, CURLOPT_POST, true);
+        curl_setopt($ch_1, CURLOPT_USERPWD, "anystring:6c66c016f943ae2ea90e72ab666d0f53-us16");
+        curl_setopt($ch_1, CURLOPT_HTTPHEADER, 'content-type: application/json');
+        curl_setopt($ch_1, CURLOPT_RETURNTRANSFER, true);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch_1, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch_1, CURLOPT_POSTFIELDS, '{"recipients":{"list_id":"96688f3bbf"},"type":"regular","settings":{"subject_line":"Your Purchase Receipt","reply_to":"manomit@wrctpl.com","from_name":"Customer Service"}}');
+
+        // Execute post
+        $result_1 = json_decode(curl_exec($ch_1),true);
+        if ($result_1 === FALSE) {
+            die('Curl failed: ' . curl_error($ch_1));
+        }
+        else {
+            
+            //print_r($result_1);
+            //$list_id = $result['id'];
+            
+        }
+        curl_close($ch_1);
+
+        $ch_2 = curl_init();
+        curl_setopt($ch_2, CURLOPT_URL, 'https://us16.api.mailchimp.com/3.0/campaigns/f60868a282/actions/send');
+        curl_setopt($ch_2, CURLOPT_POST, true);
+        curl_setopt($ch_2, CURLOPT_USERPWD, "anystring:6c66c016f943ae2ea90e72ab666d0f53-us16");
+        curl_setopt($ch_2, CURLOPT_HTTPHEADER, 'content-type: application/json');
+        curl_setopt($ch_2, CURLOPT_RETURNTRANSFER, true);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch_2, CURLOPT_SSL_VERIFYPEER, false);
+        
+
+        // Execute post
+        $result_2 = json_decode(curl_exec($ch_2),true);
+        if ($result_2 === FALSE) {
+            die('Curl failed: ' . curl_error($ch_2));
+        }
+        else {
+            
+            print_r($result_2);
+            //$list_id = $result['id'];
+            
+        }
+        curl_close($ch_2);
+
+
+        die();*/
+//        echo $result;exit;
+
         $this->load->model('firm_model');
         $this->load->model('address_model');
         $this->load->model('attorney_model');
         $this->load->model('app_users_model');
 
 
-
+        
+        $admin_session_data = $this->session->userdata('admin_session_data');       
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
-        $admin_session_data = $this->session->userdata('admin_session_data');
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        
         if($admin_session_data['FIRMADM']) {
             
         }
@@ -51,7 +130,7 @@ class Dashboard extends MY_Controller {
         $this->data['users'] = $row;
         $this->data['fname'] = $row[0]['user_first_name'];
         $this->data['lname'] = $row[0]['user_last_name'];
-        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        
         //t($row); exit;
         //$admin_all_session['role_code'];
         $cond3 = " and code = '" . $role_code . "'";
@@ -265,7 +344,7 @@ class Dashboard extends MY_Controller {
         
         $all_module_name = $this->change_module_name->fetch();
         
-        $cond = " AND firm_seq_no=$admin_id";
+        $cond = " AND firm_seq_no=$firm_seq_no";
         $fetch_module_name_byFirmAdmin = $this->Change_module_name_by_firm->fetch($cond);
         
         if(!empty($fetch_module_name_byFirmAdmin)){

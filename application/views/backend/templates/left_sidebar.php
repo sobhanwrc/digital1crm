@@ -608,12 +608,18 @@
                 $ci->load->model('change_module_name');
                 $ci->load->model('Change_module_name_by_firm');
                 $ci->load->model('user_model');
-
+                
+                $admin_session_data = $this->session->userdata('admin_session_data');       
+                $admin_id = $this->data['admin_id'];
+                $role_code = $this->data['role_code'];
+                $firm_seq_no1 = $admin_session_data['firm_seq_no'];
+        
                 $cond = " AND user_seq_no=$admin_id";
                 $fetch_details = $ci->user_model->fetch($cond);
-                $user_created_by = $fetch_details[0]['created_by'];
                 
-                $cond123 = "AND firm_seq_no=$user_created_by";
+                $firm_seq_no = $firm_seq_no1;
+                
+                $cond123 = "AND firm_seq_no=$firm_seq_no";
                 $fetch_module_name_byFirm = $ci->Change_module_name_by_firm->fetch($cond123);
                 
                 if(!empty($fetch_module_name_byFirm)){

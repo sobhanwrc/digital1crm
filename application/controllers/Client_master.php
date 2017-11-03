@@ -305,6 +305,11 @@ class Client_master extends MY_Controller {
 //            $cond= "AND client_seq_no=$client";
 //            $c= $this->client_model->fetch($cond);
 //            $this->data['name'] =$c;
+
+            $cond = " and firm_seq_no = '" . $admin_all_session['firm_seq_no'] . "'";
+            $row = $this->Change_module_number_module->fetch($cond);
+            
+            $this->data['notes'] = $row;
             
             $this->load->view($this->view_dir . 'operation_master/client/view', $this->data);
         } else {
@@ -601,10 +606,13 @@ class Client_master extends MY_Controller {
             //end
 
                //code for fetching data script value
-             $row = $this->Change_module_number_module->fetch();
-                   $this->data['notes'] = $row;
-                 // print_r( $this->data['notes']);
-                  // die();
+            $admin_all_session = $this->session->userdata('admin_session_data');
+            $cond = " and firm_seq_no = '" . $admin_all_session['firm_seq_no'] . "'";
+            $row = $this->Change_module_number_module->fetch($cond);
+           
+
+            $this->data['notes'] = $row;
+                 
        
             
              $cond_module = "AND module_name = 'module2'";
@@ -1996,8 +2004,11 @@ class Client_master extends MY_Controller {
   function temp_email($id= '', $company_id= ' ')
   {
     $target_seq_no=base64_decode($id);
-    $firm_seq_no=base64_decode($company_id);
-    $admin_id = $this->data['admin_id'];
+    //$firm_seq_no=base64_decode($company_id);
+       $admin_session_data = $this->session->userdata('admin_session_data');
+       $admin_id = $admin_session_data['admin_id'];
+       $firm_seq_no = $admin_session_data['firm_seq_no'];
+    
 
        $cond = "AND created_by=$firm_seq_no";
        $user_login_template = $this->emailtemplate_model->fetch($cond);
@@ -2016,6 +2027,7 @@ class Client_master extends MY_Controller {
        $this->data['target_seq_no']=$target_seq_no;
 
        $this->db->select('*')->from('plma_document');
+       $this->db->where('firm_seq_no',$firm_seq_no);
        $row=$this->db->get()->result_array();
        $this->data['document']=$row;
 

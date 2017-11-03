@@ -460,7 +460,7 @@
                                                         <li><a href="<?php echo $base_url; ?>competitor/temp_email/<?php echo base64_encode($target_seq_nos); ?>/<?php echo base64_encode($company_ids); ?>"><i class="fa fa-envelope-o"></i> Email</a></li>
                                                        <!-- <li><a href="javascript:void(0)" data-target="#script_modal" data-toggle="modal"><i class="fa fa-code"></i> Script</a></li>-->
                                                         <li>
-                                                            <button style=" padding:6px 0; background-color: transparent; color:#337ab7" type="button" class="btn" data-toggle="popover" data-content="<?php echo $notes[0]['note2']; ?> " data-html="true"><i class="fa fa-code"></i> Script</button>
+                                                            <button style=" padding:6px 0; background-color: transparent; color:#337ab7" type="button" class="btn" data-toggle="popover" data-content="<?php echo $fetch_module3_script; ?> " data-html="true"><i class="fa fa-code"></i> Script</button>
 
 
                                                     </ul>

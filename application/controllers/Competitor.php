@@ -84,8 +84,15 @@ class Competitor extends MY_Controller {
         $admin_id = $this->data['admin_id'];
 //        $firm_seq_no = $this->data['firm_seq_no'];
 
-        $fetch_module_script = $this->Change_module_number_module->fetch();
+        
+        $cond = " and firm_seq_no = '" . $company_session['firm_seq_no'] . "'";
+        
+        
+
+        $fetch_module_script = $this->Change_module_number_module->fetch($cond);
+
         $fetch_module3 = $fetch_module_script[0]['note3'];
+        
         $fetch_module4 = $fetch_module_script[0]['note4'];
 //        $fetch_module3_script= "<html><body>".$fetch_module3."</body></html>";
         $this->data['fetch_module3_script'] = $fetch_module3;
@@ -131,7 +138,8 @@ class Competitor extends MY_Controller {
         $fetch_appointment_details = $this->Callappointment_Model->fetch($cond);
 
         $this->data['fetch_appointment_details'] = $fetch_appointment_details;
-         //print_r($fetch_appointment_details);die();
+        // echo "<pre>";
+        //  print_r($result_array);die();
         $target_seq_no= $result_array[0]['target_seq_no'];
         
         //echo $id.'#'.$target_seq_no;die();
@@ -314,8 +322,9 @@ class Competitor extends MY_Controller {
          $this->data['module_no']=$module_no;
 
         $this->get_include();
-        $row = $this->change_module_number_module->fetch();
-        $this->data['row'] = $row;
+
+
+        $this->data['notes'] = $row;
         $this->load->view($this->view_dir . 'operation_master/competitor/competitor_details', $this->data);
    }
    function contract_view()
@@ -2327,6 +2336,8 @@ class Competitor extends MY_Controller {
     }
     function temp_email($id= '', $company_id= ' ')
     {
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        // echo $firm_seq_no = $admin_session_data['firm_seq_no'];echo "<br>";
 
          $target_seq_no=base64_decode($id);
          $firm_seq_no=base64_decode($company_id);
@@ -2342,7 +2353,7 @@ class Competitor extends MY_Controller {
        $contact_id = base64_decode($id);
        $company_id = base64_decode($company_id);
        //echo $contact_id.'#'.$company_id;die();
-       $cond = " and company_id='{$company_id}' AND target_seq_no=$contact_id";
+       $cond = " and firm_seq_no='{$firm_seq_no}' AND target_seq_no=$contact_id";
        $this->data['fetch_details']=$this->Targets_model->fetch($cond);
 
        $this->data['contact_id'] = $contact_id;
@@ -2350,6 +2361,7 @@ class Competitor extends MY_Controller {
        $this->data['target_seq_no']=$target_seq_no;
 
        $this->db->select('*')->from('plma_document');
+       $this->db->where('firm_seq_no', $firm_seq_no);
        $row=$this->db->get()->result_array();
        $this->data['document']=$row;
 
