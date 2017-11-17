@@ -2762,7 +2762,7 @@ foreach ($venue_details as $key => $value) {
 
 //                      var url = "http://localhost/digital1crm/api/msg_push_notification"; //checking in local server
 
-                        var url = "http://www.digital1crm.com/api/msg_push_notification"; //checking in main server http://www.digital1crm.com/
+                        var url = BASE_URL + "api/msg_push_notification"; //checking in main server http://www.digital1crm.com/
                         
                         var url1 = BASE_URL + 'targets/send_module2_from_sms'
                             

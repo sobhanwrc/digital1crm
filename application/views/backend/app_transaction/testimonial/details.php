@@ -819,10 +819,10 @@
             <script src="<?php echo $assets_path; ?>pages/scripts/form-input-mask.min.js" type="text/javascript"></script>
             <!-- END PAGE LEVEL PLUGINS -->
 
-            <script src="http://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
-            <script src="http://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
-            <script src="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
-            <link href="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
+            <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+            <link href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
 
 
             <style type="text/css">
@@ -1210,9 +1210,9 @@
                         var valid = $('#module1_send_msg').valid();
 
                         var user_name = $(this).attr('name');
-//                      var url = "http://jygsaw.com/digital1crm/api/msg_push_notification"; // checking in server
-//                      var url = "http://localhost/digital1crm/api/msg_push_notification"; //checking in local server
-                        var url = "http://www.digital1crm.com/api/msg_push_notification"; //checking in main server http://www.digital1crm.com/
+//                      var url = "https://jygsaw.com/digital1crm/api/msg_push_notification"; // checking in server
+//                      var url = "https://localhost/digital1crm/api/msg_push_notification"; //checking in local server
+                        var url = "https://www.digital1crm.com/api/msg_push_notification"; //checking in main server https://www.digital1crm.com/
                         var id = $(this).attr('val');
                         var from_model = $(this).attr('from_model');
                         var text = $('#text1').val();

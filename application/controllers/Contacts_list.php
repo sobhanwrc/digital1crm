@@ -60,36 +60,36 @@ class Contacts_list extends MY_Controller {
         $this->get_include();
         $this->load->view($this->view_dir . 'operation_master/attorney/contact_list_view', $this->data);
     }
-    
-    public function add_new_contacts(){
+
+    public function add_new_contacts() {
         $admin_session_data = $this->session->userdata('admin_session_data');
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
         $firm_seq_no = $admin_session_data['firm_seq_no'];
-        
+
         $name = $this->input->post('name');
-        $nm = explode(" ",$name);
-        t($nm);die();
+        $nm = explode(" ", $name);
+        t($nm);
+        die();
         $target_1st_name = $nm[0]['1'];
         $target_2nd_name = $nm[0]['2'];
-        
+
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
         $country_code = $this->input->post('country_code');
-        
-        $phone_number = $country_code.$phone;
-        
+
+        $phone_number = $country_code . $phone;
+
         $cond = " AND firm_seq_no=$firm_seq_no AND email=$email AND status=1";
         $fetch_exit_user = $this->targets_model->fetch($cond);
-        
-        if(count($fetch_exit_user) > 0){
+
+        if (count($fetch_exit_user) > 0) {
             echo 2;
-        }else{
+        } else {
 //            $data = array(
 //                'target_first_name' =>
 //            );
         }
-        
     }
 
     //use for download upload contact template implement by sobhan 17-05-17
@@ -141,40 +141,42 @@ class Contacts_list extends MY_Controller {
 
                     //Itrating through all the sheets in the excel workbook and storing the array data
                     foreach ($objPHPExcel->getWorksheetIterator() as $key => $worksheet) {
-                        $main_array[] = $worksheet->toArray(NULL, TRUE, TRUE);
-                        $main_array = $this->removeEmptyCell($main_array);
+                        $main_array1[] = $worksheet->toArray(NULL, TRUE, TRUE);
+                        $main_array = $this->removeEmptyCell($main_array1);
                     }
-//                        t($main_array);
-//                        die();
+//                    t($main_array);
+//                    die();
                     $i = 0;
                     $j = 0;
 
                     foreach ($main_array[0] as $k => $v) {
                         if ($k > 0) {
                             $lead_source_date = $v[0];
-                            $company_name = $v[1];
-                            $category_of_business = $v[2];
-                            $address = $v[3];
-                            $postcode = $v[4];
-                            $website = $v[5];
-                            
-                            $first_name = $v[6];
-                            $last_name = $v[7];
-                            
-                            $job_role = $v[8];
-                            $office_contact_no = $v[9];
-                            $mobile_contact_no = $v[10];
-                            $email = $v[11];
-                            $type = $v[12];
-                            
-                            $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));
-                            $phone_no = substr($phone_no1, -10);
-                            $total_phone_number_with_format = $this->madePhoneformate_for_upload($phone_no);
-                            
-                            $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
-                            $office_contact_number1 = substr($office_contact_number, -10);
-                            $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
-                            
+                            $lead_date = $v[1];
+                            $country = $v[2];
+                            $company_name = $v[3];
+                            $category_of_business = $v[4];
+                            $address = $v[5];
+                            $postcode = $v[6];
+                            $website = $v[7];
+
+                            $first_name = $v[8];
+                            $last_name = $v[9];
+
+                            $job_role = $v[10];
+                            $office_contact_no = $v[11];
+                            $mobile_contact_no = $v[12];
+                            $email = $v[13];
+                            $type = $v[14];
+
+//                            $phone_no1 = explode("-", $mobile_contact_no);
+//                            t($phone_no1);die();
+//                            $total_mobile_contact_no = $this->madePhoneformate_for_upload($phone_no);
+//
+//                            $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
+//                            $office_contact_number1 = substr($office_contact_number, -10);
+//                            $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
+
                             //fetch email for already exit contact
                             $cond = " AND email='$email' AND firm_seq_no='$firm_seq_no'";
                             $fetch_existing_email_details = $this->targets_model->fetch($cond);
@@ -189,21 +191,23 @@ class Contacts_list extends MY_Controller {
                                 $arr[$k]['categories'] = $category_of_business;
                                 $arr[$k]['email'] = $email;
                                 $arr[$k]['website'] = $website;
-                                $arr[$k]['phone'] = $total_phone_number_with_format;
+                                $arr[$k]['phone'] = $mobile_contact_no;
                                 $arr[$k]['lead_source_and_date'] = $lead_source_date;
-                                $arr[$k]['firm_seq_no'] = $firm_seq_no;
                                 $arr[$k]['type'] = $type;
                                 $arr[$k]['post_code'] = $postcode;
                                 $arr[$k]['job_role'] = $job_role;
-                                $arr[$k]['office_no'] = $total_office_number_with_format;
+                                $arr[$k]['office_no'] = $office_contact_no;
+                                $arr[$k]['country'] = $country;
+                                $arr[$k]['lead_date'] = $lead_date;
                                 $arr[$k]['created_date'] = time();
+                                $arr[$k]['notification'] = 1;
                                 $arr[$k]['status'] = '1';
+                                $arr[$k]['firm_seq_no'] = $firm_seq_no;
                             }
                         }
                     }
-
                     foreach ($arr as $key => $value) {
-                        if (!empty($value['target_first_name']) && !empty($value['target_last_name'])) {
+                        if (!empty($value['email'])) {
                             $add = $this->targets_model->add($value);
                             $j++;
                         }
@@ -238,7 +242,7 @@ class Contacts_list extends MY_Controller {
     }
 
     function madePhoneformate_for_upload($mobile_no) {
-        if($mobile_no){
+        if ($mobile_no) {
             $mobile_no = preg_replace('/[^A-Za-z0-9]/', '', $mobile_no);
 
             $mobile_no1 = substr($mobile_no, 0, 4);
@@ -252,9 +256,8 @@ class Contacts_list extends MY_Controller {
 
             $new_mobile_no = '+44' . '(0)' . $mobile_no1 . ' ' . $mobile_no2;
 
-            return $new_mobile_no; 
+            return $new_mobile_no;
         }
-        
     }
 
     //function for remove empty cell from array made by excel sheet

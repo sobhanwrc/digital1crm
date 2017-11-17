@@ -468,7 +468,7 @@ foreach ($template_details as $value) {
                                                     <div class="input-group col-md-12 pull-right" style="padding-left:10px">
                                                         <a class="submit btn bg-purple pull-left" name="module2_add_contact" id="a_template_preview" href="javascript:void(0)" target="_blank">Preview</a>
                                                         <button type="button"  class="submit btn bg-purple pull-left" name="btn_template_add_new" id="btn_template_add_new" >Submit</button>
-                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
+                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="https://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -783,7 +783,7 @@ if (isset($target_contact_details[0]['target_first_name']) && $target_contact_de
                                                     <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                     <div class="input-group col-md-12 pull-right" style="padding-left:10px">
                                                         <input type="button" value="Submit" class="submit btn bg-purple pull-left" name="module2_add_contact" id="module2_add_contact" >
-                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
+                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="https://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -881,10 +881,10 @@ if (isset($target_contact_details[0]['target_first_name']) && $target_contact_de
             <script src="<?php echo $assets_path; ?>pages/scripts/form-input-mask.min.js" type="text/javascript"></script>
             <!-- END PAGE LEVEL PLUGINS -->
 
-            <script src="http://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
-            <script src="http://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
-            <script src="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
-            <link href="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
+            <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+            <link href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
             <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/ckeditor.js"></script>
             <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/adapters/jquery.js"></script>
             <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/js/index.js"></script>
@@ -1283,9 +1283,9 @@ if (isset($target_contact_details[0]['target_first_name']) && $target_contact_de
                         var valid = $('#module1_send_msg').valid();
 
                         var user_name = $(this).attr('name');
-//                      var url = "http://jygsaw.com/digital1crm/api/msg_push_notification"; // checking in server
-//                      var url = "http://localhost/digital1crm/api/msg_push_notification"; //checking in local server
-                        var url = "http://www.digital1crm.com/api/msg_push_notification"; //checking in main server http://www.digital1crm.com/
+//                      var url = "https://jygsaw.com/digital1crm/api/msg_push_notification"; // checking in server
+//                      var url = "https://localhost/digital1crm/api/msg_push_notification"; //checking in local server
+                        var url = "https://www.digital1crm.com/api/msg_push_notification"; //checking in main server https://www.digital1crm.com/
                         var id = $(this).attr('val');
                         var from_model = $(this).attr('from_model');
                         var text = $('#text1').val();

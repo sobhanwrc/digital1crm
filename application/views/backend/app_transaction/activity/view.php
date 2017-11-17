@@ -236,7 +236,7 @@
                                     </div>
 
                                     <div class="col-md-4 col-lg-4">
-                                        <span style=" width: 100%; display: inline-block;"><img src="http://localhost/digital1crm/assets/upload/image/inner_logo11.jpg" alt="logo" class="logo-default"></span>
+                                        <span style=" width: 100%; display: inline-block;"><img src="https://localhost/digital1crm/assets/upload/image/inner_logo11.jpg" alt="logo" class="logo-default"></span>
 
                                         <span class="caption-subject bold" style="margin-top: 10px; width: 100%; display: inline-block;">Phone:<?php echo $module6_datas[0]['phone']; ?>
 
@@ -674,7 +674,7 @@
                                                     <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                     <div class="input-group col-md-12 pull-right" style="padding-left:10px">
                                                         <input type="button" value="Submit" class="submit btn bg-purple pull-left" name="module3_add_contact" id="module3_add_contact" >
-                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
+                                                        <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="https://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -714,10 +714,10 @@
             <script src="<?php echo $assets_path; ?>pages/scripts/form-input-mask.min.js" type="text/javascript"></script>
             <!-- END PAGE LEVEL PLUGINS -->   
 
-            <script src="http://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
-            <script src="http://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
-            <script src="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
-            <link href="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
+            <script src="https://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
+            <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+            <link href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
 
 
             <style type="text/css">

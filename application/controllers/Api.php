@@ -50,7 +50,7 @@ class Api extends MY_Controller {
             $call_user_details1 = $this->user_model->fetch($cond1);
             $call_user_id = $call_user_details1[0]['user_seq_no'];
             if (!empty($call_user_details1[0]['profile_photo'])) {
-                $image = "http://www.digital1crm.com/assets/upload/employee/resize/CROP/" . $call_user_details1[0]['profile_photo'] . "";
+                $image = "https://www.digital1crm.com/assets/upload/employee/resize/CROP/" . $call_user_details1[0]['profile_photo'] . "";
             } else {
                 $image = "Null";
             }
@@ -94,7 +94,13 @@ class Api extends MY_Controller {
             $cond1 = " AND user_id='$email' AND password='$confirm_pw' AND firm_seq_no='$company_id' AND status='1'";
             $call_user_details1 = $this->user_model->fetch($cond1);
             $call_user_id = $call_user_details1[0]['user_seq_no'];
-            $image = "http://www.digital1crm.com/assets/upload/employee/resize/CROP/" . $call_user_details1[0]['profile_photo'] . "";
+
+            if(!empty($call_user_details1[0]['profile_photo'])){
+                $image = "https://www.digital1crm.com/assets/upload/employee/resize/CROP/" . $call_user_details1[0]['profile_photo'] . "";
+            }else{
+                $image = "Null";
+            }
+            
 
             // 100 MEANS SUCCESS, 200 MEANS MISSING, 300 MEANS ERROR
             if (count($call_user_details1) > 0) {
@@ -130,9 +136,11 @@ class Api extends MY_Controller {
     function gcm_update() {
         $gcm_id = $this->input->post('gcm_id');
         $user_id = $this->input->post('user_id');
+        $user_device_id = $this->input->post('device');
 
         $data = array(
-            'gcm_id' => $gcm_id
+            'gcm_id' => $gcm_id,
+            'device' => $user_device_id
         );
 
         $edit_gcm = $this->user_model->edit($data, $user_id);
@@ -187,9 +195,12 @@ class Api extends MY_Controller {
     function check_digital1_staff() {
         $user_id = $this->input->post('email');
 
-        $cond = " AND user_id='$user_id'  AND created_by='1' AND status='1' AND assign_to<>''";
+        $cond = " AND user_id='$user_id' AND status='1'";
         $select = "assign_to";
         $fetch_user_details = $this->user_model->fetch($cond, $select);
+        // echo $this->db->last_query();
+        // t($fetch_user_details);
+        // die();
 
         $company_id = $fetch_user_details[0]['assign_to'];
 
@@ -215,6 +226,31 @@ class Api extends MY_Controller {
             );
         }
     }
+    
+    function check_digital1_staff_1() {
+        $user_id = $this->input->post('email');
+        
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL,"http://digital1.wrctpl.com/api/check_digital1_staff");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,
+                    "user_id=$user_id");
+        
+        // in real life you should use something like:
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, 
+        //          http_build_query(array('postvar1' => 'value1')));
+        
+        // receive server response ...
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $server_output = curl_exec ($ch);
+        
+        echo json_encode($server_output);
+        
+        curl_close ($ch);
+        
+    }
 
     function push_notification() {
         $logged_admin_id = $this->data['admin_id'];
@@ -237,9 +273,10 @@ class Api extends MY_Controller {
         $name = $fetch_mc_details[0]['target_first_name'] . ' ' . $fetch_mc_details[0]['target_last_name'];
 
         $cond1 = " AND user_seq_no='$admin_id'";
-        $select1 = "gcm_id";
+        $select1 = "gcm_id,device";
         $fetch_gcm = $this->user_model->fetch($cond1, $select1);
         $gcm_id = $fetch_gcm[0]['gcm_id'];
+        $use_device_id = $fetch_gcm[0]['device'];
 
         $msg = '';
         $i = 0;
@@ -274,7 +311,8 @@ class Api extends MY_Controller {
             $total_array['data']['type'] = 'call';
             $total_array['data']['admin_id'] = $logged_admin_id;
             $total_array['data']['form_model'] = $from_model;
-            $total_array['data']['phone'] = $phone_nuber;   
+            $total_array['data']['phone'] = $phone_nuber;
+            $total_array['data']['device'] = $use_device_id;   
         }
 //        t($total_array);die();
         if (count($total_array) > 0) {
@@ -319,9 +357,10 @@ class Api extends MY_Controller {
         $name = $fetch_mc_details[0]['target_first_name'] . ' ' . $fetch_mc_details[0]['target_last_name'];
 
         $cond1 = " AND user_seq_no='$admin_id'";
-        $select1 = "gcm_id";
+        $select1 = "gcm_id,device";
         $fetch_gcm = $this->user_model->fetch($cond1, $select1);
         $gcm_id = $fetch_gcm[0]['gcm_id'];
+        $use_device_id = $fetch_gcm[0]['device'];
 
         $total_array = array();
         $total_array['data']['type'] = 'sms';
@@ -333,6 +372,7 @@ class Api extends MY_Controller {
         $total_array['data']['admin_id'] = $admin_id;
         $total_array['data']['firm_seq_no'] = $fetch_mc_details[0]['company_id'];
         $total_array['data']['form_model'] = $from_model;
+        $total_array['data']['device'] = $use_device_id;  
 
         if (count($total_array) > 0) {
             echo json_encode(
@@ -421,28 +461,56 @@ class Api extends MY_Controller {
 //        $registatoin_ids = array($registatoin_ids);
 //      echo  $registatoin_ids = json_encode($registatoin_ids);
         $all_details = $messages;
+        // t($all_details);die();
 
-        $message = array(
-            "title" => 'Digital1CRM',
-            "body" => 'Welcome Digital1CRM',
-            "target_seq_no" => $all_details[data]['target_seq_no'],
-            "type" => $all_details[data]['type'],
-            "admin_id" => $all_details[data]['admin_id'],
-            "firm_seq_no" => $all_details[data]['firm_seq_no'],
-            "company_id" => $all_details[data]['company_id'],
-            "phone" => $all_details[data]['phone'],
-            "name" => $all_details[data]['target_first_name'] . " " . $all_details[data]['target_last_name'],
-            "form_model" => $all_details[data]['form_model'],
-            "receive_sms_text" => $all_details[data]['text']
-        );
+        if($all_details[data]['device'] == 'ANDROID'){
+            $message = array(
+                "title" => 'Digital1CRM',
+                "body" => 'Welcome Digital1CRM',
+                "target_seq_no" => $all_details[data]['target_seq_no'],
+                "type" => $all_details[data]['type'],
+                "admin_id" => $all_details[data]['admin_id'],
+                "firm_seq_no" => $all_details[data]['firm_seq_no'],
+                "company_id" => $all_details[data]['company_id'],
+                "phone" => $all_details[data]['phone'],
+                "name" => $all_details[data]['target_first_name'] . " " . $all_details[data]['target_last_name'],
+                "form_model" => $all_details[data]['form_model'],
+                "receive_sms_text" => $all_details[data]['text'],
+                "content-available"=>'1'
+            );
+        }else{
+            $message = array(
+                "title" => 'Digital1CRM',
+                "body" => 'Welcome Digital1CRM',
+                "target_seq_no" => $all_details[data]['target_seq_no'],
+                "type" => $all_details[data]['type'],
+                "admin_id" => $all_details[data]['admin_id'],
+                "firm_seq_no" => $all_details[data]['firm_seq_no'],
+                "company_id" => $all_details[data]['company_id'],
+                "phone" => $all_details[data]['phone'],
+                "name" => $all_details[data]['target_first_name'] . " " . $all_details[data]['target_last_name'],
+                "form_model" => $all_details[data]['form_model'],
+                "receive_sms_text" => $all_details[data]['text'],
+                "content-available"=>'1'
+            );
+        }
+        
         // Set POST variables
         $url = 'https://fcm.googleapis.com/fcm/send';
 
-        $fields = array(
-            'notification' => $message,
-            'to' => $registatoin_ids
-        );
-//        t($fields);
+        if($all_details[data]['device'] == 'ANDROID'){
+            $fields = array(
+                'data' => $message,
+                'to' => $registatoin_ids
+            );
+        }else{
+            $fields = array(
+                'notification' => $message,
+                'to' => $registatoin_ids
+            ); 
+        }
+        
+       // t($fields);die();
 
         $headers = array(
             'Authorization: key=' . 'AAAAasi98vw:APA91bHApXOOMPF7Ql7Y9td0Z167qSMVRmKEE8OxLJpoI19Oc0TZdwXbZZ0dCqJDhopWDe1OZnPPwkyuCM3k_9hlERcCJHfj54w98U5EiyTFkW4OCk_S2orBWYx-2Ku6kV2Ui8-jkN9k',

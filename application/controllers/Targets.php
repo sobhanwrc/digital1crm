@@ -92,7 +92,9 @@ class Targets extends MY_Controller {
             
             $fetch_details_master_contacts = $this->db->get()->result_array();
 
-            //echo $this->db->last_query();die;
+            // echo $this->db->last_query();
+            // t($fetch_details_master_contacts);
+            // die;
             $this->data['admin_id'] = $admin_id;
 
             $this->data['firm_id'] = $company_id;

@@ -436,17 +436,17 @@ var FormInputMask = function () {
         });
 
         $('#web_url').keyup(function(){
-            if (($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'http://') || ($(this).val() === ''))
+            if (($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'https://') || ($(this).val() === ''))
                 {
-                $(this).val('http://' + $(this).val());    
+                $(this).val('https://' + $(this).val());    
                 }
         });
         
         $('#social_url').keyup(function(){
             if (
-                ($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'http://') || ($(this).val() === ''))
+                ($(this).val().length > 5) && ($(this).val().substr(0,7) !== 'https://') || ($(this).val() === ''))
                 {
-                $(this).val('http://' + $(this).val());    
+                $(this).val('https://' + $(this).val());    
                 }
         });
     }

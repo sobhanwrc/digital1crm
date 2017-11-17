@@ -239,6 +239,9 @@ class Client_master extends MY_Controller {
         $fetch_cond = " AND module_name='module2' AND firm_seq_no='".$company_id."' AND status=1";
         $module_details = $this->sms_add_model->fetch($fetch_cond);
         $this->data['module_details']= $module_details;
+        // echo $this->db->last_query();
+        // t($module_details);
+        // die();
  
         $sql = "SELECT 
         `pfirm`.*, `pattr`.`attorney_first_name`, `pattr`.`attorney_last_name`, `pattr`.`attorney_seq_no`, `paddr`.`address_line1`, `paddr`.`address_line2`, `paddr`.`address_line3`, `pcountry`.`country_seq_no`, `pcountry`.`name`,`pstate`.`state_seq_no`, `pstate`.`state_name`, `pcounty`.`county_seq_no`, `pcounty`.`county_name`, `pcity`.`city_seq_no`, `pcity`.`city_name`, `paddr`.`postal_code`, `paddr`.`email`, `paddr`.`phone`, `paddr`.`fax`, `paddr`.`mobile_cell`, `paddr`.`website_url`, `paddr`.`social_media_url`,`paddr`.`twitter`,`paddr`.`linkedin`,`paddr`.`youtube`,`paddr`.`google_plus`,`paddr`.`im`,`pcodes`.`short_description` , `pcodes2`.`short_description` `industrytype`
