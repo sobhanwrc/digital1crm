@@ -614,8 +614,7 @@
                                     $("#upload_contacts_form").ajaxloader('hide');
                                     /*alert(data);
                                     console.log(data);*/
-                                    if (data == 1) {
-                                        jconfirm({
+                                    jconfirm({
                                             title: 'Confirmation!',
                                             content: "File uploaded successfully",
                                             buttons: {
@@ -625,7 +624,6 @@
                                                 }
                                             }
                                         });
-                                    }
                                     
                                 }
 

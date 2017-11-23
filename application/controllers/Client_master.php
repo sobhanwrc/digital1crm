@@ -46,46 +46,24 @@ class Client_master extends MY_Controller {
     }
 
     function index() {
+        if($this->session->userdata('session_target_seq_no')) {
+            $session_target_seq_no = $this->session->userdata('session_target_seq_no');
+
+            $lock_status_update=array('lock_status'=>0,'user_working'=>'');
+            $this->db->where('target_seq_no',$session_target_seq_no);
+            $update_record=$this->db->update('plma_module2',$lock_status_update);
+            $this->session->unset_userdata('session_target_seq_no');
+        }
         $company_session = $this->session->userdata('admin_session_data');
         
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
         $company_id = $company_session['firm_seq_no'];
         
-       // echo  $role_code; die();
-
-//        $sql_f = "SELECT `firm_seq_no` FROM `plma_firm` WHERE `firm_admin_seq_no` = '" . $admin_id . "'";
-//        $res = $this->db->query($sql_f);
-//        $rowf = $res->result_array();
-//        $firm_seq_no = $rowf[0]['firm_seq_no'];
-////    exit;
-//
-//        $sql_a = "SELECT `attorney_seq_no` FROM `plma_attorney` WHERE `user_seq_no` = '" . $admin_id . "'";
-//        $res_1 = $this->db->query($sql_a);
-//        $rowa = $res_1->result_array();
-//        $attorney_seq_no = $rowa[0]['attorney_seq_no'];
-//t($rowa); exit;
+       
 
         if ($role_code == 'SITEADM') {
-//            $sql = "SELECT 
-//        `pfirm`.*, `paddr`.`address_line1`, `paddr`.`address_line2`, `paddr`.`address_line3`, `pcountry`.`country_seq_no`, `pcountry`.`name`,`pstate`.`state_seq_no`, `pstate`.`state_name`, `pcounty`.`county_seq_no`, `pcounty`.`county_name`, `pcity`.`city_seq_no`, `pcity`.`city_name`, `paddr`.`postal_code`, `paddr`.`email`, `paddr`.`phone`, `paddr`.`mobile_cell`, `paddr`.`website_url`, `paddr`.`social_media_url`, `pcodes`.`short_description` 
-//        FROM 
-//        `plma_client` `pfirm` left join `plma_address` `paddr` on `paddr`.`address_seq_no` = `pfirm`.address_seq_no
-//        left join `plma_city` `pcity` on `pcity`.`city_seq_no` = `paddr`.`city`
-//        left join `plma_country` `pcountry` on `pcountry`.`country_seq_no` = `paddr`.`country`
-//        left join `plma_county` `pcounty` on `pcounty`.`county_seq_no` = `paddr`.`county`
-//        left join `plma_states` `pstate` on `pstate`.`state_seq_no` = `paddr`.`state`
-//        left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.client_gender";
-        } elseif ($role_code == 'FIRMADM') {
-//            $sql = "SELECT 
-//        `pfirm`.*, `paddr`.`address_line1`, `paddr`.`address_line2`, `paddr`.`address_line3`, `pcountry`.`country_seq_no`, `pcountry`.`name`,`pstate`.`state_seq_no`, `pstate`.`state_name`, `pcounty`.`county_seq_no`, `pcounty`.`county_name`, `pcity`.`city_seq_no`, `pcity`.`city_name`, `paddr`.`postal_code`, `paddr`.`email`, `paddr`.`phone`, `paddr`.`mobile_cell`, `paddr`.`website_url`, `paddr`.`social_media_url`, `pcodes`.`short_description` 
-//        FROM 
-//        `plma_client` `pfirm` left join `plma_address` `paddr` on `paddr`.`address_seq_no` = `pfirm`.address_seq_no
-//        left join `plma_city` `pcity` on `pcity`.`city_seq_no` = `paddr`.`city`
-//        left join `plma_country` `pcountry` on `pcountry`.`country_seq_no` = `paddr`.`country`
-//        left join `plma_county` `pcounty` on `pcounty`.`county_seq_no` = `paddr`.`county`
-//        left join `plma_states` `pstate` on `pstate`.`state_seq_no` = `paddr`.`state`
-//        left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.client_gender WHERE `pfirm`.`firm_seq_no` = '" . $firm_seq_no . "'";
+//          
             
             $cond = "AND user_seq_no=$admin_id";
             $fetch_company_id_from_user_table = $this->user_model->fetch($cond);
@@ -102,79 +80,46 @@ class Client_master extends MY_Controller {
             $this->data['fetch_details_master_contacts'] = $fetch_details_master_contacts;
             
         } elseif ($role_code == 'ATTR') {
-//            $sql = "SELECT  
-//        `pfirm`.*, `pattr`.`attorney_seq_no`, `paddr`.`address_line1`, `paddr`.`address_line2`,
-//        `paddr`.`address_line3`, `pcountry`.`country_seq_no`, `pcountry`.`name`,
-//        `pstate`.`state_seq_no`, `pstate`.`state_name`, `pcounty`.`county_seq_no`,
-//        `pcounty`.`county_name`, `pcity`.`city_seq_no`, `pcity`.`city_name`, `paddr`.`postal_code`,
-//        `paddr`.`email`, `paddr`.`phone`, `paddr`.`mobile_cell`, `paddr`.`website_url`, 
-//        `paddr`.`social_media_url`, `pcodes`.`short_description` 
-//         FROM  
-//         `plma_client` `pfirm` left join `plma_address` `paddr` on `paddr`.`address_seq_no` = `pfirm`.address_seq_no
-//        left join `plma_city` `pcity` on `pcity`.`city_seq_no` = `paddr`.`city`
-//        left join `plma_country` `pcountry` on `pcountry`.`country_seq_no` = `paddr`.`country`
-//        left join `plma_county` `pcounty` on `pcounty`.`county_seq_no` = `paddr`.`county`
-//        left join `plma_states` `pstate` on `pstate`.`state_seq_no` = `paddr`.`state`
-//        left join `plma_attorney` `pattr` on `pattr`. `attorney_seq_no` = `pfirm` . `attorney_seq_no`
-//        left join `plma_codes` `pcodes` on `pcodes`.`code` = `pfirm`.client_gender
-//        where `pfirm`.`attorney_seq_no` = '" . $attorney_seq_no . "'";
-            
+
+
+            $fetch_list_id_query = "SELECT `list_id` From `plma_assign_list_to_call_user` WHERE firm_seq_no=$company_id AND user_seq_no=$admin_id";
+            $query = $this->db->query($fetch_list_id_query);
+            $fetch_list_id = $query->result_array();
+            $tempArray = array();
+
+            foreach($fetch_list_id as $key => $value){
+
+                $related_targets = "SELECT m2.* FROM plma_module2 m2,plma_target m1 WHERE m2.target_seq_no=m1.target_seq_no AND m1.firm_seq_no=$company_id AND m1.list_id LIKE '%".$value['list_id']."%' AND m2.status = 1";
+                $query_1 = $this->db->query($related_targets);
+                $m2_target_list = $query_1->result_array();
+                foreach ($m2_target_list as $value_2) {
+                    if($value_2['admin_id'] != $admin_id) {
+                        $tempArray[] = $value_2;
+                    }
+                    
+                }
+               
+            }
+           
             $cond = "AND user_seq_no=$admin_id";
             $fetch_company_id_from_user_table = $this->user_model->fetch($cond);
             
 //            $company_id = $fetch_company_id_from_user_table[0]['firm_seq_no'];
             
-            $cond1 = " AND firm_seq_no=$company_id AND status=1 AND admin_id=$admin_id order by target_seq_no" ;
+            $cond1 = " AND firm_seq_no=$company_id AND status=1 AND admin_id=$admin_id order by target_seq_no desc" ;
             $fetch_details_module2 = $this->module2->fetch($cond1);
-           // t($fetch_details_module2);die();
+
+           
+             $newArray = array_merge($tempArray,$fetch_details_module2);
+
             
             $this->data['admin_id'] = $admin_id;
             
-            $this->data['fetch_details_module2'] = $fetch_details_module2;
+            $this->data['fetch_details_module2'] = $newArray;
             
         }
 
-        
-//        $query = $this->db->query($sql);
-//        $this->data['all_clients'] = $query->result_array();
 
-//        foreach ($this->data['all_clients'] as $key => $value) {
-//            $client_seq_no = $value['client_seq_no'];
-//            $cond = "AND client_seq_no=$client_seq_no";
-//            $client_revenue = $this->client_revenue_model->fetch($cond);
-//            
-//            $cond1 = "AND client_seq_no=$client_seq_no";
-//            $client_con = $this->client_contact_model->fetch($cond1);
-//            $this->data['all_clients'][$key]['revenue'] = count($client_revenue);
-//            $this->data['all_clients'][$key]['con'] = count($client_con);
-//        }
-//        echo $this->db->last_query();
-//        t($this->data['all_clients']);
-//        exit;
-
-//        $select = "firm_seq_no,firm_name";
-//        $this->data['firms'] = $this->firm_model->fetch('', $select);
-
-//        t($this->data['all_clients']);
-//        echo $this->db->last_query();
-//        exit;
-        ////////////////////////ALL ATTORNEYS UNDER FIRM////////////////////////                                                                                            
-//        $cond_a = "AND firm_seq_no = '" . $firm_seq_no . "'";
-//        $sel_a = "attorney_seq_no, attorney_first_name, attorney_last_name";
-//        $row_a = $this->attorney_model->fetch($cond_a, $sel_a);
-//        $this->data['all_attr'] = $row_a;
-//        t($row_a); exit;
-
-
-
-    //################# COMPANY FETCH FOR CONTACTS IMPORT #######################//
-
-//        $sql_company = "SELECT * FROM `plma_company` WHERE 1";
-//        $res_company = $this->db->query($sql_company);
-//        $row_company = $res_company->result_array($res_company);
-//        $this->data['all_company'] = $row_company;
-        // t($row_company); exit;
-        // echo $role_code; exit;
 
 
 
@@ -542,10 +487,27 @@ class Client_master extends MY_Controller {
             echo "</pre>";
             die();*/
              $target_seq_no= $target_con[0]['target_seq_no'];
+
+             $lock_status = $target_con[0]['lock_status'];
+            $admin_all_session = $this->session->userdata('admin_session_data');
+
+            if($lock_status == 0) {
+                $lock_status_update=array('lock_status'=>1,'user_working'=>$admin_all_session['first_name']." ".$admin_all_session['last_name']);
+                $this->db->where('target_seq_no',$target_con[0]['target_seq_no']);
+                $update_record=$this->db->update('plma_module2',$lock_status_update);
+                $this->session->set_userdata("session_target_seq_no",$target_con[0]['target_seq_no']);
+
+                $this->data['record_occupied'] = 1;
+            }
+            else {
+
+                $this->data['record_occupied'] = 2;
+                $this->data['user_working'] = $target_con[0]['user_working'];
+            }
               
                //echo $target_seq_no;echo $admin_id;die();
 
-             $condnote = " AND  target_seq_no ='".$target_seq_no."' and admin_id='".$admin_id."' and status!='Inactive' order by id DESC";
+             $condnote = " AND  target_seq_no ='".$target_seq_no."' and status!='Inactive' order by id DESC";
              $note=$this->Allnote_Model->fetch($condnote);
 //             echo $this->db->last_query();
 //             t($note);die();
@@ -626,9 +588,12 @@ class Client_master extends MY_Controller {
             $venue_data=$this->venue_model->fetch();
             $this->data['venue_data']=$venue_data;
             
-            $cond = " AND form_model IN('module1','module2') AND form_id=$admin_id AND to_id=$code";
+            $cond = " AND form_model IN('module1','module2') AND to_id=$code";
             $fetch_sms_details = $this->send_sms_model->fetch($cond);
+
             $this->data['sms_content'] = $fetch_sms_details;
+
+            
                
             $this->load->view($this->view_dir . 'operation_master/client/edit', $this->data);
             }
@@ -675,14 +640,18 @@ class Client_master extends MY_Controller {
     }
     
     function do_not_call_again(){
+        $company_session = $this->session->userdata('admin_session_data');
+        
         $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        $company_id = $company_session['firm_seq_no'];
         
         $user_company_id = $this->input->post('user_company_id');
         $target_seq_no = $this->input->post('target_seq_no');
         $do_not_call_note = $this->input->post('note');
         
         if(!empty($target_seq_no)){
-            $cond = " AND admin_id=$admin_id AND target_seq_no=$target_seq_no and company_id=$user_company_id";
+            $cond = " AND target_seq_no=$target_seq_no and company_id=$company_id";
             $fetch_module_two_user = $this->module2->fetch($cond);            
             $id = $fetch_module_two_user[0]['id'];
             

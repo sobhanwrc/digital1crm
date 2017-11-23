@@ -67,7 +67,8 @@ class Api extends MY_Controller {
                         array(
                             'server_code' => "100",
                             'name' => $call_user_details1[0]['user_first_name'] . ' ' . $call_user_details1[0]['user_last_name'],
-                            'company_name' => $company_name,
+                            'company_id' => $company_name,
+                            'company_name' => $receive_company_id,
                             'email' => $email,
                             'image' => $image,
                             'msg' => "success",
@@ -113,7 +114,8 @@ class Api extends MY_Controller {
                         array(
                             'server_code' => "100",
                             'name' => $call_user_details1[0]['user_first_name'] . ' ' . $call_user_details1[0]['user_last_name'],
-                            'company_name' => $company_name,
+                            'company_id' => $company_name,
+                            'company_name' => $company_id,
                             'email' => $email,
                             'image' => $image,
                             'msg' => "success",
@@ -232,7 +234,7 @@ class Api extends MY_Controller {
         
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL,"http://digital1.wrctpl.com/api/check_digital1_staff");
+        curl_setopt($ch, CURLOPT_URL,"http://172.18.248.5/api/check_digital1_staff");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
                     "user_id=$user_id");
@@ -601,18 +603,18 @@ class Api extends MY_Controller {
 
 
         if ($process_type == 'digital1_staff') {
-            $cond1 = " AND user_id='$email' AND assign_to like '%$company_id%' AND status='1'";
+            $cond1 = " AND user_id='$email' AND assign_to like '%$company_name%' AND status='1'";
             $call_user_details1 = $this->user_model->fetch($cond1);
             $id = $call_user_details1[0]['user_seq_no'];
         } else {
             if ($process_type == 'normal') {
-                $cond1 = " AND user_id='$email' AND firm_seq_no='$company_id' AND status='1'";
+                $cond1 = " AND user_id='$email' AND firm_seq_no='$company_name' AND status='1'";
                 $call_user_details1 = $this->user_model->fetch($cond1);
                 $id = $call_user_details1[0]['user_seq_no'];
             }
         }
 
-        $cond = "AND form_id='$id' AND firm_seq_no='$company_id' order by id desc";
+        $cond = "AND form_id='$id' AND firm_seq_no='$company_name' order by id desc";
         $select = "to_id,to_phone_no,to_name,send_date_time,content ";
         $fetch_sms_history = $this->send_sms_model->fetch($cond, $select);
 
@@ -700,18 +702,18 @@ class Api extends MY_Controller {
 
 
         if ($process_type == 'digital1_staff') {
-            $cond1 = " AND user_id='$email' AND assign_to like '%$company_id%' AND status='1'";
+            $cond1 = " AND user_id='$email' AND assign_to like '%$company_name%' AND status='1'";
             $call_user_details1 = $this->user_model->fetch($cond1);
             $id = $call_user_details1[0]['user_seq_no'];
         } else {
             if ($process_type == 'normal') {
-                $cond1 = " AND user_id='$email' AND firm_seq_no='$company_id' AND status='1'";
+                $cond1 = " AND user_id='$email' AND firm_seq_no='$company_name' AND status='1'";
                 $call_user_details1 = $this->user_model->fetch($cond1);
                 $id = $call_user_details1[0]['user_seq_no'];
             }
         }
 
-        $cond = "AND form_id='$id' AND firm_seq_no='$company_id' order by id desc";
+        $cond = "AND form_id='$id' AND firm_seq_no='$company_name' order by id desc";
         $select = "to_id,to_phone_no,to_name,time,call_duration";
         $fetch_call_history = $this->call_log_model->fetch($cond, $select);
 

@@ -130,63 +130,48 @@
                                     </div>
 
 
-                                    <table class="table table-striped table-bordered table-hover table-responsive" id="sample_1">
+                                    <table class="table table-striped table-bordered table-hover table-responsive" id="contact_list_table1">
                                         <thead>
                                             <tr class="">
-                                                <th style="width: 35px; padding-top: 15px;">
-                                        <div class="cBox cBox-teal cBox-inline" style="width:35px;height: 25px ">
-                                            <div style="width: 20px; float: left;">
-                                                <input type="checkbox" value="all" name="all" id="examplecBox0" class="myCheckbox">
-                                                <label for="examplecBox0"></label>
-                                            </div>
-
-                                            <div style="width: 15px; float: left;">
-                                                <button type="button" class="dropdown-toggle" data-toggle="dropdown" style=" background:  transparent; border: none"><span class="caret"></span></button>
-                                                <ul class="dropdown-menu media-list" role="menu">
-                                                    <li class="p15 pb10">
-                                                        <ul class="list-unstyled">
-                                                            <li id="all_item">All</li>
-                                                            <li class="pt10" id="f_5">First 5</li>
-                                                            <li class="pt10" id="f_10">First 10</li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        </th>
-                                        <th> SL# </th>
-                                        <th> Name </th>
-                                        <th> Email </th>
-                                        <th> Industry Name </th>
-                                        <th> Industry  Type </th>
-                                        <th> Phone Number </th>
-                                        <!--<th> Actions </th>-->
-                                        </tr>
+                                                <th>
+                                                    <div class="cBox cBox-teal cBox-inline" style="width:35px;height: 25px ">
+                                                        <div style="width: 20px; float: left;">
+                                                            <input type="checkbox" value="all" name="all" id="examplecBox0" class="myCheckbox">
+                                                            <label for="examplecBox0">SL# </label>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th> Name </th>
+                                                <th> Email </th>
+                                                <th> Industry Name </th>
+                                                <th> Industry  Type </th>
+                                                <th> Phone Number </th>
+                                            </tr>
                                         </thead>
                                         <tbody>
 
                                             <?php
-//                                            $i = 0;  t($firms); die();
-                                            foreach ($firms as $key => $value) {
+// //                                            $i = 0;  t($firms); die();
+//                                             foreach ($firms as $key => $value) {
                                                 ?>
-                                                <tr>
-                                                    <td>
+                                                <!-- <tr> -->
+                                                    <!-- <td>
                                                         <div class="cBox cBox-teal cBox-inline">
                                                             <input type="checkbox" value="<?php echo $value['target_seq_no'];?>" name="check[]" id="examplecBox" class="myCheckbox">
                                                             <label for="examplecBox"></label>
                                                         </div>
-                                                    </td>
-                                                    <td> <?php echo ++$i; ?> </td>
-                                                    <?php if ($role_code == 'SITEADM') { ?>
-                                                        <td> <?php echo $value['firm_name']; ?> </td>
-                                                    <?php } ?>
-                                                    <td> <?php echo $value['target_first_name'] . ' ' . $value['target_last_name']; ?></td>
+                                                    </td> -->
+                                                    <!-- <td> <?php echo ++$i; ?> </td> -->
+                                                    <?php //if ($role_code == 'SITEADM') { ?>
+                                                        <!-- <td> <?php echo $value['firm_name']; ?> </td> -->
+                                                    <?php //} ?>
+                                                    <!-- <td> <?php echo $value['target_first_name'] . ' ' . $value['target_last_name']; ?></td> -->
             <!--                                        <td> <?php //if($value['attorney_gender'] == '122'){ echo 'Male'; }else if($value['attorney_gender'] == '123') { echo 'Female'; } else if($value['attorney_gender'] == '124') { echo 'Other'; }       ?> </td>-->
-                                                    <td> <?php echo $value['email']; ?> </td>
-                                                    <td> <?php echo $value['company']; ?> </td><!--
+                                                    <!-- <td> <?php echo $value['email']; ?> </td> -->
+                                                    <!-- <td> <?php echo $value['company']; ?> </td> --><!--
                                                     <td> <?php //echo $value['bar_registration_no'];       ?> </td>-->
-                                                    <td> <?php echo $value['type']; ?> </td>
-                                                    <td> <?php echo $value['phone']; ?> </td>
+                                                    <!-- <td> <?php echo $value['type']; ?> </td>
+                                                    <td> <?php echo $value['phone']; ?> </td> -->
                                                     
                                                     <!-- <td> <?php echo $value['position']; ?> </td>   -->                                     
     <!--                                                    <td>
@@ -217,8 +202,8 @@
                                                             </ul>
                                                         </div>
                                                     </td>-->
-                                                </tr>
-                                            <?php } ?>                                             
+                                                <!-- </tr> -->
+                                            <?php //} ?>                                             
 
                                         </tbody>
                                     </table>
@@ -302,7 +287,7 @@
                     <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                     <div class="input-group col-md-12 pull-right" style="padding-left:10px">
 
-<div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><!-- <img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font> --></div>
+<div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><!-- <img src="https://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font> --></div>
                     </div>
                 </div>
             </div>
@@ -321,7 +306,7 @@
 
                         <div class="row">    
                             <div class="input-group col-md-12" style="padding-left:10px">
-                                <a style="padding-left: 20px; margin-top: 5px; display: inline-block; margin-left: 18px; background: #21daf0; color:#000"  href="<?php echo $base_url; ?>contacts_list/export_digital1crm_names_upload" id="" class="btn pull-left">Download Upload Contacts Template</a>
+                                <a style="padding-left: 20px; margin-top: 5px; display: inline-block; margin-left: 18px; background: #21daf0; color:#000"  href="<?php echo $base_url; ?>Contacts_list/export_digital1crm_names_upload" id="" class="btn pull-left">Download Upload Contacts Template</a>
                                 <span style="color:#ff0000; font-size: 11px; margin-top: 7px; margin-left: 18px; display: inline-block;">* before browse the file, you should download the template and fill with the data and then upload !</span>
                             </div>
                         </div>
@@ -499,14 +484,30 @@
             }
 
         </style>
-        <script src="http://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
-        <script src="http://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
+        <script src="https://jonthornton.github.io/Datepair.js/dist/datepair.js"></script>
+        <script src="https://jonthornton.github.io/Datepair.js/dist/jquery.datepair.js"></script>
         <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
 
 
         <script type="text/javascript">
             jQuery(document).ready(function() {
+                
+                var table = $('#contact_list_table1').DataTable({
+                    "aoColumnDefs": [{'bSortable': false, 'aTargets': false, 'orderable': false, 'targets': 0}],
+                    "processing": true,
+                    "oLanguage": {
+                        sProcessing: "<img src=" + BASE_URL + "assets/upload/FhHRx.gif>"
+                    },
+                    "serverSide": true,
+                    "iDisplayLength": 50,
+                    "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+                    "ajax": {
+                        "url": BASE_URL + "Contacts_list/index1",
+                        "type": "POST"
+                    },
+                    "stateSave": true
+                });
                 
                 $('#examplecBox0').on('click', function () {
                     if ($("#examplecBox0").prop('checked') == true) {

@@ -81,25 +81,34 @@ class Targets extends MY_Controller {
             $this->data['fetch_details_master_contacts'] = $fetch_details_master_contacts;
         }
         elseif ($role_code == 'ATTR') {
-           /*echo $admin_id;
-           die();*/
 
-            $this->db->select('plma_target.*')->from('plma_target')
-            ->join('plma_assign_list_to_call_user','plma_target.list_id = plma_assign_list_to_call_user.list_id','INNER')
-            ->where('plma_assign_list_to_call_user.user_seq_no',$admin_id)
-            ->where('plma_target.status != "Inactive"')
-            ->where('plma_assign_list_to_call_user.firm_seq_no',$company_id);
-            
-            $fetch_details_master_contacts = $this->db->get()->result_array();
+            // $this->db->select('plma_target.*')->from('plma_target')
+            // ->join('plma_assign_list_to_call_user','plma_target.list_id = plma_assign_list_to_call_user.list_id','INNER')
+            // ->where('plma_assign_list_to_call_user.user_seq_no',$admin_id)
+            // ->where('plma_target.status != "Inactive"')
+            // ->where('plma_assign_list_to_call_user.firm_seq_no',$company_id);
+            // $fetch_details_master_contacts = $this->db->get()->result_array();
 
-            // echo $this->db->last_query();
-            // t($fetch_details_master_contacts);
-            // die;
+            $fetch_list_id_query = "SELECT `list_id` From `plma_assign_list_to_call_user` WHERE firm_seq_no=$company_id AND user_seq_no=$admin_id";
+            $query = $this->db->query($fetch_list_id_query);
+            $fetch_list_id = $query->result_array();
+            $tempArray = array();
+
+            foreach($fetch_list_id as $key => $value){
+               
+                $cond = " AND firm_seq_no=$company_id AND list_id LIKE '%".$value['list_id']."%' AND status!='Inactive'";
+                $fetch_details_master_contacts = $this->targets_model->fetch($cond);
+
+                foreach($fetch_details_master_contacts as $value1){
+                    $tempArray[] = $value1;
+                }
+            }
+
             $this->data['admin_id'] = $admin_id;
 
             $this->data['firm_id'] = $company_id;
 
-            $this->data['fetch_details_master_contacts'] = $fetch_details_master_contacts;
+            $this->data['fetch_details_master_contacts'] = $tempArray;
         }
 
         elseif ($role_code == 'SITEADM') {

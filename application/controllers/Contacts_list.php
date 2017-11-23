@@ -41,7 +41,7 @@ class Contacts_list extends MY_Controller {
         $firm_seq_no = $admin_session_data['firm_seq_no'];
 
 
-        $cond1 = "AND firm_seq_no = '$firm_seq_no' limit 0,1000";
+        $cond1 = "AND firm_seq_no = '$firm_seq_no' order by target_seq_no desc";
         $firm_details = $this->targets_model->fetch($cond1);
         //t($firm_details); die();
         //$select = "firm_seq_no,firm_name";
@@ -61,35 +61,116 @@ class Contacts_list extends MY_Controller {
         $this->load->view($this->view_dir . 'operation_master/attorney/contact_list_view', $this->data);
     }
 
-    public function add_new_contacts() {
+    function index1() {
         $admin_session_data = $this->session->userdata('admin_session_data');
         $admin_id = $this->data['admin_id'];
         $role_code = $this->data['role_code'];
         $firm_seq_no = $admin_session_data['firm_seq_no'];
+        
+        $my_search = $this->input->post('search');
+        $my_order = $this->input->post('order');
+        
+        if ($role_code == 'FIRMADM') {
 
+            $no_of_columns_in_list = explode(',', "target_first_name, target_last_name, email, company, type, phone");
+            $sql_target = "SELECT * "
+                    . " FROM plma_target "
+                    . " WHERE firm_seq_no = '" . (int) $firm_seq_no . "' ";
+        }
+        
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+        
+        $CountAllQueryData = count($all_target_array);
+
+        $AllFilteredData = $CountAllQueryData;  
+        
+        if($role_code == 'FIRMADM'){
+            $sql_target .= " AND((target_first_name LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[1] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[2] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[3] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[4] LIKE '%" . $my_search['value'] . "%') ";
+            $sql_target .= " OR($no_of_columns_in_list[5] LIKE '%" . $my_search['value'] . "%')) ";
+        }
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+        
+        $CountAllQueryData = count($all_target_array);
+        
+        $sorted_column = '';
+        if ($my_order[0]['column'] == 0) {
+            $sorted_column = 0;
+        } else if ($my_order[0]['column'] > 0) {
+            $sorted_column = $my_order[0]['column'] - 1;
+        }
+        $start = $this->input->post('start');
+        $length = $this->input->post('length');
+
+        if ($length == '-1') {
+            $sql_target .= " ORDER BY " . $no_of_columns_in_list[$sorted_column] . "  " . $my_order[0]['dir'] . " ";
+        } else {
+            $sql_target .= " ORDER BY " . $no_of_columns_in_list[$sorted_column] . "  " . $my_order[0]['dir'] . " LIMIT " . $start . "," . $length . " ";
+        }
+        $query_target = $this->db->query($sql_target);
+        $all_target_array = $query_target->result_array();
+
+        $all_target_list = array();
+        
+        $index = 0;
+
+        foreach($all_target_array as $key => $value){
+            $target_id = $value['target_seq_no'];
+            $nested_data = array();
+            $index++;
+            
+            $nested_data[] = ' <input type="checkbox" name="checked_ids[]" id="examplecBox" class="myCheckbox" multiple="multiple" value = " '.$target_id.'"> ' . $index . '';
+            $nested_data[] = (!empty($value['target_first_name']) || $value['target_last_name'] != ' ') ? $value['target_first_name'].' '.$value['target_last_name'] : 'N/A';
+            $nested_data[] = !empty($value['email'])? $value['email']: 'N/A';
+            $nested_data[] = !empty($value['company'])? $value['company'] :'N/A';
+            $nested_data[] = !empty($value['type'])? $value['type']: 'N/A';
+            $nested_data[] = !empty($value['phone']) ? $value['phone']: 'N/A';  
+            $all_target_list[] = $nested_data;
+        }
+
+        $json_data = array(
+            "draw" => intval($this->input->post('draw')), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal" => intval($AllFilteredData), // total number of records
+            "recordsFiltered" => intval($CountAllQueryData), // total number of records after searching, if there is no searching then totalFiltered = totalData
+            "data" => $all_target_list   // total data array
+        );
+        echo json_encode($json_data);  // send data as json format
+    }
+    
+    public function add_new_contacts(){
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        
         $name = $this->input->post('name');
-        $nm = explode(" ", $name);
-        t($nm);
-        die();
+        $nm = explode(" ",$name);
+        t($nm);die();
         $target_1st_name = $nm[0]['1'];
         $target_2nd_name = $nm[0]['2'];
-
+        
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
         $country_code = $this->input->post('country_code');
-
-        $phone_number = $country_code . $phone;
-
+        
+        $phone_number = $country_code.$phone;
+        
         $cond = " AND firm_seq_no=$firm_seq_no AND email=$email AND status=1";
         $fetch_exit_user = $this->targets_model->fetch($cond);
-
-        if (count($fetch_exit_user) > 0) {
+        
+        if(count($fetch_exit_user) > 0){
             echo 2;
-        } else {
+        }else{
 //            $data = array(
 //                'target_first_name' =>
 //            );
         }
+        
     }
 
     //use for download upload contact template implement by sobhan 17-05-17
@@ -118,6 +199,7 @@ class Contacts_list extends MY_Controller {
 
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
+        PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
 
         $fileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name'] : '';
 
@@ -132,109 +214,113 @@ class Contacts_list extends MY_Controller {
                 $temp_file = $expstr[0] . time() . '.' . $FileExt;
 
                 if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $config['upload_path'] . $temp_file)) {
-                    $excel_file = $config['upload_path'] . $temp_file;
+                        $excel_file = $config['upload_path'] . $temp_file;
+                        
 
-                    $objReader = new PHPExcel_Reader_Excel2007($this->phpexcel);
-                    ob_end_clean();
 
-                    $objPHPExcel = $objReader->load($excel_file);
+                        $objReader = new PHPExcel_Reader_Excel2007($this->phpexcel);
+                        ob_end_clean();
 
-                    //Itrating through all the sheets in the excel workbook and storing the array data
-                    foreach ($objPHPExcel->getWorksheetIterator() as $key => $worksheet) {
-                        $main_array1[] = $worksheet->toArray(NULL, TRUE, TRUE);
-                        $main_array = $this->removeEmptyCell($main_array1);
-                    }
-//                    t($main_array);
-//                    die();
-                    $i = 0;
-                    $j = 0;
+                        $objPHPExcel = $objReader->load($excel_file);
 
-                    foreach ($main_array[0] as $k => $v) {
-                        if ($k > 0) {
-                            $lead_source_date = $v[0];
-                            $lead_date = $v[1];
-                            $country = $v[2];
-                            $company_name = $v[3];
-                            $category_of_business = $v[4];
-                            $address = $v[5];
-                            $postcode = $v[6];
-                            $website = $v[7];
+                        //Itrating through all the sheets in the excel workbook and storing the array data
+                        foreach ($objPHPExcel->getWorksheetIterator() as $key => $worksheet) {
+                            $main_array1[] = $worksheet->toArray(NULL, TRUE, TRUE);
+                            $main_array = $this->removeEmptyCell($main_array1);
+                        }
+                       // t($main_array);
+                       // die();
+                        $i = 0;
+                        $j = 0;
 
-                            $first_name = $v[8];
-                            $last_name = $v[9];
+                        foreach ($main_array[0] as $k => $v) {
+                            if ($k > 0) {
+                                $lead_source_date = $v[0];
+                                $company_name = $v[1];
+                                $category_of_business = $v[2];
+                                $address = $v[3];
+                                $postcode = $v[4];
+                                $website = $v[5];
+                                
+                                $first_name = $v[6];
+                                $last_name = $v[7];
+                                
+                                $job_role = $v[8];
+                                $office_contact_no = trim($v[9]);
+                                $mobile_contact_no = trim($v[10]);
+                                $email = $v[11];
+                                $type = $v[12]?$v[12]:'';
+                                
+                                // $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));
+                                // $phone_no = substr($phone_no1, -10);
+                                // $total_phone_number_with_format = $this->madePhoneformate_for_upload($phone_no);
+                                
+                                // $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
+                                // $office_contact_number1 = substr($office_contact_number, -10);
+                                // $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
+                                
+                                //fetch email for already exit contact
+                                $cond = " AND email='$email' AND firm_seq_no='$firm_seq_no'";
+                                $fetch_existing_email_details = $this->targets_model->fetch($cond);
+                                
+                                $cond = " AND phone='$mobile_contact_no' AND firm_seq_no='$firm_seq_no'";
+                                $fetch_existing_phone_details = $this->targets_model->fetch($cond);
 
-                            $job_role = $v[10];
-                            $office_contact_no = $v[11];
-                            $mobile_contact_no = $v[12];
-                            $email = $v[13];
-                            $type = $v[14];
+                                
+                                $fetch_existing_office_phone_details = $this->targets_model->fetch($cond);                                
 
-//                            $phone_no1 = explode("-", $mobile_contact_no);
-//                            t($phone_no1);die();
-//                            $total_mobile_contact_no = $this->madePhoneformate_for_upload($phone_no);
-//
-//                            $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
-//                            $office_contact_number1 = substr($office_contact_number, -10);
-//                            $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
-
-                            //fetch email for already exit contact
-                            $cond = " AND email='$email' AND firm_seq_no='$firm_seq_no'";
-                            $fetch_existing_email_details = $this->targets_model->fetch($cond);
-
-                            if (count($fetch_existing_email_details) > 0) {
-                                $i++;
-                            } else {
-                                $arr[$k]['target_first_name'] = $first_name;
-                                $arr[$k]['target_last_name'] = $last_name;
-                                $arr[$k]['company'] = $company_name;
-                                $arr[$k]['address'] = $address;
-                                $arr[$k]['categories'] = $category_of_business;
-                                $arr[$k]['email'] = $email;
-                                $arr[$k]['website'] = $website;
-                                $arr[$k]['phone'] = $mobile_contact_no;
-                                $arr[$k]['lead_source_and_date'] = $lead_source_date;
-                                $arr[$k]['type'] = $type;
-                                $arr[$k]['post_code'] = $postcode;
-                                $arr[$k]['job_role'] = $job_role;
-                                $arr[$k]['office_no'] = $office_contact_no;
-                                $arr[$k]['country'] = $country;
-                                $arr[$k]['lead_date'] = $lead_date;
-                                $arr[$k]['created_date'] = time();
-                                $arr[$k]['notification'] = 1;
-                                $arr[$k]['status'] = '1';
-                                $arr[$k]['firm_seq_no'] = $firm_seq_no;
+                                if (count($fetch_existing_email_details) > 0 || count($fetch_existing_phone_details) > 0 || count($fetch_existing_office_phone_details) > 0) {
+                                    $i++;
+                                } else {
+                                    $arr[$k]['target_first_name'] = $first_name;
+                                    $arr[$k]['target_last_name'] = $last_name;
+                                    $arr[$k]['company'] = $company_name;
+                                    $arr[$k]['address'] = $address;
+                                    $arr[$k]['categories'] = $category_of_business;
+                                    $arr[$k]['email'] = $email;
+                                    $arr[$k]['website'] = $website;
+                                    $arr[$k]['phone'] = $office_contact_no;
+                                    $arr[$k]['lead_source_and_date'] = $lead_source_date;
+                                    $arr[$k]['firm_seq_no'] = $firm_seq_no;
+                                    $arr[$k]['type'] = $type;
+                                    $arr[$k]['post_code'] = $postcode;
+                                    $arr[$k]['job_role'] = $job_role;
+                                    $arr[$k]['mobile'] = $mobile_contact_no;
+                                    $arr[$k]['created_date'] = time();
+                                    $arr[$k]['status'] = '1';
+                                }
                             }
                         }
-                    }
-                    foreach ($arr as $key => $value) {
-                        if (!empty($value['email'])) {
-                            $add = $this->targets_model->add($value);
-                            $j++;
+                        
+                        foreach ($arr as $key => $value) {
+                            
+                                $add = $this->targets_model->add($value);
+                                $j++;
+                            
                         }
-                    }
 
-                    if ($add) {
-                        if ($i == 0 && $j > 0) {
-                            $msg1 = $j . " New contacts are added.";
-                        } else if ($i > 0 && $j > 0) {
-                            $msg = $i . " Potential duplicate contacts are already added.";
-                            $msg1 = $j . " New contacts are added.";
-                        } else if ($i == 0 && $j = 0) {
-                            $msg2 = " No contacts are added.";
+                        if ($add) {
+                            if ($i == 0 && $j > 0) {
+                                $msg1 = $j . " New contacts are added.";
+                            } else if ($i > 0 && $j > 0) {
+                                $msg = $i . " Potential duplicate contacts are already added.";
+                                $msg1 = $j . " New contacts are added.";
+                            } else if ($i == 0 && $j = 0) {
+                                $msg2 = " No contacts are added.";
+                            }
+                            echo $msg . " " . $msg1 . " " . $msg2;
+                            exit();
+                        } else {
+                            if ($i == 0 && $j == 0) {
+                                $msg2 = "No contacts are added.";
+                            } else if ($i > 0 && $j == 0) {
+                                $msg = $i . " Potential duplicate contacts are already added.";
+                            }
+                            echo $msg . " " . $msg2;
+                            exit();
                         }
-                        echo $msg . " " . $msg1 . " " . $msg2;
-                        exit();
-                    } else {
-                        if ($i == 0 && $j == 0) {
-                            $msg2 = "No contacts are added.";
-                        } else if ($i > 0 && $j == 0) {
-                            $msg = $i . " Potential duplicate contacts are already added.";
-                        }
-                        echo $msg . " " . $msg2;
-                        exit();
                     }
-                }
-            } else {
+            }else {
                 echo "Please select .xlsx file";
                 exit();
             }
@@ -242,7 +328,7 @@ class Contacts_list extends MY_Controller {
     }
 
     function madePhoneformate_for_upload($mobile_no) {
-        if ($mobile_no) {
+        if($mobile_no){
             $mobile_no = preg_replace('/[^A-Za-z0-9]/', '', $mobile_no);
 
             $mobile_no1 = substr($mobile_no, 0, 4);
@@ -256,8 +342,9 @@ class Contacts_list extends MY_Controller {
 
             $new_mobile_no = '+44' . '(0)' . $mobile_no1 . ' ' . $mobile_no2;
 
-            return $new_mobile_no;
+            return $new_mobile_no; 
         }
+        
     }
 
     //function for remove empty cell from array made by excel sheet

@@ -92,8 +92,19 @@ class Managelist extends MY_Controller {
         $cond = $code;
         $row = $this->managelist_model->delete($cond);
         //echo $this->db->last_query(); exit;
+        $admin_all_session = $this->session->userdata('admin_session_data');
+        $farm_seq_no = $admin_all_session['firm_seq_no'];
+        
+
+        if ($farm_seq_no != '') {
+            $cond = " and firm_seq_no = '" . $farm_seq_no . "'";
+            $row = $this->managelist_model->fetch($cond);
+            $this->data['managelist'] = $row;
+        }
         $this->get_include();
-        redirect($base_url . 'managelist/index');
+
+        // print_r($data);
+        //die();
         $this->load->view($this->view_dir . 'operation_master/manage_list/list_view', $this->data);
     }
 
@@ -131,16 +142,14 @@ class Managelist extends MY_Controller {
     }
 
     function import_contact_list() {
-        //echo $this->input->post('list');die;
         $admin_id = $this->data['admin_id'];
 
-        $cond = "AND user_seq_no=$admin_id";
-        $fetch_company_details = $this->app_users_model->fetch($cond);
-        $fetch_company_id = $fetch_company_details[0]['firm_seq_no'];
-//        t($fetch_company_details);die();
+        $company_session = $this->session->userdata('admin_session_data');
+        $firm_seq_no = $company_session['firm_seq_no'];
 
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
+        PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
 
         $fileName = isset($_FILES['upload_file']['name']) ? $_FILES['upload_file']['name'] : '';
 
@@ -153,73 +162,116 @@ class Managelist extends MY_Controller {
 
             if ($FileExt == 'xlsx') {
                 $temp_file = $expstr[0] . time() . '.' . $FileExt;
+
                 if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $config['upload_path'] . $temp_file)) {
-                    $excel_file = $config['upload_path'] . $temp_file;
-                    $objReader = new PHPExcel_Reader_Excel2007($this->phpexcel);
-                    ob_end_clean();
-
-                    $objPHPExcel = $objReader->load($excel_file);
-                    //t($objPHPExcel);die;
-                    //Itrating through all the sheets in the excel workbook and storing the array data
-                    foreach ($objPHPExcel->getWorksheetIterator() as $key => $worksheet) {
-                        $main_array[] = $worksheet->toArray(NULL, TRUE, TRUE);
-                        $main_array = $this->removeEmptyCell($main_array);
-                        //                        $arrayData[$worksheet->getTitle()] = $main_array;
-                    }
-                       /*t($main_array);
-                        die();*/
-                    $i = 0;
-                    $j = 0;
-
-                    foreach ($main_array[0] as $k => $v) {
-                        if ($k > 0) {
-                            $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $v[6]));
-                            $phone_no = substr($phone_no1, -10);
-                            $total_phone_number_with_format = $this->madePhoneformate_for_upload($phone_no);
-
-                            $name = explode(" ", $v[4]);
-                            $fname = $name[0];
-                            $lname = $name[1];
-
-                            $email = $v[7];
-                            $cond = " AND email='$email'";
-                            $fetch_existing_email_details = $this->targets_model->fetch($cond);
+                        $excel_file = $config['upload_path'] . $temp_file;
+                        
 
 
+                        $objReader = new PHPExcel_Reader_Excel2007($this->phpexcel);
+                        ob_end_clean();
 
-                            if (count($fetch_existing_email_details) > 0) {
-                                $i++;
-                            } else {
+                        $objPHPExcel = $objReader->load($excel_file);
 
-                                $arr[$k]['target_first_name'] = $fname;
-                                $arr[$k]['target_last_name'] = $lname;
-                                $arr[$k]['company'] = $v[0];
-                                $arr[$k]['address'] = $v[2];
-                                $arr[$k]['categories'] = $v[1];
-                                $arr[$k]['email'] = $v[7];
-                                $arr[$k]['website'] = $v[3];
-                                $arr[$k]['phone'] = $total_phone_number_with_format;
-                                $arr[$k]['firm_seq_no'] = $admin_id;
-                                $arr[$k]['firm_seq_no'] = $fetch_company_id;
-                                $arr[$k]['type'] = $v[8];
-                                $arr[$k]['created_date'] = time();
-                                $arr[$k]['status'] = '1';
-                                $arr[$k]['list_id'] = $this->input->post('list');
+                        //Itrating through all the sheets in the excel workbook and storing the array data
+                        foreach ($objPHPExcel->getWorksheetIterator() as $key => $worksheet) {
+                            $main_array1[] = $worksheet->toArray(NULL, TRUE, TRUE);
+                            $main_array = $this->removeEmptyCell($main_array1);
+                        }
+                       // t($main_array);
+                       // die();
+                        $i = 0;
+                        $j = 0;
+
+                        foreach ($main_array[0] as $k => $v) {
+                            if ($k > 0) {
+                                $lead_source_date = $v[0];
+                                $company_name = $v[1];
+                                $category_of_business = $v[2];
+                                $address = $v[3];
+                                $postcode = $v[4];
+                                $website = $v[5];
+                                
+                                $first_name = $v[6];
+                                $last_name = $v[7];
+                                
+                                $job_role = $v[8];
+                                $office_contact_no = trim($v[9]);
+                                $mobile_contact_no = trim($v[10]);
+                                $email = $v[11];
+                                $type = $v[12]?$v[12]:'';
+                                
+                                // $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));
+                                // $phone_no = substr($phone_no1, -10);
+                                // $total_phone_number_with_format = $this->madePhoneformate_for_upload($phone_no);
+                                
+                                // $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
+                                // $office_contact_number1 = substr($office_contact_number, -10);
+                                // $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
+                                
+                                //fetch email for already exit contact
+                                $cond = " AND email='$email' AND firm_seq_no='$firm_seq_no'";
+                                $fetch_existing_email_details = $this->targets_model->fetch($cond);
+                                
+                                $cond = " AND phone='$mobile_contact_no' AND firm_seq_no='$firm_seq_no'";
+                                $fetch_existing_phone_details = $this->targets_model->fetch($cond);
+
+                                
+                                $fetch_existing_office_phone_details = $this->targets_model->fetch($cond);                                
+
+                                if (count($fetch_existing_email_details) > 0 || count($fetch_existing_phone_details) > 0 || count($fetch_existing_office_phone_details) > 0) {
+                                    $i++;
+                                } else {
+                                    $arr[$k]['target_first_name'] = $first_name;
+                                    $arr[$k]['target_last_name'] = $last_name;
+                                    $arr[$k]['company'] = $company_name;
+                                    $arr[$k]['address'] = $address;
+                                    $arr[$k]['categories'] = $category_of_business;
+                                    $arr[$k]['email'] = $email;
+                                    $arr[$k]['website'] = $website;
+                                    $arr[$k]['phone'] = $office_contact_no;
+                                    $arr[$k]['lead_source_and_date'] = $lead_source_date;
+                                    $arr[$k]['firm_seq_no'] = $firm_seq_no;
+                                    $arr[$k]['type'] = $type;
+                                    $arr[$k]['post_code'] = $postcode;
+                                    $arr[$k]['job_role'] = $job_role;
+                                    $arr[$k]['mobile'] = $mobile_contact_no;
+                                    $arr[$k]['created_date'] = time();
+                                    $arr[$k]['status'] = '1';
+                                    $arr[$k]['list_id'] = $this->input->post('list');
+                                }
                             }
                         }
-                    }
-                    //echo $arr[$k]['target_first_name'];echo '<br/>';die;
-
-                    foreach ($arr as $key => $value) {
-                        if($value['target_first_name']!=""){
-                            $add = $this->targets_model->add($value);
-                            //echo $this->db->last_query();die;
-                            $j++;
+                        
+                        foreach ($arr as $key => $value) {
+                            
+                                $add = $this->targets_model->add($value);
+                                $j++;
+                            
                         }
-                    }                    
-                }
-            echo 1;
-            } else {
+
+                        if ($add) {
+                            if ($i == 0 && $j > 0) {
+                                $msg1 = $j . " New contacts are added.";
+                            } else if ($i > 0 && $j > 0) {
+                                $msg = $i . " Potential duplicate contacts are already added.";
+                                $msg1 = $j . " New contacts are added.";
+                            } else if ($i == 0 && $j = 0) {
+                                $msg2 = " No contacts are added.";
+                            }
+                            echo $msg . " " . $msg1 . " " . $msg2;
+                            exit();
+                        } else {
+                            if ($i == 0 && $j == 0) {
+                                $msg2 = "No contacts are added.";
+                            } else if ($i > 0 && $j == 0) {
+                                $msg = $i . " Potential duplicate contacts are already added.";
+                            }
+                            echo $msg . " " . $msg2;
+                            exit();
+                        }
+                    }
+            }else {
                 echo "Please select .xlsx file";
                 exit();
             }
@@ -333,20 +385,33 @@ class Managelist extends MY_Controller {
     }
 
     function assign_to_list() {
-        //t($this->input->post('list_id'));die;
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $admin_id = $this->data['admin_id'];
+        $role_code = $this->data['role_code'];
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+
         $checked_contact_array = $this->input->post('checked_ids');
-        //t($checked_contact_array);die;
         if($checked_contact_array){
             $list_ids = $this->input->post('list_id');
+
             foreach ($checked_contact_array as $key => $value) {
+                $cond = "AND firm_seq_no=$firm_seq_no AND target_seq_no=$value";
+                $select = "list_id";
+                $check_exit_list_id = $this->targets_model->fetch($cond, $select);
+                $check_exit_list_id1 = $check_exit_list_id[0]['list_id'];
+
+                if(!empty($check_exit_list_id)){
+                    $data = array(
+                        'list_id' => $check_exit_list_id1.','.$list_ids
+                    );
+                }else{
                     $data = array(
                         'list_id' => $list_ids
                     );
-                    $edit = $this->targets_model->edit($data, $value);
-                    //echo $this->db->last_query();die;
+                }
+
+                $edit = $this->targets_model->edit($data, $value);
             }
-           
-            //echo $this->db->last_query();die;
 
             echo 1;
         } else {
@@ -360,8 +425,8 @@ class Managelist extends MY_Controller {
         $call_user_id = $this->input->post('call_user_id');
         $admin_session_data = $this->session->userdata('admin_session_data');
         if($list_ids){
-            $this->db->where('user_seq_no', $call_user_id);
-            $this->db->delete('plma_assign_list_to_call_user'); 
+            // $this->db->where('user_seq_no', $call_user_id);
+            // $this->db->delete('plma_assign_list_to_call_user'); 
             foreach ($list_ids as $value) {
                 $data = array(
                     'list_id' => $value,

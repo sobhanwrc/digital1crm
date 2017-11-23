@@ -235,11 +235,11 @@
         <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
-        <script src="http://localhost/digital1crm/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+        <script src="https://localhost/digital1crm/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
         
-        <script src="http://localhost/digital1crm/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-        <script src="http://localhost/digital1crm/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-        <script src="http://localhost/digital1crm/assets/pages/scripts/table-datatables-responsive.js" type="text/javascript"></script>
+        <script src="https://localhost/digital1crm/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+        <script src="https://localhost/digital1crm/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+        <script src="https://localhost/digital1crm/assets/pages/scripts/table-datatables-responsive.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             $(window).load(function() {

@@ -142,13 +142,13 @@
 
                         <table width="180px" align="right">
                             <tr>
-
+                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
                                 <td style="width: 35px" height="40px" valign="top">
                                     <?php if ($prev_target_seq_no) { ?>
                                         <a style="width: 100%; display: block" href="<?php echo $base_url; ?>client_master/details/<?php echo base64_encode($prev_target_seq_no); ?>" id="prev"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-left"></i></a>
                                     <?php } ?>
                                 </td>
-
+                                <?php } ?>
 
                                 <td style=" width: 90px">
                                     <div class="btn-group btn-group-devided" data-toggle="buttons">
@@ -158,12 +158,13 @@
                                     </div>
                                 </td>
 
-
+                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
                                 <td style=" width: 35px" height="40px" valign="top">
                                     <?php if ($next_target_seq_no) { ?>
                                         <a style="width: 100%; display: block" href="<?php echo $base_url; ?>client_master/details/<?php echo base64_encode($next_target_seq_no); ?>" id="next"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-right pull-right"></i></a>
                                     <?php } ?>
                                 </td>
+                                <?php } ?>
 
                             </tr>
 
@@ -180,22 +181,7 @@
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
                             <div class="portlet light bordered">
                                 <div class="portlet-title company_header">
-
-                                    <!--
-                                                                      <div class="col-md-4 col-lg-4">
-                                                                            <div class="caption font-dark" style=" padding-top: 25px">
-                                                                                
-                                    <?php if ($fetch_add_contact_details['is_primary_contact'] == '1') { ?>
-                                                                                                <span class="caption-subject bold" style=" width: 100%; display: block"><?php echo $fetch_add_contact_details['first_name'] . ' ' . $fetch_add_contact_details['last_name']; ?></span>
-                                    <?php } ?>
-                                                                                 
-                                    
-                                                                            </div>
-                                    
-                                                                        </div>
-                                    -->
-
-
+                                    <?php if($this->session->userdata('session_target_seq_no')) { ?> 
                                     <div class="custom_header">
                                         <?php
                                         if ($targets[0]['type'] == "C") {
@@ -343,8 +329,22 @@
                                             ?>
                                         </div>
                                     </div>
+                                    <?php } else { ?>
+                                    <div class="custom_header">
+                                        <img class="corporate_image" style="border-radius:0 !important;" src="<?php echo base_url(); ?>assets/upload/image/user_blank.jpg" alt="logo" class="logo-default">
+
+                                        <div style=" width: 100%; margin: 0 auto;">
+
+                                            <div style="width: 100%; display: inline-block;">
+
+                                                <span style=" width: auto; padding: 0 5px; text-align: right;display: inline-block;"><strong><?php echo $user_working;?> is working on this contact</strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  <?php } ?>
 
                                 </div>
+                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
                                 <div class="portlet-body">
 
 
@@ -382,10 +382,20 @@
                                                                 $date = date_create();
                                                                 date_timestamp_set($date, $getdate);
                                                                 $newdate = date_format($date, 'd-m-Y H:i:s');
+
+                                                                $ci = &get_instance();
+                                                                $ci->load->model('user_model');
+
+                                                                $user_id = $value['admin_id'];
+                                                                $cond = " AND user_seq_no=$user_id";
+                                                                $select = " user_first_name,user_last_name";
+                                                                $fetch_user = $ci->user_model->fetch($cond,$select);
+                                                                $user_name = $fetch_user[0]['user_first_name'].' '.$fetch_user[0]['user_last_name'];
+
                                                                 ?>
                                                                 <p>
                                                                 <?php echo $value['content']; ?>
-                                                                    <br> <span style="color:#07afee; margin-right: 10px"><strong>Posted by</strong>: <?php echo ucwords($call_user_admin_name); ?> </span><span style="color:#07afee;"><?php echo $newdate; ?></span>
+                                                                    <br> <span style="color:#07afee; margin-right: 10px"><strong>Posted by</strong>: <?php echo ucwords($user_name); ?> </span><span style="color:#07afee;"><?php echo $newdate; ?></span>
                                                                 </p>
                                                                 <?php
                                                             }
@@ -926,6 +936,7 @@
 
                         </div>
                     </div>
+                    <?php } ?>
                     <!-- END CONTENT BODY -->
                 </div>
                 <!-- END CONTENT -->
@@ -1537,7 +1548,15 @@
                                         /*alert(data);
                                         console.log(data);*/
                                         if (data == 1) {
-                                            window.location.href = BASE_URL + 'client_master';
+                                            jconfirm({
+                                                title: 'Confirmation!',
+                                                content: "Contact successfully removed from this module.",
+                                                buttons: {
+                                                    OK: function () {
+                                                        window.location.href = BASE_URL + 'client_master';
+                                                    }
+                                                }
+                                            });                                           
                                         }
                                     }
                                 });
