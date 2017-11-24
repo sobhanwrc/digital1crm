@@ -551,11 +551,21 @@
                         </li>-->
                         
                         <?php if ($role_code == 'FIRMADM') { ?>
-                            <li class="nav-item <?php if ($controller_name == 'module_weeks_report') { ?> menu_active<?php } ?>">
+                            <li class="nav-item <?php if (($this->uri->segment(1) == 'module_weeks_report' && $this->uri->segment(2) == '') || ($this->uri->segment(1) == 'module_weeks_report' && $this->uri->segment(2) == 'index')) { ?> menu_active<?php } ?>">
 
                                 <a href="<?php echo $base_url; ?>module_weeks_report" class="nav-link ">
 
                                     <span class="title">Module weekly report</span>
+
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item <?php if ($this->uri->segment(2) == 'total_activities') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>module_weeks_report/total_activities" class="nav-link ">
+
+                                    <span class="title">Module weekly activity reports (SMS / Calls)</span>
 
                                 </a>
 

@@ -266,7 +266,7 @@ class Contacts_list extends MY_Controller {
                                 $cond = " AND phone='$mobile_contact_no' AND firm_seq_no='$firm_seq_no'";
                                 $fetch_existing_phone_details = $this->targets_model->fetch($cond);
 
-                                
+                                $cond = " AND office_no='$mobile_contact_no' AND firm_seq_no='$firm_seq_no'";
                                 $fetch_existing_office_phone_details = $this->targets_model->fetch($cond);                                
 
                                 if (count($fetch_existing_email_details) > 0 || count($fetch_existing_phone_details) > 0 || count($fetch_existing_office_phone_details) > 0) {
@@ -291,7 +291,7 @@ class Contacts_list extends MY_Controller {
                                 }
                             }
                         }
-                        
+
                         foreach ($arr as $key => $value) {
                             
                                 $add = $this->targets_model->add($value);

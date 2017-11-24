@@ -22,6 +22,8 @@ Class Module_weeks_report extends MY_Controller{
         $this->load->model('Module10_Model');
         $this->load->model('change_module_number_module');
         $this->load->model('change_module_name');
+        $this->load->model('Call_log_model');
+        $this->load->model('Send_sms_model');
 
         $this->data['page'] = 'Dashboard';
     }
@@ -347,6 +349,228 @@ Class Module_weeks_report extends MY_Controller{
             $new_formate[] = $new_data;
         }
         return $new_formate;
+    }
+
+    public function total_activities ($year=' ', $week=' ', $module='') {
+        $admin_session_data = $this->session->userdata('admin_session_data');
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+
+        $admin_id = $admin_session_data['admin_id'];
+        $role_code = $admin_session_data['role_code'];
+
+        if($admin_session_data['FIRMADM']) {
+            
+        }
+
+        if($module == ''){
+            $module = 'module1';
+        }else{
+            $module = $module;
+        }
+
+        $cond = " AND user_seq_no = '" . $admin_id . "'";
+        $row = $this->app_users_model->fetch($cond); //t($row , 1);
+        $this->data['users'] = $row;
+        $this->data['fname'] = $row[0]['user_first_name'];
+        $this->data['lname'] = $row[0]['user_last_name'];
+        $firm_seq_no = $admin_session_data['firm_seq_no'];
+        //t($row); exit;
+        //$admin_all_session['role_code'];
+        $cond3 = " and code = '" . $role_code . "'";
+        $row3 = $this->codes_model->fetch($cond3);
+        $this->data['role_short_description'] = $row3[0]['short_description'];
+        
+        
+        $date = getdate();        
+        if ($year) {
+            if (strlen($year) == 4 && is_numeric($year) == 1) {  // $week from parameter is 4 character length then it is 
+                if ($year <= 2016 || $year >= 2025) {
+                    $year = $year;
+                }
+            } else {
+                $year = $date['year'];
+            }
+        } else {
+            $year = $date['year'];
+        }
+        
+        $ddate = date('d-m-Y');
+        $date1 = new DateTime($ddate);
+        
+        if ($week) {
+            if (strlen($week) == 2 && is_numeric($week) == 1) {  // $week from parameter is 4 character length then it is 
+            
+                $week = $week;
+            } else {
+                $week = $date1->format("W");
+            }
+        } else {
+            $week = $date1->format("W");
+            $month = $date['mon'];
+        }
+        
+        $this->data['week'] = $week;
+        $date1 = date( "M d", strtotime($year."W".$week."1") ); // First day of week
+        //echo date( "M d", strtotime("+7 day", strtotime($year."W".$week."1") ));
+        $week_date_array = array();
+        $week_date_arrays = array();
+        for($j=0;$j<=6;$j++){
+            $week_date_array[$j] = date( "d-M-Y", strtotime("+".$j." day", strtotime($year."W".$week."1") ));
+            $week_date_arrays[$j] = date( "d-m-Y", strtotime("+".$j." day", strtotime($year."W".$week."1") ));
+//           $week_date_arrays1[$j] = strtotime("+".$j." day", strtotime($year."W".$week."1") );
+        }
+        $from_date = date('d/m/Y', strtotime($week_date_array[0]));
+        $to_date = date('d/m/Y', strtotime($week_date_array[6]));
+        
+       // t($week_date_array);
+       // t($week_date_arrays);
+       // die();
+        
+        $this->data['week_date_array'] = $week_date_array;
+        
+        $d = "1 January $year";
+        $time = strtotime($d, time());
+        $day = date('w', $time);
+        $time += ((7 * $week) + 1 - $day) * 24 * 3600;
+        $month = date('n', $time);
+        
+        $this->data['year'] = $year;
+        $this->data['month'] = $month;
+        
+        $month_date = array();
+        $first_month = date('n', $time);
+        $first_day = date('j', $time);
+        
+        $time += 6 * 24 * 3600;
+        $second_month = date('n', $time);
+        $second_day = date('j', $time);
+        
+        $from_date1 = $week_date_arrays[0];
+        $to_date1 = $week_date_arrays[6];
+        
+        $cond1 = " AND firm_seq_no=$firm_seq_no AND status=1 AND DATE_FORMAT(FROM_UNIXTIME(`created_date`), '%d-%m-%Y') between '$from_date1'  and  '$to_date1'";
+        $select1 = "count(target_seq_no)";
+        $fetch_all_contact_module1 = $this->targets_model->fetch($cond1,$select1);
+        
+        $cond2 = " AND  firm_seq_no=$firm_seq_no AND status=1 AND added_date between '$from_date1'  and  '$to_date1'";
+        $select2 = "count(id)";
+        $fetch_total_from_module2 = $this->module2->fetch($cond2,$select2);
+        
+        $cond3 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select3 = "count(id)";
+        $fetch_total_from_model3 = $this->appointment_details_module->fetch($cond3,$select3);
+        
+        $cond4 = " AND  firm_seq_no=$firm_seq_no AND created_date between '$from_date1'  and  '$to_date1'";
+        $select4 = "count(module_4_seq_no)";
+        $fetch_total_from_model4 = $this->Module4_Model->fetch($cond4,$select4);
+        
+        $cond5 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select5 = "count(id)";
+        $fetch_total_from_model5 = $this->Model5->fetch($cond5,$select5);
+        
+        $cond6 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select6 = "count(id)";
+        $fetch_total_from_model6 = $this->Module6_Model->fetch($cond6,$select6);
+        
+        $cond7 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND updated_date between '$from_date1'  and  '$to_date1'";
+        $select7 = "count(module_7_seq_no)";
+        $fetch_total_from_model7 = $this->Module7_Model->fetch($cond7,$select7);
+        
+        $cond8 = " AND  firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select8 = "count(module_8_seq_no)";
+        $fetch_total_from_model8 = $this->Model8->fetch($cond8,$select8);
+        
+        $cond9 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select9 = "count(module_9_seq_no)";
+        $fetch_total_from_model9 = $this->Module9_Model->fetch($cond9,$select9);
+        
+        $cond10 = " AND firm_seq_no=$firm_seq_no AND status='Active' AND added_date between '$from_date1'  and  '$to_date1'";
+        $select10 = "count(id)";
+        $fetch_total_from_model10 = $this->Module10_Model->fetch($cond10,$select10);
+        
+        $week_count_list = [];
+
+        $total_count = 0;
+        $k = 0;
+        
+        foreach ($week_date_arrays as $key => $value) {
+            $total_count = 0;
+            $sql_sms = "SELECT plma_send_sms.form_model,COUNT(*) as sms_count, DATE_FORMAT(FROM_UNIXTIME(plma_send_sms.added_date), '%d-%m-%Y') as add_date FROM plma_send_sms, plma_target WHERE plma_target.target_seq_no=plma_send_sms.to_id AND plma_send_sms.firm_seq_no=$firm_seq_no AND DATE_FORMAT(FROM_UNIXTIME(plma_send_sms.added_date), '%d-%m-%Y')='$value' AND plma_send_sms.form_model='$module' GROUP BY plma_send_sms.form_model";
+
+            $query_sms = $this->db->query($sql_sms);
+            $result_sms = $query_sms->result_array();
+
+            /*echo "<pre>";
+            print_r($result_sms);
+
+            echo "<br/>";*/
+
+            if(count($result_sms) > 0) {
+                $total_count+= $result_sms[0]['sms_count'];
+            }
+            else {
+                $total_count+= 0;
+            }
+
+
+            $sql_call = "SELECT plma_call_log.form_model,COUNT(*) as call_count, DATE_FORMAT(FROM_UNIXTIME(plma_call_log.added_date), '%d-%m-%Y') as add_date FROM plma_call_log, plma_target WHERE plma_target.target_seq_no=plma_call_log.to_id AND plma_call_log.firm_seq_no=$firm_seq_no AND DATE_FORMAT(FROM_UNIXTIME(plma_call_log.added_date), '%d-%m-%Y')='$value' AND plma_call_log.form_model='$module' GROUP BY plma_call_log.form_model";
+
+            $query_call = $this->db->query($sql_call);
+            $result_call = $query_call->result_array();
+
+            /*echo "<pre>";
+            print_r($result_call);
+            echo "<br/>";*/
+
+            if(count($result_call) > 0) {
+                $total_count+= $result_call[0]['call_count'];
+            }
+            else {
+                $total_count+= 0;
+            }
+
+            $week_count_list[$k++] = $total_count;
+
+        }
+        
+        /*echo "<pre>";
+        print_r($week_count_list);
+        
+        die();*/
+        
+        $month_date['first_month'] = date('M', mktime(0, 0, 0, $first_month, 10));
+        $month_date['first_day'] = $first_day;
+        $month_date['second_month'] = date('M', mktime(0, 0, 0, $second_month, 10));
+        $month_date['second_day'] = $second_day;
+
+        $this->data['month_date'] = $month_date;
+
+        $week_date_array = $this->changeFormate($week_date_array);        
+
+        $this->data['weekly_date_module1'] = $weekly_date_module1;
+        
+        $this->data['module_name'] = $module;
+        
+
+        $this->data['weekly_date_module1'] = $week_count_list;
+        
+        $day_month_array = array();
+        $weeks = str_pad($week, 2, '0', STR_PAD_LEFT);
+        for($i=1;$i<=52;$i++){
+         $week = str_pad($i, 2, '0', STR_PAD_LEFT);    
+         $date1 = date( "M d", strtotime($year."W".$week."1") ); // First day of week
+         $date2 = date( "M d", strtotime($year."W".$week."7") ); // Last day of week
+         $day_month_array[$week] = $date1 . " - " . $date2;
+        }
+        
+        $this->data['weekly_area'] = $day_month_array[$weeks];
+        $this->data['day_month_array'] = $day_month_array;
+        
+        $all_module_name = $this->change_module_name->fetch();
+        $this->data['all_module_name'] = $all_module_name[0];
+        
+        $this->get_include();
+        $this->load->view($this->view_dir . module_weeks_report_total_call_sms, $this->data);
     }
 }
 
