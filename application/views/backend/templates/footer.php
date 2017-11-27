@@ -43,6 +43,11 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+        $('.reset_email_all_module').on('click',function () {
+            CKEDITOR.instances['msg'].setData('');
+        });
+
+
         // passing api controller using for call.
         $('.call_now').on('click', function() {
             var call_user_id = "<?php echo $admin_id; ?>";

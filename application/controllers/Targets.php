@@ -37,6 +37,14 @@ class Targets extends MY_Controller {
     }
 
     function index() {
+        if($this->session->userdata('session_target_seq_no')) {
+            $session_target_seq_no = $this->session->userdata('session_target_seq_no');
+
+            $lock_status_update=array('lock_status'=>0,'user_working'=>'');
+            $this->db->where('target_seq_no',$session_target_seq_no);
+            $update_record=$this->db->update('plma_target',$lock_status_update);
+            $this->session->unset_userdata('session_target_seq_no');
+        }
         $company_session = $this->session->userdata('admin_session_data');
         //t($company_session);die;
         ///////////////////// Code for Filtering Firms /////////////////////
@@ -89,8 +97,9 @@ class Targets extends MY_Controller {
             // ->where('plma_assign_list_to_call_user.firm_seq_no',$company_id);
             // $fetch_details_master_contacts = $this->db->get()->result_array();
 
-            $fetch_list_id_query = "SELECT `list_id` From `plma_assign_list_to_call_user` WHERE firm_seq_no=$company_id AND user_seq_no=$admin_id";
+            $fetch_list_id_query = "SELECT DISTINCT(`list_id`) From `plma_assign_list_to_call_user` WHERE firm_seq_no=$company_id AND user_seq_no=$admin_id";
             $query = $this->db->query($fetch_list_id_query);
+            
             $fetch_list_id = $query->result_array();
             $tempArray = array();
 
@@ -521,16 +530,20 @@ class Targets extends MY_Controller {
 //           t($data_field);die();
 
            $this->load->model('module2');
-           $add_module2 = $this->module2->add($data_field);
-           if($add_module2){
-               $data = array(
-                   'status' => "Inactive"
-               );
-               $edit = $this->targets_model->edit($data,$id);
 
-               redirect($base_url . 'targets');
+           $cond100 = " AND target_seq_no=$id AND firm_seq_no=$company_id";
+           $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+           if(count($fetch_exit_in_module2) == 0){
+                $add_module2 = $this->module2->add($data_field);
+               if($add_module2){
+                   $data = array(
+                       'status' => "Inactive"
+                   );
+                   $edit = $this->targets_model->edit($data,$id);
+
+                   redirect($base_url . 'targets');
+               }
            }
-
        }
     }
 
@@ -787,6 +800,25 @@ class Targets extends MY_Controller {
         $this->data['targets'] = $row[0];
 //        t($this->data['targets']);die;
         $target_seq_id = $row[0]['target_seq_no'];
+
+        /******************Check Lock Status******************/
+
+        $lock_status = $row[0]['lock_status'];
+        if($lock_status == 0) {
+            $lock_status_update=array('lock_status'=>1,'user_working'=>$admin_all_session['first_name']." ".$admin_all_session['last_name']);
+            $this->db->where('target_seq_no',$row[0]['target_seq_no']);
+            $update_record=$this->db->update('plma_target',$lock_status_update);
+            $this->session->set_userdata("session_target_seq_no",$row[0]['target_seq_no']);
+
+            $this->data['record_occupied'] = 1;
+        }
+        else {
+
+            $this->data['record_occupied'] = 2;
+            $this->data['user_working'] = $row[0]['user_working'];
+        }
+        /******************End*******************************/
+
         if (count($row) > 0) {
             $cond2 = " and address_seq_no = '" . $row[0]['address_seq_no'] . "'";
             $row2 = $this->address_model->fetch($cond2);
@@ -1701,16 +1733,21 @@ class Targets extends MY_Controller {
 //           t($data_field);die();
 
         $this->load->model('module2');
-        $add_module2 = $this->module2->add($data_field);
-        if($add_module2){
-            $data = array(
-                'status' => "Inactive",
-                'type' => $corporate ? $corporate : $individual
-            );
-            $edit = $this->targets_model->edit($data,$target_seq_no);
-//                echo "1";
-        }
         
+        $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+        $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+
+        if(count($fetch_exit_in_module2) == 0){
+            $add_module2 = $this->module2->add($data_field);
+            if($add_module2){
+                $data = array(
+                    'status' => "Inactive",
+                    'type' => $corporate ? $corporate : $individual
+                );
+                $edit = $this->targets_model->edit($data,$target_seq_no);
+    //                echo "1";
+            }
+        }
     }
             
     function send_module2_from_sms () {
@@ -1754,16 +1791,20 @@ class Targets extends MY_Controller {
 //           t($data_field);die();
 
         $this->load->model('module2');
-        $add_module2 = $this->module2->add($data_field);
-        if($add_module2){
-            $data = array(
-                'status' => "Inactive",
-                'type' => $corporate ? $corporate : $individual
-            );
-            $edit = $this->targets_model->edit($data,$target_seq_no);
-//                echo "1";
-         }
-        
+
+        $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+        $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+        if(count($fetch_exit_in_module2) == 0){
+            $add_module2 = $this->module2->add($data_field);
+            if($add_module2){
+                $data = array(
+                    'status' => "Inactive",
+                    'type' => $corporate ? $corporate : $individual
+                );
+                $edit = $this->targets_model->edit($data,$target_seq_no);
+    //                echo "1";
+             }
+        } 
     }
 
     function add_notes() {
@@ -1812,14 +1853,19 @@ class Targets extends MY_Controller {
 //           t($data_field);die();
 
                $this->load->model('module2');
-               $add_module2 = $this->module2->add($data_field);
-               if($add_module2){
-                   $data = array(
-                       'status' => "Inactive",
-                       'type' => $corporate ? $corporate : $individual
-                   );
-                   $edit = $this->targets_model->edit($data,$target_seq_no);
-                   echo "1";
+
+                $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+                $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+                if(count($fetch_exit_in_module2) == 0){
+                    $add_module2 = $this->module2->add($data_field);
+                    if($add_module2){
+                       $data = array(
+                           'status' => "Inactive",
+                           'type' => $corporate ? $corporate : $individual
+                       );
+                       $edit = $this->targets_model->edit($data,$target_seq_no);
+                       echo "1";
+                    }
                 }
             }
             else {
@@ -1902,35 +1948,40 @@ class Targets extends MY_Controller {
            );
 
        $this->load->model('module2');
-       $add_module2 = $this->module2->add($data_field);
-       if($add_module2) {
-            $contact_data_array = array(
-                'firm_seq_no' => $firm_seq_no,
-                'target_seq_no' => $target_seq_no,
-                'first_name' => $contact_first_name,
-                'last_name' => $contact_last_name,
-                'designation' => $contact_designation,
-                'phone' => $contact_phone1,
-                'email' => $contact_email,
-                'created_by' => $this->data['admin_id'],
-                'created_date' => time(),
-                'is_primary_contact' => $contact_primary
-            );
-            $insert_contact_data = $this->target_contact_model->add($contact_data_array);
-            if($insert_contact_data) {
-                $update_array = array(
-                    'status' => 'Inactive'
+
+        $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+        $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+        if(count($fetch_exit_in_module2) == 0){
+            $add_module2 = $this->module2->add($data_field);
+            if($add_module2) {
+                $contact_data_array = array(
+                    'firm_seq_no' => $firm_seq_no,
+                    'target_seq_no' => $target_seq_no,
+                    'first_name' => $contact_first_name,
+                    'last_name' => $contact_last_name,
+                    'designation' => $contact_designation,
+                    'phone' => $contact_phone1,
+                    'email' => $contact_email,
+                    'created_by' => $this->data['admin_id'],
+                    'created_date' => time(),
+                    'is_primary_contact' => $contact_primary
                 );
-                $update_id = $this->targets_model->edit($update_array, $target_seq_no);
-                echo "1";
-            }
-            else {
+                $insert_contact_data = $this->target_contact_model->add($contact_data_array);
+                if($insert_contact_data) {
+                    $update_array = array(
+                        'status' => 'Inactive'
+                    );
+                    $update_id = $this->targets_model->edit($update_array, $target_seq_no);
+                    echo "1";
+                }
+                else {
+                    echo "0";
+                }
+           }else {
                 echo "0";
             }
-       }
-       else {
-            echo "0";
-       }
+        }
+       
     }
 
 
@@ -1979,24 +2030,29 @@ class Targets extends MY_Controller {
 
 
        $this->load->model('module2');
-       $add_module2 = $this->module2->add($data_field);
-       if($add_module2) {
-            $note_data=array('target_seq_no'=>$target_seq_no,'admin_id'=>$this->data['admin_id'],'content'=>$next_call_date_notes,'status'=>'Active','added_date'=>time(),'modified_date'=>time(),'module'=>'module1');
-            $note_insert=$this->db->insert('plma_all_notes',$note_data);
-            if($note_insert) {
-                $update_array = array(
-                    'status' => 'Inactive'
-                );
-                $update_id = $this->targets_model->edit($update_array, $target_seq_no);
-                echo "1";
-            }
-            else {
+
+        $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+        $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+        if(count($fetch_exit_in_module2) == 0){
+            $add_module2 = $this->module2->add($data_field);
+            if($add_module2) {
+                $note_data=array('target_seq_no'=>$target_seq_no,'admin_id'=>$this->data['admin_id'],'content'=>$next_call_date_notes,'status'=>'Active','added_date'=>time(),'modified_date'=>time(),'module'=>'module1');
+                $note_insert=$this->db->insert('plma_all_notes',$note_data);
+                if($note_insert) {
+                    $update_array = array(
+                        'status' => 'Inactive'
+                    );
+                    $update_id = $this->targets_model->edit($update_array, $target_seq_no);
+                    echo "1";
+                }
+                else {
+                    echo "0";
+                }
+           }
+           else {
                 echo "0";
-            }
-       }
-       else {
-            echo "0";
-       }
+           }
+        }
     }
 
     function add_appointment() {

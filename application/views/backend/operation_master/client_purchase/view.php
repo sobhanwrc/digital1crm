@@ -688,7 +688,7 @@
                                                         <div class="modal-footer">
                                                             <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                             <div class="input-group col-md-12 pull-right" style="padding-right:15px">
-                                                                <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right cancel" name="" id="">
+                                                                <input style=" margin-left: 15px" type="reset" value="Reset" class="submit btn green pull-right cancel" name="" id="">
                                                                 <input type="button" value="Submit" class="submit btn green pull-right" name="master_name_submit" id="master_name_submit" >
                                                                 <div id="master_name_submit_loader" style="display:none; padding-right:15px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
                                                             </div>
@@ -739,7 +739,7 @@
                                                     <div class="modal-footer">
                                                         <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                         <div class="input-group col-md-12 pull-right" style="padding-right:13px">
-                                                            <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right cancel" name="" id="">
+                                                            <input style=" margin-left: 15px" type="reset" value="Reset" class="submit btn green pull-right cancel" name="" id="">
                                                             <input type="button" value="Submit" class="submit btn green pull-right" name="add_purchase_again_submit" id="add_purchase_again_submit" >
                                                             <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
                                                         </div>
@@ -1357,18 +1357,18 @@
 
                     var handleInputMasks = function () {
 
-                        $("#phone").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#mobile").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#fax").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#phione").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
+                        // $("#phone").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
+                        // $("#mobile").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
+                        // $("#fax").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
+                        // $("#phione").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
                         $("#social_security_no").inputmask("999-99-9999", {
                             placeholder: " ",
                             clearMaskOnLostFocus: true

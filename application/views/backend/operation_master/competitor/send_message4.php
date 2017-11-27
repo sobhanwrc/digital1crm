@@ -306,6 +306,7 @@
                                                 <input type="hidden" name="firm_seq_no" id="firm_seq_no" value="<?php echo base64_encode($firm_seq_no); ?>"/>
                                                 <input type="hidden" id="target_seq_no" value="<?php echo $target_seq_no ;?>">
                                                 <input type="button" id="mailbuttons" name="mailbutton" value="SEND" class="btn btn-primary">
+                                                <input type="reset" value="Reset" class="btn btn-primary reset_email_all_module">
                                                 <div id="csv_email_loader1" style="display:none; padding-left:10px; margin-top:2px;"><font color="green"><img src="<?php echo $base_url; ?>assets/upload/image/FhHRx.gif"></font></div>
 
 

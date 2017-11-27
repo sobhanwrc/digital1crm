@@ -248,7 +248,7 @@ class Contacts_list extends MY_Controller {
                                 $job_role = $v[8];
                                 $office_contact_no = trim($v[9]);
                                 $mobile_contact_no = trim($v[10]);
-                                $email = $v[11];
+                                $email = trim($v[11]);
                                 $type = $v[12]?$v[12]:'';
                                 
                                 // $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));

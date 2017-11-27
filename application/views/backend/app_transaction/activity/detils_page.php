@@ -565,7 +565,7 @@ if ($fetch_contact_details[0]['type'] == "I") {
                                                         <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                         <div class="input-group col-md-12" style="padding-right:15px">
 
-                                                            <input type="reset" value="Cancel" class="submit btn green pull-right" name="" id="" >
+                                                            <input type="reset" value="Reset" class="submit btn green pull-right" name="" id="" >
                                                             <input style=" margin-right: 15px" type="button" value="Submit" class="submit btn green pull-right" name="master_name_submit" id="master_name_submit" >
                                                             <div id="master_name_submit_loader" style="display:none; padding-right:15px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
                                                         </div>
@@ -608,7 +608,7 @@ if ($fetch_contact_details[0]['type'] == "I") {
                                                         <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                         <div class="input-group col-md-12" style="padding-right:15px">
 
-                                                            <input type="reset" value="Cancel" class="submit btn green pull-right" name="" id="" >
+                                                            <input type="reset" value="Reset" class="submit btn green pull-right" name="" id="" >
 
                                                             <input style="margin-right:15px " type="button" value="Submit" class="submit btn green pull-right" name="do_not_call_submit" id="do_not_call_submit" >
                                                             <div id="master_name_submit_loader" style="display:none; padding-right:15px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
@@ -684,7 +684,7 @@ if ($fetch_contact_details[0]['type'] == "I") {
                                                     <div class="modal-footer">
                                                         <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
                                                         <div class="input-group col-md-12 pull-right" style="padding-right:13px">
-                                                            <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right" name="" id="">
+                                                            <input style=" margin-left: 15px" type="reset" value="Reset" class="submit btn green pull-right" name="" id="">
                                                             <input type="button" value="Submit" class="submit btn green pull-right" name="goods_services_delivered_submit" id="goods_services_delivered_submit" >
 
                                                             <div id="master_name_submit_loader" style="display:none; padding-left:10px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
@@ -1136,18 +1136,18 @@ if ($fetch_contact_details[0]['type'] == "I") {
 
                     var handleInputMasks = function () {
 
-                        $("#phione").inputmask("mask", {
-                            "mask": "(0)9999 999999"
-                        });
-                        $("#phone").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#mobile").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#fax").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
+                        // $("#phione").inputmask("mask", {
+                        //     "mask": "(0)9999 999999"
+                        // });
+                        // $("#phone").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
+                        // $("#mobile").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
+                        // $("#fax").inputmask("mask", {
+                        //     "mask": "(999) 999-9999"
+                        // });
                         $("#social_security_no").inputmask("999-99-9999", {
                             placeholder: " ",
                             clearMaskOnLostFocus: true

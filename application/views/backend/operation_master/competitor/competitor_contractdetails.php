@@ -674,7 +674,7 @@ if (isset($target_contact_details[0]['target_first_name']) && $target_contact_de
                                                     <div class="modal-footer">
 
                                                         <div class="input-group col-md-12" style="padding-right:15px">
-                                                            <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right cancel" name="" id="">
+                                                            <input style=" margin-left: 15px" type="reset" value="Reset" class="submit btn green pull-right cancel" name="" id="">
                                                             <input type="button" value="Submit" class="submit btn green pull-right" name="contract_signed_submit" id="contract_signed_submit" >
                                                             <div id="master_name_submit_loader" style="display:none; padding-right:15px;"><font color="green"><img src="<?php echo $base_url; ?>assets/img/FhHRx.gif"></font></div>
                                                         </div>
@@ -1231,36 +1231,36 @@ if (isset($target_contact_details[0]['target_first_name']) && $target_contact_de
                 var primary_contact = "";
                 var template_id = "";
 
-                var FormInputMask = function () {
+                // var FormInputMask = function () {
 
-                    var handleInputMasks = function () {
+                //     var handleInputMasks = function () {
 
-                        $("#module4_contact_phone").inputmask("mask", {
-                            "mask": "(0)9999 999999"
-                        });
-                        $("#phone").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#mobile").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#fax").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#social_security_no").inputmask("999-99-9999", {
-                            placeholder: " ",
-                            clearMaskOnLostFocus: true
-                        });
-                    }
-                    return {
-                        //main function to initiate the module
-                        init: function () {
-                            handleInputMasks();
-                            //            handleIPAddressInput();
-                        }
-                    };
+                //         $("#module4_contact_phone").inputmask("mask", {
+                //             "mask": "(0)9999 999999"
+                //         });
+                //         $("#phone").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#mobile").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#fax").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#social_security_no").inputmask("999-99-9999", {
+                //             placeholder: " ",
+                //             clearMaskOnLostFocus: true
+                //         });
+                //     }
+                //     return {
+                //         //main function to initiate the module
+                //         init: function () {
+                //             handleInputMasks();
+                //             //            handleIPAddressInput();
+                //         }
+                //     };
 
-                }();
+                // }();
 
                 if (App.isAngularJsApp() === false) {
                     jQuery(document).ready(function () {

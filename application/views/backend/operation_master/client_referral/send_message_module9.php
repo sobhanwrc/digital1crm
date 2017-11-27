@@ -245,7 +245,7 @@
                                             <div class="col-xs-12">
                                                 <div class="form-group">
                                                     <label for="email">To:</label>
-                                                    <input type="email" readonly="" class="form-control" id="email" name="email" value="<?php echo $fetch_details[0]['email']; ?>">
+                                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $fetch_details[0]['email']; ?>" disabled="disabled">
                                                 </div>
                                                 <div class="form-group" style=" margin-top: 15px;">
                                                     <label for="subject">Subject:</label>
@@ -305,6 +305,7 @@
                                                 <input type="hidden" name="firm_seq_no" id="firm_seq_no" value="<?php echo base64_encode($firm_seq_no); ?>"/>
                                                 <input type="hidden" id="target_seq_no" value="<?php echo $target_seq_no ;?>">
                                                 <input type="button" id="mailbuttons" name="mailbutton" value="SEND" class="btn btn-primary">
+                                                <input type="reset" value="Reset" class="btn btn-primary reset_email_all_module">
                                                 <div id="csv_email_loader1" style="display:none; padding-left:10px; margin-top:2px;"><font color="green"><img src="<?php echo $base_url; ?>assets/upload/image/FhHRx.gif"></font></div>
 
 

@@ -443,7 +443,7 @@
 
                                 <tr>
 
-
+                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
 
                                     <td style="width: 35px" height="40px" valign="top">
 
@@ -456,7 +456,7 @@
                                     </td>
 
 
-
+                                    <?php } ?>
 
 
                                     <td style=" width: 90px">
@@ -476,7 +476,7 @@
 
 
 
-
+                                    <?php if($this->session->userdata('session_target_seq_no')) { ?>
                                     <td style=" width: 35px" height="40px" valign="top">
 
                                         <?php if ($next_target_seq_no) { ?>
@@ -486,7 +486,7 @@
                                         <?php } ?>
 
                                     </td>
-
+                                    <?php } ?>
 
 
                                 </tr>
@@ -527,37 +527,7 @@
 
                                 <div class="portlet-title company_header">
 
-                                  
-
-<!--
-
-                                  <div class="col-md-4 col-lg-4">
-
-                                        <div class="caption font-dark" style=" padding-top: 25px">
-
-                                            
-
-                                            <?php if($fetch_add_contact_details['is_primary_contact']=='1'){ ?>
-
-                                                <span class="caption-subject bold" style=" width: 100%; display: block"><?php echo $fetch_add_contact_details['first_name'].' '. $fetch_add_contact_details['last_name']; ?></span>
-
-                                            <?php } ?>
-
-                                             
-
-
-
-                                        </div>
-
-
-
-                                    </div>
-
--->
-
-                                    
-
-                                    
+                                   <?php if($this->session->userdata('session_target_seq_no')) { ?> 
                                     
                                    <div class="custom_header">
 
@@ -816,9 +786,22 @@
                                         </div>
 
                                   </div>
+                                  <?php } else { ?>
+                                    <div class="custom_header">
+                                        <img class="corporate_image" style="border-radius:0 !important;" src="<?php echo base_url(); ?>assets/upload/image/user_blank.jpg" alt="logo" class="logo-default">
+
+                                        <div style=" width: 100%; margin: 0 auto;">
+
+                                            <div style="width: 100%; display: inline-block;">
+
+                                                <span style=" width: auto; padding: 0 5px; text-align: right;display: inline-block;"><strong><?php echo $user_working;?> is working on this contact</strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  <?php } ?>
 
                                 </div>
-
+                                <?php if($this->session->userdata('session_target_seq_no')) { ?> 
                                 <div class="portlet-body">
 
                                     <div class="row">
@@ -1156,7 +1139,7 @@ if (isset($targets['target_last_name']) && $targets['target_last_name'] != '') {
                                                                 <input type="submit" id="general-edit-submit-btn" class="btn green" name="submit" value="Submit">
                                                             
 
-                                                                <input style="margin-right: 10px" type="button" id="btn_cancel_main"  class="btn green" name="" value="Cancel">
+                                                                <input style="margin-right: 10px" type="button" id="btn_cancel_main"  class="btn green" name="" value="Reset">
                                                                 <?php } 
                                                                 ?>
                                                             </div>
@@ -1184,7 +1167,7 @@ if (isset($targets['target_last_name']) && $targets['target_last_name'] != '') {
                                 </div>
 
 
-
+                                <?php } ?> 
 
 
                                 <!-- END EXAMPLE TABLE PORTLET-->
@@ -1979,7 +1962,7 @@ foreach ($venue_details as $key => $value) {
 
                                 <div class="input-group col-md-12" style="padding-right:15px">
 
-                                    <input style=" margin-left: 15px" type="reset" value="Cancel" class="submit btn green pull-right cancel" name="" id="">
+                                    <input style=" margin-left: 15px" type="reset" value="Reset" class="submit btn green pull-right cancel" name="" id="">
 
                                     <input type="button" value="Submit" class="submit btn green pull-right" name="appointment_made_submit" id="appointment_made_submit" >
 
@@ -2595,78 +2578,78 @@ foreach ($venue_details as $key => $value) {
 
             <script type="text/javascript">
 
-                var FormInputMask = function () {
+                // var FormInputMask = function () {
 
 
 
-                    var handleInputMasks = function () {
+                //     var handleInputMasks = function () {
 
-                        $("#home_phone").inputmask("mask", {
+                //         $("#home_phone").inputmask("mask", {
 
-                            "mask": "(0)9999 999999"
+                //             "mask": "(0)9999 999999"
 
-                        });
-
-
-                        $("#mobile123").inputmask("mask", {
-
-                            "mask": "(0)9999 999999"
-
-                        });
-
-                        $("#contact_phone").inputmask("mask", {
-
-                            "mask": "(0)9999 999999"
-
-                        });
-
-                        $("#fax").inputmask("mask", {
-
-                            "mask": "(999) 999-9999"
-
-                        });
-
-                        $("#new_contact_phone").inputmask("mask", {
-
-                            "mask": "(0)9999 999999"
-
-                        });
-
-                        $("#social_security_no").inputmask("999-99-9999", {
-
-                            placeholder: " ",
-
-                            clearMaskOnLostFocus: true
-
-                        });
-
-                        // $("#new_contact_mobile").inputmask("mask", {
-
-                        // "mask": "(999) 999-9999"
-
-                        // });
+                //         });
 
 
+                //         $("#mobile123").inputmask("mask", {
 
-                    }
+                //             "mask": "(0)9999 999999"
 
-                    return {
+                //         });
 
-                        //main function to initiate the module
+                //         $("#contact_phone").inputmask("mask", {
 
-                        init: function () {
+                //             "mask": "(0)9999 999999"
 
-                            handleInputMasks();
+                //         });
 
-                            //            handleIPAddressInput();
+                //         $("#fax").inputmask("mask", {
 
-                        }
+                //             "mask": "(999) 999-9999"
 
-                    };
+                //         });
+
+                //         $("#new_contact_phone").inputmask("mask", {
+
+                //             "mask": "(0)9999 999999"
+
+                //         });
+
+                //         $("#social_security_no").inputmask("999-99-9999", {
+
+                //             placeholder: " ",
+
+                //             clearMaskOnLostFocus: true
+
+                //         });
+
+                //         // $("#new_contact_mobile").inputmask("mask", {
+
+                //         // "mask": "(999) 999-9999"
+
+                //         // });
 
 
 
-                }();
+                //     }
+
+                //     return {
+
+                //         //main function to initiate the module
+
+                //         init: function () {
+
+                //             handleInputMasks();
+
+                //             //            handleIPAddressInput();
+
+                //         }
+
+                //     };
+
+
+
+                // }();
 
 
 
@@ -3023,22 +3006,7 @@ foreach ($venue_details as $key => $value) {
 
                                 noSpace: true
 
-                            },
-
-                            country_code1:{
-
-                                required: true,
-
-                                maxlength: 3,
-
-                            },
-
-                            country_code2:{
-
-                                maxlength: 3,
-
-                            },
-
+                            }
                            
 
                         },
@@ -3068,20 +3036,6 @@ foreach ($venue_details as $key => $value) {
                                 email: "Please enter valid email format",
 
                                 noSpace: "Space not allowed"
-
-                            },
-
-                            country_code1:{
-
-                                required:"Please enter your country code",
-
-                                maxlength: "Maximum 3 digits allowed"
-
-                            },
-
-                            country_code2:{
-
-                                maxlength: "Maximum 3 digits allowed"
 
                             },
 

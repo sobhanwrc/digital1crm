@@ -1048,33 +1048,33 @@
 
             </script> 
             <script type="text/javascript">
-                var FormInputMask = function () {
+                // var FormInputMask = function () {
 
-                    var handleInputMasks = function () {
+                //     var handleInputMasks = function () {
 
-                        $("#phone").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#mobile").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#fax").inputmask("mask", {
-                            "mask": "(999) 999-9999"
-                        });
-                        $("#social_security_no").inputmask("999-99-9999", {
-                            placeholder: " ",
-                            clearMaskOnLostFocus: true
-                        });
-                    }
-                    return {
-                        //main function to initiate the module
-                        init: function () {
-                            handleInputMasks();
-                            //            handleIPAddressInput();
-                        }
-                    };
+                //         $("#phone").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#mobile").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#fax").inputmask("mask", {
+                //             "mask": "(999) 999-9999"
+                //         });
+                //         $("#social_security_no").inputmask("999-99-9999", {
+                //             placeholder: " ",
+                //             clearMaskOnLostFocus: true
+                //         });
+                //     }
+                //     return {
+                //         //main function to initiate the module
+                //         init: function () {
+                //             handleInputMasks();
+                //             //            handleIPAddressInput();
+                //         }
+                //     };
 
-                }();
+                // }();
 
                 if (App.isAngularJsApp() === false) {
                     jQuery(document).ready(function () {
