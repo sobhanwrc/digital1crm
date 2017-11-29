@@ -619,7 +619,7 @@
                                                                 <label class="control-label" style=" width: 100%; display: inline-block">Phone</label>
                                                                 <!--<input type="text" placeholder="" class="form-control" disabled="" name="target_code" id="target_code" value="<?php echo $targets[0]['phione']; ?>" />--> 
                                                                 <input type="text" readonly value="<?php echo $country_code; ?>" placeholder="" class="form-control" id="country_code1" name="country_code1" autocomplete="off" style="width: 15%; display: inline-block" readonly>
-                                                                <input type="text" readonly placeholder="" value="<?php echo $user_detail[0]['phone'];; ?>" class="form-control phone" id="phione" name="phione" style="width: 83%; margin-left: -5px; display: inline-block">
+                                                                <input type="text" readonly placeholder="" value="<?php echo $ph_no; ?>" class="form-control phone" id="phione" name="phione" style="width: 83%; margin-left: -5px; display: inline-block">
                                                             </div>
 
                                                             <div class="form-group bb">

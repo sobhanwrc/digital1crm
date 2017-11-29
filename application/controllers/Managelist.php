@@ -17,6 +17,7 @@ class Managelist extends MY_Controller {
         $this->load->model('attorney_model');
         $this->load->model('user_model');
         $this->load->model('app_users_model');
+        $this->load->model('country_model');
 
         $this->load->helper('url');
         $this->load->helper('date');
@@ -200,24 +201,41 @@ class Managelist extends MY_Controller {
                                 $mobile_contact_no = trim($v[10]);
                                 $email = $v[11];
                                 $type = $v[12]?$v[12]:'';
-                                
-                                // $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));
-                                // $phone_no = substr($phone_no1, -10);
-                                // $total_phone_number_with_format = $this->madePhoneformate_for_upload($phone_no);
-                                
-                                // $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
-                                // $office_contact_number1 = substr($office_contact_number, -10);
-                                // $total_office_number_with_format = $this->madePhoneformate_for_upload($office_contact_number1);
+                                $country = trim($v[13]);
+
+                                $cond = " AND country_id LIKE '%".$country."%'";
+                                $select = "country_code";
+                                $fetch_country = $this->country_model->fetch($cond,$select);
+                                $country_code = $fetch_country[0]['country_code'];
+                                if(!empty($country_code)){
+                                    $country_code = $country_code;
+                                }else{
+                                    $country_code = '';
+                                }
+
+                                if($office_contact_no){
+                                    $office_contact_number = trim(preg_replace('/[^A-Za-z0-9]/', '', $office_contact_no));
+                                    $office_contact_number1 = substr($office_contact_number, -10);
+                                    $total_new_office_no = $country_code.'-'.$office_contact_number1;
+
+                                    //fetch phone no for already exit contact
+                                    $cond = " AND phone='$total_new_office_no' AND firm_seq_no='$firm_seq_no'";
+                                    $fetch_existing_phone_details = $this->targets_model->fetch($cond);
+                                }
+
+                                if($mobile_contact_no){
+                                    $phone_no1 = trim(preg_replace('/[^A-Za-z0-9]/', '', $mobile_contact_no));
+                                    $phone_no = substr($phone_no1, -10);
+                                    $total_new_phone_no = $country_code.'-'.$phone_no;
+
+                                    //fetch mobile no for already exit contact
+                                    $cond = " AND mobile='$total_new_phone_no' AND firm_seq_no='$firm_seq_no'";
+                                    $fetch_existing_office_phone_details = $this->targets_model->fetch($cond);
+                                }
                                 
                                 //fetch email for already exit contact
                                 $cond = " AND email='$email' AND firm_seq_no='$firm_seq_no'";
-                                $fetch_existing_email_details = $this->targets_model->fetch($cond);
-                                
-                                $cond = " AND phone='$mobile_contact_no' AND firm_seq_no='$firm_seq_no'";
-                                $fetch_existing_phone_details = $this->targets_model->fetch($cond);
-
-                                
-                                $fetch_existing_office_phone_details = $this->targets_model->fetch($cond);                                
+                                $fetch_existing_email_details = $this->targets_model->fetch($cond);                                
 
                                 if (count($fetch_existing_email_details) > 0 || count($fetch_existing_phone_details) > 0 || count($fetch_existing_office_phone_details) > 0) {
                                     $i++;
@@ -229,19 +247,21 @@ class Managelist extends MY_Controller {
                                     $arr[$k]['categories'] = $category_of_business;
                                     $arr[$k]['email'] = $email;
                                     $arr[$k]['website'] = $website;
-                                    $arr[$k]['phone'] = $office_contact_no;
+                                    $arr[$k]['phone'] = $total_new_office_no;
+                                    $arr[$k]['mobile'] = $total_new_phone_no;
                                     $arr[$k]['lead_source_and_date'] = $lead_source_date;
                                     $arr[$k]['firm_seq_no'] = $firm_seq_no;
                                     $arr[$k]['type'] = $type;
                                     $arr[$k]['post_code'] = $postcode;
                                     $arr[$k]['job_role'] = $job_role;
-                                    $arr[$k]['mobile'] = $mobile_contact_no;
                                     $arr[$k]['created_date'] = time();
                                     $arr[$k]['status'] = '1';
+                                    $arr[$k]['country'] = $country;
                                     $arr[$k]['list_id'] = $this->input->post('list');
                                 }
                             }
                         }
+                        // t($arr);die();
                         
                         foreach ($arr as $key => $value) {
                             

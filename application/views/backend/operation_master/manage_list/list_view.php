@@ -616,7 +616,7 @@
                                     console.log(data);*/
                                     jconfirm({
                                             title: 'Confirmation!',
-                                            content: "File uploaded successfully",
+                                            content: data,
                                             buttons: {
                                                 OK: function () {
                                                     window.location.href = BASE_URL + 'managelist';

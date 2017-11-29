@@ -101,27 +101,9 @@ class Activity_Payment extends MY_Controller {
         $this->data['module_details']= $module_details;
          
          
-        $user_phone = $targets_data_view[0]['phone'];
-        $original_user_phone = $user_phone;
-        $length = strlen($original_user_phone);
-        if ($length == 10) {
-            $country_code1 = '';
-        } else if ($length == 11) {
-            $country_code1 = substr($original_user_phone, 0, 1);
-        } else if ($length == 12) {
-            $country_code1 = substr($original_user_phone, 0, 2);
-        } else if ($length == 13) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        } else if ($length == 14) {
-            $country_code1 = substr($original_user_phone, 0, 4);
-        }
-        else if ($length == 17) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        }
-        $user_phone_number = substr($original_user_phone, -11);
-        
-        $this->data['country_code'] = $country_code1;
-        $this->data['home_phone_number'] = $user_phone_number;
+        $user_phone = explode("-",$targets_data_view[0]['phone']);        
+        $this->data['country_code'] = $user_phone[0];
+        $this->data['home_phone_number'] = $user_phone[1];
 
         $this->data['target_seq_no']=$target_seq_no;
         //fetching data from module7
@@ -300,7 +282,7 @@ class Activity_Payment extends MY_Controller {
        $phione = $this->input->post("phione");
        $target_seq_no = $this->input->post("target_seq_no");
 
-       $data=array('target_first_name'=>$first_name,'target_last_name' =>$last_name,'email_target_id'=>$email,'home_phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('target_first_name'=>$first_name,'target_last_name' =>$last_name,'email_target_id'=>$email,'home_phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //t($data);die;
         $this->db->where('target_seq_no',$target_seq_no);
         $res=$this->db->update('plma_module7',$data);
@@ -308,7 +290,7 @@ class Activity_Payment extends MY_Controller {
        //echo $this->db->last_query();die;
 
 
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {

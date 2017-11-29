@@ -37,14 +37,14 @@ class Targets extends MY_Controller {
     }
 
     function index() {
-        if($this->session->userdata('session_target_seq_no')) {
+        /*if($this->session->userdata('session_target_seq_no')) {
             $session_target_seq_no = $this->session->userdata('session_target_seq_no');
 
             $lock_status_update=array('lock_status'=>0,'user_working'=>'');
             $this->db->where('target_seq_no',$session_target_seq_no);
             $update_record=$this->db->update('plma_target',$lock_status_update);
             $this->session->unset_userdata('session_target_seq_no');
-        }
+        }*/
         $company_session = $this->session->userdata('admin_session_data');
         //t($company_session);die;
         ///////////////////// Code for Filtering Firms /////////////////////
@@ -409,9 +409,12 @@ class Targets extends MY_Controller {
 
            $country_code = $this->input->post('country_code1');
            $home_phone = $this->input->post('home_phone');
-           $phone = $country_code . $home_phone;
+           $phone = $country_code .'-'. $home_phone;
 
-           $mobile = $this->input->post('mobile');
+           $mobile = trim($this->input->post('mobile'));
+            $country_code2 = trim($this->input->post('country_code2'));
+            $mobile_no = $country_code2.'-'.$mobile;
+
            $address = $this->input->post('address1');
            $next_call_date = $this->input->post('next_call_date');
            $next_call_time = $this->input->post('next_call_time');
@@ -489,7 +492,7 @@ class Targets extends MY_Controller {
                'last_name' => $last_name,
                'email' => $email,
                'phione' => $phone,
-               'mobile' => $mobile,
+               'mobile' => $mobile_no,
                'address' => $address,
                'company_name' => $target_company_name,
                'categories' => $company_type,
@@ -703,94 +706,15 @@ class Targets extends MY_Controller {
             $row[$key]['industry_type'] = $industry_type[0]['short_description'];
             $row[$key]['attorney_seq_no'] = $attorney[0]['attorney_first_name'] . ' ' . $attorney[0]['attorney_last_name'];
 
-            $home_phone = $value['phone'];
-            $original_home_phone = $home_phone;
-
-            $length = strlen($original_home_phone);
-            $first_element=$original_home_phone[0];
-
-//           if($first_element=="(")
-//           {
-            if ($length == 10) {
-                $country_code1 = '';
-            } else if ($length == 11) {
-                $country_code1 = substr($original_home_phone, 0, 2);
-            } else if ($length == 12) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            } else if ($length == 13) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            } else if ($length == 14) {
-                $country_code1 = substr($original_home_phone, 0, 5);
-            } else if ($length == 17) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            }
-
-            if($length == 13){
-                $home_phone_number = substr($original_home_phone, -10);
-            }else{
-                $home_phone_number = substr($original_home_phone, -11);
-            }
+            $home_phone = explode("-", $value['phone']);
+            $row[$key]['country_code1'] = $home_phone[0];
+            $row[$key]['home_phone_10'] = $home_phone[1];
 
 
-
-            $mobile_super_master = $value['mobile'];
-            $original_mobile = $mobile_super_master;
-
-            $length = strlen($original_mobile);
-            $first_element_mobile=$original_mobile[0];
-
-//           if($first_element=="(")
-//           {
-            if ($length == 10) {
-                $country_code2 = '';
-            } else if ($length == 11) {
-                $country_code2 = substr($original_mobile, 0, 2);
-            } else if ($length == 12) {
-                $country_code2 = substr($original_mobile, 0, 3);
-            } else if ($length == 13) {
-                $country_code2 = substr($original_mobile, 0, 3);
-            } else if ($length == 14) {
-                $country_code2 = substr($original_mobile, 0, 5);
-            } else if ($length == 17) {
-                $country_code2 = substr($original_mobile, 0, 3);
-            }
-
-
-//           }
-//           else if($first_element=="+")
-//           {
-//                if ($length == 10) {
-//                $country_code1 = '';
-//               } else if ($length == 11) {
-//                $country_code1 = substr($original_home_phone, 0, 2);
-//               } else if ($length == 12) {
-//                $country_code1 = substr($original_home_phone, 0, 2);
-//               } else if ($length == 13) {
-//                $country_code1 = substr($original_home_phone, 0, 3);
-//               } else if ($length == 14) {
-//                $country_code1 = substr($original_home_phone, 0, 4);
-//               }
-//
-//           }
-             //echo $country_code1;die();
-
-            if($length == 13){
-            	$home_mobile = substr($original_mobile, -10);
-            }else{
-            	$home_mobile = substr($original_mobile, -11);
-            }
-
-            $originalhome_phone_number = $this->madePhoneformate_ios_android($original_home_phone);
-            $home_no = $this->madePhoneformate($home_phone_number);
-            $row[$key]['home_phone'] = $originalhome_phone_number;
-            $row[$key]['home_phone_10'] = $home_no;
-            $row[$key]['country_code1'] = $country_code1;
-
-            $original_mobile_no = $this->madePhoneformate_ios_android($original_mobile);
-            $home_no = $this->madePhoneformate($home_mobile);
-            $row[$key]['home_mobile'] = $original_mobile;
-            $row[$key]['home_mobile_10'] = $home_no;
-            $row[$key]['country_code2'] = $country_code2;
+            $mobile_super_master = explode("-", $value['mobile']);
+            $row[$key]['country_code2'] = $mobile_super_master[0];
+            $row[$key]['home_mobile_10'] = $mobile_super_master[1];
+            
 
             /*echo $originalhome_phone_number."</br>";
              echo $home_no."</br>";
@@ -798,13 +722,13 @@ class Targets extends MY_Controller {
 
         }
         $this->data['targets'] = $row[0];
-//        t($this->data['targets']);die;
+       // t($this->data['targets']);die;
         $target_seq_id = $row[0]['target_seq_no'];
 
         /******************Check Lock Status******************/
 
         $lock_status = $row[0]['lock_status'];
-        if($lock_status == 0) {
+        /*if($lock_status == 0) {
             $lock_status_update=array('lock_status'=>1,'user_working'=>$admin_all_session['first_name']." ".$admin_all_session['last_name']);
             $this->db->where('target_seq_no',$row[0]['target_seq_no']);
             $update_record=$this->db->update('plma_target',$lock_status_update);
@@ -816,7 +740,7 @@ class Targets extends MY_Controller {
 
             $this->data['record_occupied'] = 2;
             $this->data['user_working'] = $row[0]['user_working'];
-        }
+        }*/
         /******************End*******************************/
 
         if (count($row) > 0) {
@@ -902,12 +826,128 @@ class Targets extends MY_Controller {
         //--------end------------//
         $cond = " and firm_seq_no = '" . $admin_all_session['firm_seq_no'] . "'";
         $row = $this->change_module_number_module->fetch($cond);
+
+        $presentation_query = "SELECT * FROM plma_presentation_files WHERE firm_seq_no='".$admin_all_session['firm_seq_no']."' order by id desc";
+        $fetch = $this->db->query($presentation_query);
+        $fetch_details = $fetch->result_array();
+        $this->data['fetch_presentation_details'] = $fetch_details;
         
         
         $this->get_include();
         
         $this->data['row'] = $row;
         $this->load->view($this->view_dir . 'operation_master/targets/target_view', $this->data);
+    }
+
+    public function send_presentation () {
+        $this->load->helper('url');
+        
+        $this->load->helper('path');
+        $path = set_realpath('assets/upload/attachments/');
+
+        $admin_all_session = $this->session->userdata('admin_session_data');
+        $admin_id = $admin_all_session['admin_id'];
+
+        $cond = " AND user_seq_no=$admin_id";
+        $user_login_details = $this->user_model->fetch($cond);
+
+        $target_seq_no = $this->input->post('target_seq_no_id');
+        
+        $presentation_document = $this->input->post('presentation_document');
+        $presentation_file_array = array();
+        foreach($presentation_document as $key => $value){
+            $presentation_query = "SELECT * FROM plma_presentation_files WHERE id=$value";
+            $query = $this->db->query($presentation_query);
+            $result = $query->result_array();
+
+            $presentation_file_array[] = $result[0]['presentation_file_name'];
+        }
+        /*echo "<pre>";
+        print_r($presentation_file_array);
+        die();*/
+
+        $subject = $this->input->post('email_subject');
+        $email = $this->input->post('email_to');
+        $email_body = $this->input->post('BookDescription');
+
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'sitemail.isqweb.it',
+            'smtp_port' => 587,
+            'smtp_user' => 'digital1crm@isqweb.com',
+            'smtp_pass' => 'grT54rDDy6k',
+            'mailtype'  => 'html', 
+            'charset'   => 'iso-8859-1'
+        );
+        $this->load->library('email', $config);
+        $this->email->from($user_login_details[0]['user_id'], $user_login_details[0]['user_first_name']." ".$user_login_details[0]['user_last_name']);
+        $this->email->to($email);
+        $this->email->set_mailtype("html");
+        $this->email->subject($subject);
+        $msg="<html><body>".$email_body."<br></body></html>";
+        $this->email->message($msg);
+
+        $i=0;
+        for($i=0; $i<count($presentation_file_array); $i++){
+            $this->email->attach($path.$presentation_file_array[$i]);
+        }
+
+        $send = $this->email->send();
+        
+
+        if($send){
+            $cond = "AND target_seq_no=$target_seq_no";
+            $fetch_records_details = $this->targets_model->fetch($cond);
+
+            $target_seq_no = $fetch_records_details[0]['target_seq_no'];
+            $firm_seq_no = $fetch_records_details[0]['firm_seq_no'];
+            $target_first_name = $fetch_records_details[0]['target_first_name'];
+            $target_last_name = $fetch_records_details[0]['target_last_name'];
+            $email_target_id = $fetch_records_details[0]['email'];
+            $phone_number = $fetch_records_details[0]['phone'];
+            $mobile = $fetch_records_details[0]['mobile'];
+            $address1 = $fetch_records_details[0]['address1'];
+            $target_company_name = $fetch_records_details[0]['target_company_name'];
+            $industry_type = $fetch_records_details[0]['industry_type'];
+            $date_contacted = $fetch_records_details[0]['date_contacted'];
+            $individual = $fetch_records_details[0]['individual'];
+            $corporate = $fetch_records_details[0]['corporate'];
+            
+            $data_field = array(
+                'admin_id' => $this->data['admin_id'],
+                'target_seq_no' => $target_seq_no,
+                'company_id' => $firm_seq_no,
+                'firm_seq_no' => $firm_seq_no,
+                'first_name' =>  $target_first_name,
+                'last_name' => $target_last_name,
+                'email' => $email_target_id,
+                'phione' => $phone_number,
+                'mobile' => $mobile,
+                'address' => $address1,
+                'company_name' => $target_company_name,
+                'categories' => $industry_type,
+                'date_contacted' => $date_contacted,
+                'status' => 1,
+                'added_date' => time(),
+                'modified_date' => time(),
+                'type' => $corporate ? $corporate : $individual
+            );
+
+            $this->load->model('module2');
+            $add_module2 = $this->module2->add($data_field);
+            if($add_module2){
+                $data_array = array(
+                    'status' => 'Inactive' 
+                );
+                $edit = $this->targets_model->edit($data_array,$target_seq_no);
+                if($edit){
+                    echo 1;
+                    exit;
+                }
+            }
+        }
+
+
     }
 
     function madePhoneformate_ios_android($mobile_no) {
@@ -1701,9 +1741,12 @@ class Targets extends MY_Controller {
 
         $country_code1 = $this->input->post('country_code1');
         $home_phone = $this->input->post('home_phone');
-        $phone_number = $country_code1.$home_phone;
+        $phone_number = $country_code1.'-'.$home_phone;
 
-        $mobile = $this->input->post('mobile');
+        $mobile = trim($this->input->post('mobile'));
+        $country_code2 = trim($this->input->post('country_code2'));
+        $mobile_no = $country_code2.'-'.$mobile;
+
         $address1 = $this->input->post('address1');
         $target_company_name = $this->input->post('target_company_name');
         $industry_type = $this->input->post('industry_type');
@@ -1720,7 +1763,7 @@ class Targets extends MY_Controller {
             'last_name' => $target_last_name,
             'email' => $email_target_id,
             'phione' => $phone_number,
-            'mobile' => $mobile,
+            'mobile' => $mobile_no,
             'address' => $address1,
             'company_name' => $target_company_name,
             'categories' => $industry_type,
@@ -1759,9 +1802,12 @@ class Targets extends MY_Controller {
 
         $country_code1 = $this->input->post('country_code1');
         $home_phone = $this->input->post('home_phone');
-        $phone_number = $country_code1.$home_phone;
+        $phone_number = $country_code1.'-'.$home_phone;
 
-        $mobile = $this->input->post('mobile');
+        $mobile = trim($this->input->post('mobile'));
+        $country_code2 = trim($this->input->post('country_code2'));
+        $mobile_no = $country_code2.'-'.$mobile;
+
         $address1 = $this->input->post('address1');
         $target_company_name = $this->input->post('target_company_name');
         $industry_type = $this->input->post('industry_type');
@@ -1778,7 +1824,7 @@ class Targets extends MY_Controller {
             'last_name' => $target_last_name,
             'email' => $email_target_id,
             'phione' => $phone_number,
-            'mobile' => $mobile,
+            'mobile' => $mobile_no,
             'address' => $address1,
             'company_name' => $target_company_name,
             'categories' => $industry_type,
@@ -1807,7 +1853,7 @@ class Targets extends MY_Controller {
         } 
     }
 
-    function add_notes() {
+    function add_notes1 () {
         $newnotes = $this->input->post('newnotes');
         $target_seq_no = base64_decode($this->input->post('target_seq_no'));
         $firm_seq_no = base64_decode($this->input->post('firm_seq_no'));
@@ -1872,6 +1918,71 @@ class Targets extends MY_Controller {
                 echo "0";
             }
         }
+
+    }
+
+    function add_notes() {
+        $newnotes = $this->input->post('newnotes');
+        $target_seq_no = base64_decode($this->input->post('target_seq_no'));
+        $firm_seq_no = base64_decode($this->input->post('firm_seq_no'));
+        $target_first_name = $this->input->post('target_first_name');
+        $target_last_name = $this->input->Post('target_last_name');
+        $email_target_id = $this->input->post('email_target_id');
+
+        $country_code1 = trim($this->input->post('country_code1'));
+        $home_phone = trim($this->input->post('home_phone'));
+        $phone_number = $country_code1.'-'.$home_phone;
+
+        $mobile = trim($this->input->post('mobile'));
+        $country_code2 = trim($this->input->post('country_code2'));
+        $mobile_no = $country_code2.'-'.$mobile;
+
+        $address1 = $this->input->post('address1');
+        $target_company_name = $this->input->post('target_company_name');
+        $industry_type = $this->input->post('industry_type');
+        $date_contacted = $this->input->post('date_contacted');
+        $individual = $this->input->post('individual');
+        $corporate = $this->input->post('corporate');
+
+        if($target_seq_no){
+            // $note_data=array('target_seq_no'=>$target_seq_no,'admin_id'=>$this->data['admin_id'],'content'=>$newnotes,'status'=>'Active','added_date'=>time(),'modified_date'=>time(),'module'=>'module1');
+            // $note_insert=$this->db->insert('plma_all_notes',$note_data);
+
+                $data_field = array(
+                   'firm_seq_no' => $firm_seq_no,
+                   'target_first_name' =>  $target_first_name,
+                   'target_last_name' => $target_last_name,
+                   'email' => $email_target_id,
+                   'phone' => $phone_number,
+                   'mobile' => $mobile_no,
+                   'address' => $address1,
+                   'company' => $target_company_name,
+                   'categories' => $industry_type,
+                   'type' => $corporate ? $corporate : $individual
+               );
+          // t($data_field);die();
+            $edit = $this->targets_model->edit($data_field,$target_seq_no);
+            if($edit){
+                echo 1;
+                exit();
+            }
+
+               // $this->load->model('module2');
+
+               //  $cond100 = " AND target_seq_no=$target_seq_no AND firm_seq_no=$firm_seq_no";
+               //  $fetch_exit_in_module2 = $this->module2->fetch($cond100);
+               //  if(count($fetch_exit_in_module2) == 0){
+               //      $add_module2 = $this->module2->add($data_field);
+               //      if($add_module2){
+               //         $data = array(
+               //             'status' => "Inactive",
+               //             'type' => $corporate ? $corporate : $individual
+               //         );
+               //         $edit = $this->targets_model->edit($data,$target_seq_no);
+               //         echo "1";
+               //      }
+               //  }
+        }
     }
 
     function add_do_not_call() {
@@ -1906,9 +2017,12 @@ class Targets extends MY_Controller {
 
         $country_code1 = $this->input->post('country_code1');
         $home_phone = $this->input->post('home_phone');
-        $home_phone1 = $country_code1 . $home_phone;
+        $home_phone1 = $country_code1 .'-'. $home_phone;
 
-        $mobile = $this->input->post('mobile');
+        $mobile = trim($this->input->post('mobile'));
+        $country_code2 = trim($this->input->post('country_code2'));
+        $mobile_no = $country_code2.'-'.$mobile;
+
         $address1 = $this->input->post('address1');
         $target_company_name = $this->input->post('target_company_name');
         $industry_type = $this->input->post('industry_type');
@@ -1936,7 +2050,7 @@ class Targets extends MY_Controller {
                'last_name' => $target_last_name,
                'email' => $email_target_id,
                'phione' => $home_phone1,
-               'mobile' => $mobile,
+               'mobile' => $mobile_no,
                'address' => $address1,
                'company_name' => $target_company_name,
                'categories' => $industry_type,
@@ -1993,7 +2107,11 @@ class Targets extends MY_Controller {
         $email_target_id = $this->input->post('email_target_id');
         $country_code1 = $this->input->post('country_code1');
         $home_phone = $this->input->post('home_phone');
-        $mobile = $this->input->post('mobile');
+        
+        $mobile = trim($this->input->post('mobile'));
+        $country_code2 = trim($this->input->post('country_code2'));
+        $mobile_no = $country_code2.'-'.$mobile;
+
         $address1 = $this->input->post('address1');
         $target_company_name = $this->input->post('target_company_name');
         $industry_type = $this->input->post('industry_type');
@@ -2013,8 +2131,8 @@ class Targets extends MY_Controller {
                'first_name' =>  $target_first_name,
                'last_name' => $target_last_name,
                'email' => $email_target_id,
-               'phione' => $country_code1.$home_phone,
-               'mobile' => $mobile,
+               'phione' => $country_code1.'-'.$home_phone,
+               'mobile' => $mobile_no,
                'address' => $address1,
                'company_name' => $target_company_name,
                'categories' => $industry_type,
@@ -2166,7 +2284,7 @@ class Targets extends MY_Controller {
 
       $new_contact_phone = $this->input->post('new_contact_phone');
       $new_contact_phone_country_code = $this->input->post('new_contact_phone_country_code');
-      $phone_number = $new_contact_phone_country_code . $new_contact_phone;
+      $phone_number = $new_contact_phone_country_code .'-'. $new_contact_phone;
 
       $new_contact_mobile = $this->input->post('new_contact_mobile');
       $new_contact_address = $this->input->post('new_contact_address');

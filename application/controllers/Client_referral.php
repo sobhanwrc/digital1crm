@@ -95,27 +95,9 @@ class Client_referral extends MY_Controller {
          $this->data['user_detail']=$target_data;
          //print_r($target_data);die();
 
-        $user_phone = $target_data[0]['phone'];
-        $original_user_phone = $user_phone;
-        $length = strlen($original_user_phone);
-        if ($length == 10) {
-            $country_code1 = '';
-        } else if ($length == 11) {
-            $country_code1 = substr($original_user_phone, 0, 1);
-        } else if ($length == 12) {
-            $country_code1 = substr($original_user_phone, 0, 2);
-        } else if ($length == 13) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        } else if ($length == 14) {
-            $country_code1 = substr($original_user_phone, 0, 4);
-        }
-        else if ($length == 17) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        }
-        $user_phone_number = substr($original_user_phone, -11);
-        
-        $this->data['country_code'] = $country_code1;
-        $this->data['home_phone_number'] = $user_phone_number;
+        $user_phone = explode("-", $target_data[0]['phone']);        
+        $this->data['country_code'] = $user_phone[0];
+        $this->data['home_phone_number'] = $user_phone[1];
          
          $condnote = " and admin_id ='".$admin_id."' and target_seq_no='".$target_seq_no."' order by id DESC";
          $note = $this->Allnote_Model->fetch($condnote);
@@ -244,7 +226,7 @@ class Client_referral extends MY_Controller {
         
         $contact_phone=$this->input->post("contact_phone");
         $country_code1=$this->input->post("country_code1");
-        $phone_number = $country_code1 . $contact_phone;
+        $phone_number = $country_code1 .'-'. $contact_phone;
         
         $category=$this->input->post("category");
         $company_name=$this->input->post("company_name");
@@ -337,14 +319,14 @@ class Client_referral extends MY_Controller {
        $target_seq_no = $this->input->post("target_seq_no");
 
        //update table module8 data
-       $data=array('name'=>$first_name.' '.$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('name'=>$first_name.' '.$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //$res=$this->appointment_details_module->edit($data,$seq_no);
        $this->db->where('target_seq_no',$target_seq_no);
        $res = $this->db->update('plma_module9', $data);
        //echo $this->db->last_query();die;
 
        //update table target (module1)
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {

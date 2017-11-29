@@ -152,29 +152,9 @@ class Competitor extends MY_Controller {
         $this->data['id']=$id;
          //echo 'hello'.$id;die();
          //----------------------phone no-------------------------
-            $home_phone = $user_data[0]['phione'];
-            $original_home_phone = $home_phone;
-            $length = strlen($original_home_phone);
-            //echo $length;
-            if ($length == 10) {
-                $country_code1 = '';
-            } else if ($length == 11) {
-                $country_code1 = substr($original_home_phone, 0, 1);
-            } else if ($length == 12) {
-                $country_code1 = substr($original_home_phone, 0, 2);
-            } else if ($length == 13) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            } else if ($length == 14) {
-                $country_code1 = substr($original_home_phone, 0, 4);
-            }
-            else if ($length == 17) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            }
-            $home_phone_number = substr($original_home_phone, -11);
-            $home_no = $this->madePhoneformate($home_phone_number);
-            
-            $this->data['country_code1'] = $country_code1;
-            $this->data['home_no'] = $home_no;
+            $home_phone = explode("-", $user_data[0]['phione']);            
+            $this->data['country_code1'] = $home_phone[0];
+            $this->data['home_no'] = $home_phone[1];
 
          //--------------for add data----------------------------
              $cond=" AND target_seq_no='".$target_seq_no."' ";
@@ -378,16 +358,9 @@ class Competitor extends MY_Controller {
         $target_contact_details1 = $target_contact_details->result_array();
         $this->data['target_contact_details'] = $target_contact_details1;
         
-        $view_details_module4_no = $target_contact_details1[0]['target_phone'];
-        $length = strlen($view_details_module4_no);
-        if($length == 17){
-            $country_code = substr($view_details_module4_no, 0,3);
-        }
-        $phone_number = substr($view_details_module4_no, -11);        
-        $home_no = $this->madePhoneformate($phone_number);
-        
-        $this->data['country_code'] = $country_code;
-        $this->data['home_no'] = $home_no;
+        $view_details_module4_no = explode("-", $target_contact_details1[0]['target_phone']);        
+        $this->data['country_code'] = $view_details_module4_no[0];
+        $this->data['home_no'] = $view_details_module4_no[1];
         /******************End**************************************/
 
 
@@ -1806,55 +1779,17 @@ class Competitor extends MY_Controller {
         $module_details = $this->sms_add_model->fetch($fetch_cond);
         $this->data['module_details']= $module_details;
 
-        $contact_phone = $fetch_details[0]['phone'];
-        $original_home_phone = $contact_phone;
-        $length = strlen($original_home_phone);
-        if ($length == 10) {
-            $country_code1 = '';
-        } else if ($length == 11) {
-            $country_code1 = substr($original_home_phone, 0, 1);
-        } else if ($length == 12) {
-            $country_code1 = substr($original_home_phone, 0, 2);
-        } else if ($length == 13) {
-            $country_code1 = substr($original_home_phone, 0, 3);
-        } else if ($length == 14) {
-            $country_code1 = substr($original_home_phone, 0, 4);
-        }
-        else if ($length == 17) {
-            $country_code1 = substr($original_home_phone, 0, 3);
-        }
-        $home_phone_number = substr($original_home_phone, -11);      
-        $home_no = $this->madePhoneformate($home_phone_number);
-
-        $this->data['country_code'] = $country_code1;
-        $this->data['home_phone_number'] = $home_no;
+        $contact_phone = explode("-", $fetch_details[0]['phone']);
+        $this->data['country_code'] = $contact_phone[0];
+        $this->data['home_phone_number'] = $contact_phone[1];
 
         $cond123 = " AND firm_seq_no='$company_id' AND target_seq_no='$target_seq_no'";
         $fetch_add_contact_details = $this->add_contact_model->fetch($cond123);
         $this->data['fetch_add_contact_details'] = $fetch_add_contact_details[0];
 
-        $primary_contact_phone = $fetch_add_contact_details[0]['phone'];
-        $original_primary_contact_phone = $primary_contact_phone;
-        $length = strlen($original_primary_contact_phone);
-        if ($length == 10) {
-            $country_code2 = '';
-        } else if ($length == 11) {
-            $country_code2 = substr($original_primary_contact_phone, 0, 1);
-        } else if ($length == 12) {
-            $country_code2 = substr($original_primary_contact_phone, 0, 2);
-        } else if ($length == 13) {
-            $country_code2 = substr($original_primary_contact_phone, 0, 3);
-        } else if ($length == 14) {
-            $country_code2 = substr($original_primary_contact_phone, 0, 4);
-        }
-        else if ($length == 17) {
-            $country_code2 = substr($original_primary_contact_phone, 0, 3);
-        }
-        $primary_contact_phone_number = substr($original_primary_contact_phone, -11);
-        $primary_contact_phone_number_new = $this->madePhoneformate($primary_contact_phone_number);
-
-        $this->data['country_code2'] = $country_code2;
-        $this->data['primary_contact_phone_number'] = $primary_contact_phone_number_new;
+        $primary_contact_phone = explode("-",$fetch_add_contact_details[0]['phone']);
+        $this->data['country_code2'] = $primary_contact_phone[0];
+        $this->data['primary_contact_phone_number'] = $primary_contact_phone[1];
 
         $condnote = " AND  target_seq_no ='".$target_seq_no."' and admin_id='".$admin_id."' and status!='Inactive' order by id DESC";
         $note=$this->Allnote_Model->fetch($condnote);
@@ -1955,7 +1890,7 @@ class Competitor extends MY_Controller {
 
         $country_code1 = $this->input->post('country_code1');
         $phone = $this->input->post('phone');
-        $total_phone_no = $country_code1 . $phone;
+        $total_phone_no = $country_code1 .'-'. $phone;
 
         $designation = $this->input->post('designation');
 
@@ -2175,7 +2110,7 @@ class Competitor extends MY_Controller {
     
     $contact_phone=$this->input->post("contact_phone");
     $country_code=$this->input->post("country_code");
-    $phone_number = $country_code . $contact_phone;
+    $phone_number = $country_code .'-'. $contact_phone;
     
     $contact_designation=$this->input->post("contact_designation");
     $primary_contact=$this->input->post("contact_primary");
@@ -2245,22 +2180,22 @@ class Competitor extends MY_Controller {
        $first_name=$this->input->post("first_name");
        $last_name=$this->input->post("last_name");
        $email=$this->input->post("email");
-       $country_code1=$this->input->post("country_code1");
+       $country_code1=trim($this->input->post("country_code1"));
        $mobile=$this->input->post("mobile");
        $address1=$this->input->post("address1");
        $seq_no=$this->input->post("seq_no");
        $target_company_name=$this->input->post("target_company_name");
        $industry_type=$this->input->post("industry_type");
-       $phione = $this->input->post("phione");
+       $phione = trim($this->input->post("phione"));
        $target_seq_no = $this->input->post("target_seq_no");
 
        //update table module3 data
-       $data=array('first_name'=>$first_name,'last_name'=>$last_name,'email'=>$email,'phione'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('first_name'=>$first_name,'last_name'=>$last_name,'email'=>$email,'phione'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        $res=$this->appointment_details_module->edit($data,$seq_no);
        //echo $this->db->last_query();die;
 
        //update table target (module1)
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {
@@ -2287,13 +2222,13 @@ class Competitor extends MY_Controller {
        $target_seq_no = $this->input->post("target_seq_no");
 
        //update module4 table
-       $data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email_target_id'=>$email,'home_phone'=>$country_code1.$phione , 'mobile' => $mobile,'address1'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email_target_id'=>$email,'home_phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address1'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //t($data);die;
        $res=$this->Module4_Model->edit($data,$seq_no);
        //echo $this->db->last_query();die;
 
        //update target table
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {
@@ -2321,13 +2256,13 @@ class Competitor extends MY_Controller {
        $phione = $this->input->post("phione");
        $target_seq_no = $this->input->post("target_seq_no");
 
-       $data=array('name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address1'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address1'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //t($data);die;
        $res=$this->Model5->edit($data,$seq_no);
        //echo $this->db->last_query();die;
 
 
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {

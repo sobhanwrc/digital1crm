@@ -142,13 +142,13 @@
 
                         <table width="180px" align="right">
                             <tr>
-                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
+                                
                                 <td style="width: 35px" height="40px" valign="top">
                                     <?php if ($prev_target_seq_no) { ?>
                                         <a style="width: 100%; display: block" href="<?php echo $base_url; ?>client_master/details/<?php echo base64_encode($prev_target_seq_no); ?>" id="prev"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-left"></i></a>
                                     <?php } ?>
                                 </td>
-                                <?php } ?>
+                                
 
                                 <td style=" width: 90px">
                                     <div class="btn-group btn-group-devided" data-toggle="buttons">
@@ -158,13 +158,13 @@
                                     </div>
                                 </td>
 
-                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
+                                
                                 <td style=" width: 35px" height="40px" valign="top">
                                     <?php if ($next_target_seq_no) { ?>
                                         <a style="width: 100%; display: block" href="<?php echo $base_url; ?>client_master/details/<?php echo base64_encode($next_target_seq_no); ?>" id="next"><i style=" font-size: 36px; margin-top: 10px;" class="fa fa-angle-right pull-right"></i></a>
                                     <?php } ?>
                                 </td>
-                                <?php } ?>
+                                
 
                             </tr>
 
@@ -181,7 +181,7 @@
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
                             <div class="portlet light bordered">
                                 <div class="portlet-title company_header">
-                                    <?php if($this->session->userdata('session_target_seq_no')) { ?> 
+                                     
                                     <div class="custom_header">
                                         <?php
                                         if ($targets[0]['type'] == "C") {
@@ -329,22 +329,12 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <?php } else { ?>
-                                    <div class="custom_header">
-                                        <img class="corporate_image" style="border-radius:0 !important;" src="<?php echo base_url(); ?>assets/upload/image/user_blank.jpg" alt="logo" class="logo-default">
-
-                                        <div style=" width: 100%; margin: 0 auto;">
-
-                                            <div style="width: 100%; display: inline-block;">
-
-                                                <span style=" width: auto; padding: 0 5px; text-align: right;display: inline-block;"><strong><?php echo $user_working;?> is working on this contact</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  <?php } ?>
+                                    
+                                    
+                                  
 
                                 </div>
-                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
+                                
                                 <div class="portlet-body">
 
 
@@ -936,7 +926,7 @@
 
                         </div>
                     </div>
-                    <?php } ?>
+                    
                     <!-- END CONTENT BODY -->
                 </div>
                 <!-- END CONTENT -->
@@ -1526,7 +1516,10 @@
                         }
                     });
 
+
+
                     $('#do_not_call_submit').on('click', function (e) {
+                        
                         var valid = $('#do_not_call').valid();
                         if (valid) {
                             var notes = $('#do_not_call_notes').val();
@@ -1545,8 +1538,7 @@
                                         status: 'Inactive'
                                     },
                                     success: function (data) {
-                                        /*alert(data);
-                                        console.log(data);*/
+                                        
                                         if (data == 1) {
                                             jconfirm({
                                                 title: 'Confirmation!',
@@ -1874,15 +1866,15 @@
                             },
                             country_code1: {
                                 required: true,
-                                maxlength: 3,
-                                minlength: 3,
+                                // maxlength: 3,
+                                // minlength: 3,
                                 accept: "[0-9]+"
                             },
                             contact_phone: {
                                 required: true,
 //                                number: true,
-                                maxlength: 14,
-                                minlength: 14,
+                                // maxlength: 14,
+                                // minlength: 14,
                                 accept: "[0-9-\(\)]+"
                             },
                             contact_designation: {

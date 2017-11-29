@@ -1626,29 +1626,9 @@ pat.activity_seq_no =  '" . $code . "' ) GROUP BY
         $module_details = $this->sms_add_model->fetch($fetch_cond);
         $this->data['module_details']= $module_details;
         
-        $user_phone = $fetch_contact_details[0]['phone'];
-        $original_user_phone = $user_phone;
-        $length = strlen($original_user_phone);
-        if ($length == 10) {
-            $country_code1 = '';
-        } else if ($length == 11) {
-            $country_code1 = substr($original_user_phone, 0, 1);
-        } else if ($length == 12) {
-            $country_code1 = substr($original_user_phone, 0, 2);
-        } else if ($length == 13) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        } else if ($length == 14) {
-            $country_code1 = substr($original_user_phone, 0, 4);
-        }
-        else if ($length == 17) {
-            $country_code1 = substr($original_user_phone, 0, 3);
-        }
-        $user_phone_number = substr($original_user_phone, -11);
-
-
-
-        $this->data['country_code'] = $country_code1;
-        $this->data['home_phone_number'] = $user_phone_number;
+        $user_phone = explode("-", $fetch_contact_details[0]['phone']);
+        $this->data['country_code'] = $user_phone[0];
+        $this->data['home_phone_number'] = $user_phone[1];
         
         $cond1 = " AND target_seq_no='$target_seq_no'";
         $select1 = "target_image, lead_source_and_date";
@@ -1867,13 +1847,13 @@ pat.activity_seq_no =  '" . $code . "' ) GROUP BY
        $phione = $this->input->post("phione");
        $target_seq_no = $this->input->post("target_seq_no");
 
-       $data=array('name'=>$first_name." ".$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('name'=>$first_name." ".$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //t($data);die;
        $res=$this->Module6_Model->edit($data,$seq_no);
        //echo $this->db->last_query();die;
 
 
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {

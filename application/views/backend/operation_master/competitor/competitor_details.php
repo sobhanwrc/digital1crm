@@ -1860,15 +1860,15 @@ if ($get_contact_data[0]['is_primary_contact'] == 1) {
                         },
                         add_contact_model3_country_code1: {
                             required: true,
-                            maxlength: 3,
-                            minlength: 3,
+                            // maxlength: 3,
+                            // minlength: 3,
                             accept: "[0-9]+"
                         },
                         add_contact_model3_phione: {
                             required: true,
 //                                number: true,
-                            maxlength: 14,
-                            minlength: 14,
+                            // maxlength: 14,
+                            // minlength: 14,
                             accept: "[0-9-\(\)]+"
                         },
                         contact_designation: {

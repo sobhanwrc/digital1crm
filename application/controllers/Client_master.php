@@ -46,14 +46,15 @@ class Client_master extends MY_Controller {
     }
 
     function index() {
-        if($this->session->userdata('session_target_seq_no')) {
+        /*if($this->session->userdata('session_target_seq_no')) {
             $session_target_seq_no = $this->session->userdata('session_target_seq_no');
+            
 
             $lock_status_update=array('lock_status'=>0,'user_working'=>'');
             $this->db->where('target_seq_no',$session_target_seq_no);
             $update_record=$this->db->update('plma_module2',$lock_status_update);
             $this->session->unset_userdata('session_target_seq_no');
-        }
+        }*/
         $company_session = $this->session->userdata('admin_session_data');
         
         $admin_id = $this->data['admin_id'];
@@ -448,31 +449,9 @@ class Client_master extends MY_Controller {
 //            t($target_con); 
             //$this->module2->fetch
             //$this->data['all_contact'] =$target_con;
-            $home_phone = $target_con[0]['phione'];
-            $original_home_phone = $home_phone;
-            $length = strlen($original_home_phone);
-            //echo $length;
-            if ($length == 10) {
-                $country_code1 = '';
-            } else if ($length == 11) {
-                $country_code1 = substr($original_home_phone, 0, 1);
-            } else if ($length == 12) {
-                $country_code1 = substr($original_home_phone, 0, 2);
-            } else if ($length == 13) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            } else if ($length == 14) {
-                $country_code1 = substr($original_home_phone, 0, 4);
-            }
-            else if ($length == 17) {
-                $country_code1 = substr($original_home_phone, 0, 3);
-            }
-//            echo $country_code1;
-            $home_phone_number = substr($original_home_phone, -11);
-//            echo $home_phone_number; die();
-                        
-            
-            $this->data['country_code'] = $country_code1;
-            $this->data['home_phone_number'] = $home_phone_number;
+            $home_phone = explode("-", $target_con[0]['phione']);
+            $this->data['country_code'] = $home_phone[0];
+            $this->data['home_phone_number'] = $home_phone[1];
             
             
             $this->data['targets'] =$target_con;
@@ -489,13 +468,20 @@ class Client_master extends MY_Controller {
              $target_seq_no= $target_con[0]['target_seq_no'];
 
              $lock_status = $target_con[0]['lock_status'];
+
             $admin_all_session = $this->session->userdata('admin_session_data');
 
-            if($lock_status == 0) {
+            /*echo $lock_status;
+            echo $target_seq_no;*/
+
+
+            /*if($lock_status == 0) {
                 $lock_status_update=array('lock_status'=>1,'user_working'=>$admin_all_session['first_name']." ".$admin_all_session['last_name']);
                 $this->db->where('target_seq_no',$target_con[0]['target_seq_no']);
                 $update_record=$this->db->update('plma_module2',$lock_status_update);
                 $this->session->set_userdata("session_target_seq_no",$target_con[0]['target_seq_no']);
+
+
 
                 $this->data['record_occupied'] = 1;
             }
@@ -503,8 +489,9 @@ class Client_master extends MY_Controller {
 
                 $this->data['record_occupied'] = 2;
                 $this->data['user_working'] = $target_con[0]['user_working'];
-            }
-              
+            }*/
+            /*echo $this->session->userdata("session_target_seq_no");  
+            die();*/
                //echo $target_seq_no;echo $admin_id;die();
 
              $condnote = " AND  target_seq_no ='".$target_seq_no."' and status!='Inactive' order by id DESC";
@@ -762,7 +749,7 @@ class Client_master extends MY_Controller {
         
         $country_code1 = $this->input->post('country_code1');
         $phone = $this->input->post('phone');
-        $total_phone_no = $country_code1 . $phone;
+        $total_phone_no = $country_code1 .'-'. $phone;
         
         $designation = $this->input->post('designation');
         
@@ -1961,12 +1948,12 @@ class Client_master extends MY_Controller {
        $target_seq_no = $this->input->post("target_seq_no");
 
        // update table module2 data
-       $data=array('first_name'=>$first_name,'last_name'=>$last_name,'email'=>$email,'phione'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('first_name'=>$first_name,'last_name'=>$last_name,'email'=>$email,'phione'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        $res=$this->module2->edit($data,$seq_no);
        //echo $this->db->last_query();die;
 
        // update table target(module1) data
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->targets_model->edit($target_data,$target_seq_no);
        if($res)
        {

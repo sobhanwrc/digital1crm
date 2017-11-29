@@ -1654,15 +1654,15 @@
                             },
                             country_code1: {
                                 required: true,
-                                maxlength: 3,
-                                minlength: 3,
+                                // maxlength: 3,
+                                // minlength: 3,
                                 accept: "[0-9]+"
                             },
                             contact_phone: {
                                 required: true,
                                 number: true,
-                                maxlength: 14,
-                                minlength: 14,
+                                // maxlength: 14,
+                                // minlength: 14,
                                 accept: "[0-9-\(\)]+"
                             },
                             contact_designation: {

@@ -106,7 +106,7 @@
 
                         <span class="arrow <?php
 
-                        if ($controller_name == 'PostGroup' || $controller_name == 'change_module_number' || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'documentsetting') {
+                        if ($controller_name == 'PostGroup' || $controller_name == 'change_module_number' || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'documentsetting'|| $controlle_name == 'Presentation') {
 
                             echo 'open';
 
@@ -118,7 +118,7 @@
 
                     </a>
 
-                    <ul  <?php if ($controller_name == 'change_module_number' || $controller_name == 'PostGroup'  || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'module_setting' || $controller_name == 'documentsetting') { ?> style="display: block;"<?php } else { ?> style="display: none;" <?php } ?>class="sub-menu">
+                    <ul  <?php if ($controller_name == 'change_module_number' || $controller_name == 'PostGroup'  || $controller_name == 'targets' || $controller_name == 'sections' || $controller_name == 'firm_sg' || $controller_name == 'firm_sections' || $controller_name == 'firm_pa' || $controller_name == 'app_codes' || $controller_name == 'firm_codes' || $controller_name == 'firm_sg_sections' || $controller_name == 'practice_area_survey' || $controller_name == 'practice_area' || $controller_name == 'city_state_country' || $controller_name == 'app_users' || $controller_name == 'designation' || $controller_name == 'group' || $controller_name == 'firm_designation' || $controller_name == 'app_profiles' || $controller_name == 'ui_lists_security' || $controller_name == 'register_user' || $controller_name == 'import_csv' || $controller_name == 'super_admin' || $controller_name == 'venue' || $controller_name == 'emailtemplate' || $controller_name == 'paymentsettings' || $controller_name == 'signaturesettings' || $controller_name == 'module_setting' || $controller_name == 'documentsetting' || $controlle_name == 'Presentation') { ?> style="display: block;"<?php } else { ?> style="display: none;" <?php } ?>class="sub-menu">
 
                         <!--Only Site admin  can see app codes-->
 
@@ -207,6 +207,18 @@
                                 <a href="<?php echo $base_url; ?>managelist/" class="nav-link ">
 
                                     <span class="title">Manage List</span>
+
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="nav-item <?php if ($controller_name == 'Presentation') { ?> menu_active<?php } ?>">
+
+                                <a href="<?php echo $base_url; ?>Presentation/" class="nav-link ">
+
+                                    <span class="title">Presentation</span>
 
                                 </a>
 

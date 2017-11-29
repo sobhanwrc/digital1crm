@@ -443,7 +443,7 @@
 
                                 <tr>
 
-                                <?php if($this->session->userdata('session_target_seq_no')) { ?>
+                                
 
                                     <td style="width: 35px" height="40px" valign="top">
 
@@ -456,7 +456,7 @@
                                     </td>
 
 
-                                    <?php } ?>
+                                    
 
 
                                     <td style=" width: 90px">
@@ -476,7 +476,7 @@
 
 
 
-                                    <?php if($this->session->userdata('session_target_seq_no')) { ?>
+                                    
                                     <td style=" width: 35px" height="40px" valign="top">
 
                                         <?php if ($next_target_seq_no) { ?>
@@ -486,7 +486,7 @@
                                         <?php } ?>
 
                                     </td>
-                                    <?php } ?>
+                                    
 
 
                                 </tr>
@@ -527,7 +527,7 @@
 
                                 <div class="portlet-title company_header">
 
-                                   <?php if($this->session->userdata('session_target_seq_no')) { ?> 
+                                   
                                     
                                    <div class="custom_header">
 
@@ -786,22 +786,10 @@
                                         </div>
 
                                   </div>
-                                  <?php } else { ?>
-                                    <div class="custom_header">
-                                        <img class="corporate_image" style="border-radius:0 !important;" src="<?php echo base_url(); ?>assets/upload/image/user_blank.jpg" alt="logo" class="logo-default">
-
-                                        <div style=" width: 100%; margin: 0 auto;">
-
-                                            <div style="width: 100%; display: inline-block;">
-
-                                                <span style=" width: auto; padding: 0 5px; text-align: right;display: inline-block;"><strong><?php echo $user_working;?> is working on this contact</strong></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  <?php } ?>
+                                  
 
                                 </div>
-                                <?php if($this->session->userdata('session_target_seq_no')) { ?> 
+                                 
                                 <div class="portlet-body">
 
                                     <div class="row">
@@ -869,6 +857,11 @@
                                                             <button style=" margin-bottom: 15px; margin-top: 10px" class="btn btn-transparent dark btn-outline btn-circle active1" id="btn_make_appointment" type="button">
 
                                                                 <img src="<?php echo $assets_path; ?>pages/img/Make_Appointment.png" alt="" class="menu_icon" />Make Appointment
+
+                                                            </button>
+
+                                                            <button style=" margin-bottom: 15px; margin-top: 10px" class="btn btn-transparent dark btn-outline btn-circle active1" id="btn_send_presentation" type="button" target_seq_no="<?php echo $targets['target_seq_no'];?>" target_email ="<?php echo $targets['email'];?>">
+                                                                Send Presentation
 
                                                             </button>
                                                             
@@ -1136,10 +1129,10 @@ if (isset($targets['target_last_name']) && $targets['target_last_name'] != '') {
                                                             <div class="col-md-12">
 
                                                             <?php if($role_code != 'SITEADM'){ ?>
-                                                                <input type="submit" id="general-edit-submit-btn" class="btn green" name="submit" value="Submit">
+                                                                <input type="submit" id="general-edit-submit-btn" class="btn green" name="submit" value="Edit">
                                                             
 
-                                                                <input style="margin-right: 10px" type="button" id="btn_cancel_main"  class="btn green" name="" value="Reset">
+                                                                <input style="margin-right: 10px" type="reset" id="btn_cancel_main"  class="btn green" name="" value="Reset">
                                                                 <?php } 
                                                                 ?>
                                                             </div>
@@ -1167,7 +1160,7 @@ if (isset($targets['target_last_name']) && $targets['target_last_name'] != '') {
                                 </div>
 
 
-                                <?php } ?> 
+                                
 
 
                                 <!-- END EXAMPLE TABLE PORTLET-->
@@ -1345,7 +1338,102 @@ if (isset($targets['target_last_name']) && $targets['target_last_name'] != '') {
             <!--End Note Modal -->
 
 
+            <div class="modal fade" id="presentation_modal" tabindex="-1" role="dialog"  aria-hidden="true">
 
+                <div class="modal-dialog modal-dialog-sm">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                            <div class="modal-title"><span class="glyphicon glyphicon-pencil text-purple2 mr10"></span><b>Send Presentation</b></div>
+
+                        </div>
+
+                        <form name="send_presentation_form" id="send_presentation_form" action="javascript:void(0)" method="post" enctype="multipart/form-data"> 
+
+                        <input type="hidden" name="target_seq_no_id" id="target_seq_no_id">
+                        
+                        <div class="modal-body">
+
+                            <div id="create_event" class=" mt10">
+
+                                <div class="form-group" id="">
+
+                                    <div style="width: 100%"><label>To</label></div>
+
+                                    <div class="input-group " style="width: 100%">
+                                        <input class="form-control" type="text" name="email_to" id="email_to">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" id="">
+
+                                    <div style="width: 100%"><label>Subject</label></div>
+
+                                    <div class="input-group " style="width: 100%">
+
+                                        <!-- <textarea name="do_not_call" id="do_not_call" class="form-control" cols="75" rows="5"></textarea> -->
+                                        <input class="form-control" type="text" name="email_subject" id="email_subject">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" style=" margin-top:10px">
+                                    <div style="width: 100%"><label for="message">Message</label></div>
+                                    <div class="input-group " style="width: 100%">
+                                        <textarea rows="12" cols="100" id="email_body" name="email_body" placeholder="Write your message here..." class="ckeditorBox" style="height:300px;width: 300px;"></textarea>
+                                    </div>
+                                    <label id="msg-error" class="error" for="msg" generated="true"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div style="width: 100%"><label for="message">Select Presentation Document</label></div>
+                                    <div class="input-group " style="width: 100%">
+                                        <select class="form-control" multiple="multiple" name="presentation_document[]" id="presentation_document" value="">
+                                            <?php foreach ($fetch_presentation_details as $key => $value) { ?>
+                                                <option value="<?php echo $value['id']; ?>" ><?php echo $value['presentation_file_name']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="clearfix"></div>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <!--<button type="submit" class="create-event-form btn bg-blue2">Create Event</button>-->
+
+                            <div class="input-group col-md-12" style="padding-right:15px">
+                                <input type="reset" value="Reset" class="submit btn green pull-right" style="margin-left: 10px;">
+
+                                <input type="button" value="Submit" class="submit btn green pull-right" name="send_presentation_submit_form" id="send_presentation_submit_form" >
+
+                                <div id="master_name_submit_loader" style="display:none; padding-right:15px;"><font color="green"><img src="http://jygsaw.com/digital1crm/assets/img/FhHRx.gif"></font></div>
+
+                            </div>
+
+                        </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <!--Do Not Call Me Modal -->
@@ -2120,6 +2208,13 @@ foreach ($venue_details as $key => $value) {
 
             <script src="<?php echo $assets_path; ?>custom/jquery-timepicker/jquery.timepicker.js"></script>
 
+            <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/ckeditor.js"></script>
+            <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/libs/ckeditor/adapters/jquery.js"></script>
+            <script type="text/javascript" src="<?php echo $assets_path; ?>emailtemplate/ckeditor/resources/js/index.js"></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+
             <link href="http://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css"/>
 
             <!--<link rel="stylesheet" type="text/css" href="jquery.timepicker.css" />-->
@@ -2578,78 +2673,78 @@ foreach ($venue_details as $key => $value) {
 
             <script type="text/javascript">
 
-                // var FormInputMask = function () {
+                var FormInputMask = function () {
 
 
 
-                //     var handleInputMasks = function () {
+                    var handleInputMasks = function () {
 
-                //         $("#home_phone").inputmask("mask", {
+                        // $("#home_phone").inputmask("mask", {
 
-                //             "mask": "(0)9999 999999"
+                        //     "mask": "(0)9999 999999"
 
-                //         });
-
-
-                //         $("#mobile123").inputmask("mask", {
-
-                //             "mask": "(0)9999 999999"
-
-                //         });
-
-                //         $("#contact_phone").inputmask("mask", {
-
-                //             "mask": "(0)9999 999999"
-
-                //         });
-
-                //         $("#fax").inputmask("mask", {
-
-                //             "mask": "(999) 999-9999"
-
-                //         });
-
-                //         $("#new_contact_phone").inputmask("mask", {
-
-                //             "mask": "(0)9999 999999"
-
-                //         });
-
-                //         $("#social_security_no").inputmask("999-99-9999", {
-
-                //             placeholder: " ",
-
-                //             clearMaskOnLostFocus: true
-
-                //         });
-
-                //         // $("#new_contact_mobile").inputmask("mask", {
-
-                //         // "mask": "(999) 999-9999"
-
-                //         // });
+                        // });
 
 
+                        // $("#mobile123").inputmask("mask", {
 
-                //     }
+                        //     "mask": "(0)9999 999999"
 
-                //     return {
+                        // });
 
-                //         //main function to initiate the module
+                        // $("#contact_phone").inputmask("mask", {
 
-                //         init: function () {
+                        //     "mask": "(0)9999 999999"
 
-                //             handleInputMasks();
+                        // });
 
-                //             //            handleIPAddressInput();
+                        // $("#fax").inputmask("mask", {
 
-                //         }
+                        //     "mask": "(999) 999-9999"
 
-                //     };
+                        // });
+
+                        // $("#new_contact_phone").inputmask("mask", {
+
+                        //     "mask": "(0)9999 999999"
+
+                        // });
+
+                        $("#social_security_no").inputmask("999-99-9999", {
+
+                            placeholder: " ",
+
+                            clearMaskOnLostFocus: true
+
+                        });
+
+                        // $("#new_contact_mobile").inputmask("mask", {
+
+                        // "mask": "(999) 999-9999"
+
+                        // });
 
 
 
-                // }();
+                    }
+
+                    return {
+
+                        //main function to initiate the module
+
+                        init: function () {
+
+                            handleInputMasks();
+
+                            //            handleIPAddressInput();
+
+                        }
+
+                    };
+
+
+
+                }();
 
 
 
@@ -2662,6 +2757,16 @@ foreach ($venue_details as $key => $value) {
                     });
 
                 }
+
+                CKEDITOR.replace('email_body');
+
+                $('#presentation_document').multiselect({
+//            includeSelectAllOption: true,
+                    // enableFiltering: true,
+                    numberDisplayed: 3,
+                    // enableCaseInsensitiveFiltering: true,
+                    maxHeight: 300
+                });
 
             </script>
 
@@ -2894,7 +2999,7 @@ foreach ($venue_details as $key => $value) {
 
                     $("#btn_cancel_main").click(function (e) {
 
-                        window.location.href = "<?php echo base_url(); ?>targets";
+                        // window.location.href = "<?php echo base_url(); ?>targets";
 
                     })
 
@@ -2940,35 +3045,35 @@ foreach ($venue_details as $key => $value) {
 
                             target_first_name: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             target_last_name: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             email_target_id: {
 
-                                required: true,
+                                // required: true,
 
                                 email: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             home_phone: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true,
+                                // noSpace: true,
 
                                 accept: "[0-9-\(\)]+"
 
@@ -2976,35 +3081,35 @@ foreach ($venue_details as $key => $value) {
 
                             target_company_name: {
 
-                                required: true,
+                                // required: true,
 
                                 check_company: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             address1: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             industry_type: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             },
 
                             date_contacted: {
 
-                                required: true,
+                                // required: true,
 
-                                noSpace: true
+                                // noSpace: true
 
                             }
                            
@@ -3086,9 +3191,9 @@ foreach ($venue_details as $key => $value) {
                         submitHandler: function (form) {
 
 
-                            $('#noteModal').modal('show');
+                            // $('#noteModal').modal('show');
 
-                            return false;
+                            // return false;
 
                         }
 
@@ -3134,9 +3239,9 @@ foreach ($venue_details as $key => $value) {
 
                                 required: true,
 
-                                maxlength: 3,
+                                // maxlength: 3,
 
-                                minlength: 3,
+                                // minlength: 3,
 
                                 accept: "[0-9]+"
 
@@ -3148,9 +3253,9 @@ foreach ($venue_details as $key => $value) {
 
 //                                number: true,
 
-                                maxlength: 14,
+                                // maxlength: 14,
 
-                                minlength: 14,
+                                // minlength: 14,
 
                                 accept: "[0-9-\(\)]+",
                                 noSpace: true
@@ -3198,9 +3303,9 @@ foreach ($venue_details as $key => $value) {
 
                                 required: "<font color=\"red\">Please enter your country code!</font>",
 
-                                maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                                // maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
 
-                                minlength: "<font color=\"red\">Please enter your correct country code !</font>",
+                                // minlength: "<font color=\"red\">Please enter your correct country code !</font>",
 
                                 accept: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
                                 noSpace: "Space not allowed"
@@ -3749,9 +3854,9 @@ foreach ($venue_details as $key => $value) {
 
                                 required: true,
 
-                                maxlength: 3,
+                                // maxlength: 3,
 
-                                minlength: 3,
+                                // minlength: 3,
 
                                 accept: "[0-9]+",
 
@@ -3765,9 +3870,9 @@ foreach ($venue_details as $key => $value) {
 
 //                                number: true,
 
-                                maxlength: 14,
+                                // maxlength: 14,
 
-                                minlength: 14,
+                                // minlength: 14,
 
                                 accept: "[0-9-\(\)]+"
 
@@ -3815,9 +3920,9 @@ foreach ($venue_details as $key => $value) {
 
                                 required: true,
 
-                                maxlength: 10,
+                                // maxlength: 10,
 
-                                minlength: 10,
+                                // minlength: 10,
 
                                 number: true,
 
@@ -3857,9 +3962,9 @@ foreach ($venue_details as $key => $value) {
 
                                 required: "<font color=\"red\">Please enter your country code!</font>",
 
-                                maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
+                                // maxlength: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
 
-                                minlength: "<font color=\"red\">Please enter your correct country code !</font>",
+                                // minlength: "<font color=\"red\">Please enter your correct country code !</font>",
 
                                 accept: "<font color=\"red\">Please enter your country code! Maximum 3 digits allow.</font>",
 
@@ -4079,6 +4184,46 @@ foreach ($venue_details as $key => $value) {
 
                     });
 
+                    $("#btn_send_presentation").click(function (e) {
+                        var target_email = $(this).attr('target_email');
+                        var target_seq_no = $(this).attr('target_seq_no');
+
+                        $('#target_seq_no_id').val(target_seq_no);
+                        $('#email_to').val(target_email);
+
+                        $("#presentation_modal").modal('show');
+
+                    });
+
+                    $("#send_presentation_submit_form").on('click', function () {
+                        var data = new FormData($('#send_presentation_form')[0]);
+                        
+                        var editorval = CKEDITOR.instances['email_body'].getData();
+                        data.append('BookDescription',editorval);
+
+                        $.ajax({
+                            type: "POST",
+                            url: BASE_URL + 'Targets/send_presentation',
+                            data: data,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (data) {
+                                if(data == 1){
+                                    jconfirm({
+                                        title: 'Confirmation!',
+                                        content: 'Presentation send successfully.<br>Contact goes to next module.',
+                                        buttons: {
+                                            OK: function () {
+                                                window.location.href = base_url +'targets' ;
+                                            }
+                                        }
+                                    });
+                                }                               
+                            }
+                        });
+                    });
+
                     $("#add_new_master_contact").click(function (e) {
 
                         $("#add_new_master_contact_module").modal('show');
@@ -4145,7 +4290,50 @@ foreach ($venue_details as $key => $value) {
 
                     });
 
+                    $('#general-edit-submit-btn').on('click', function () {
+                        var valid = $('#myfirm-general-info-form').valid();
+                        if(valid){
+                            $.ajax({
 
+                                type: "POST",
+
+                                url: BASE_URL + "targets/add_notes",
+
+                                data: $('#myfirm-general-info-form').serialize(),
+
+                                beforeSend: function () {
+
+                                    $("#existing_group_field").find('img').css('display', 'block');
+
+                                },
+
+                                success: function (response) {
+
+                                    $("#existing_group_field").find('img').css('display', 'none');
+
+                                    jconfirm({
+
+                                        title: 'Confirmation!',
+
+                                        content: "Contact edited successfully",
+
+                                        buttons: {
+
+                                            OK: function () {
+
+                                                // window.location.href = "<?php echo base_url(); ?>targets";
+                                                window.location.reload();
+
+                                            }
+
+                                        }
+
+                                    });
+                                }
+                            });
+                        }
+                        
+                    });
 
                     $("#master_name_submit_note").click(function (e) {
 
@@ -4183,7 +4371,7 @@ foreach ($venue_details as $key => $value) {
 
                                 type: "POST",
 
-                                url: BASE_URL + "targets/add_notes",
+                                url: BASE_URL + "targets/add_notes1",
 
                                 data: $('#myfirm-general-info-form').serialize() + "&newnotes=" + newnotes,
 

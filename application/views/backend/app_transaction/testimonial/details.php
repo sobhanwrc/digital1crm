@@ -536,24 +536,9 @@
                                                             <div class="form-group bb">
                                                                 <label class="control-label" style=" width: 100%; display: inline-block">Phone</label>
                                                                 <?php
-                                                                $user_phone = $target_details[0]['phone'];
-                                                                $original_user_phone = $user_phone;
-                                                                $length = strlen($original_user_phone);
-                                                                if ($length == 10) {
-                                                                    $country_code1 = '';
-                                                                } else if ($length == 11) {
-                                                                    $country_code1 = substr($original_user_phone, 0, 1);
-                                                                } else if ($length == 12) {
-                                                                    $country_code1 = substr($original_user_phone, 0, 2);
-                                                                } else if ($length == 13) {
-                                                                    $country_code1 = substr($original_user_phone, 0, 3);
-                                                                } else if ($length == 14) {
-                                                                    $country_code1 = substr($original_user_phone, 0, 4);
-                                                                }
-                                                                else if ($length == 17) {
-                                                                    $country_code1 = substr($original_user_phone, 0, 3);
-                                                                }
-                                                                $user_phone_number = substr($original_user_phone, -11);
+                                                                $user_phone = explode("-",$target_details[0]['phone']);
+                                                                $country_code1 = $user_phone[0];
+                                                                $user_phone_number = $user_phone[1];
 
                                                                  ?>
                                                                 <input type="text" readonly value="<?php echo $country_code1; ?>" placeholder="" class="form-control" id="country_code1" name="country_code1" autocomplete="off" style="width: 15%; display: inline-block" readonly>

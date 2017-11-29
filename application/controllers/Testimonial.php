@@ -266,14 +266,14 @@ class Testimonial extends MY_Controller {
        $target_seq_no = $this->input->post("target_seq_no");
 
        //update table module8 data
-       $data=array('name'=>$first_name.' '.$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
+       $data=array('name'=>$first_name.' '.$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company_name'=>$target_company_name, 'categories'=>$industry_type);
        //$res=$this->appointment_details_module->edit($data,$seq_no);
        $this->db->where('target_seq_no',$target_seq_no);
        $res = $this->db->update('plma_module8', $data);
        //echo $this->db->last_query();die;
 
        //update table target (module1)
-       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
+       $target_data=array('target_first_name'=>$first_name,'target_last_name'=>$last_name,'email'=>$email,'phone'=>$country_code1.'-'.$phione , 'mobile' => $mobile,'address'=>$address1,'company'=>$target_company_name, 'categories'=>$industry_type);
        $target_res=$this->Targets_model->edit($target_data,$target_seq_no);
        if($res && $target_res)
        {
